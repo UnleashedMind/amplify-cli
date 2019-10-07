@@ -84,12 +84,7 @@ async function selectCluster(context, inputs, AWS) {
   }
 
   if (clusters.size > 0) {
-<<<<<<< HEAD
-    const clusterIdentifier =
-      await promptWalkthroughQuestion(inputs, 1, Array.from(clusters.keys()));
-=======
     const clusterIdentifier = await promptWalkthroughQuestion(inputs, 1, Array.from(clusters.keys()));
->>>>>>> c90bf4802d62ec141ace01614235d32aed63938d
     const selectedCluster = clusters.get(clusterIdentifier);
 
     return {
