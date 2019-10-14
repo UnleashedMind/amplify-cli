@@ -12,6 +12,7 @@ const HTTPTransformer = require('graphql-http-transformer').default;
 const KeyTransformer = require('graphql-key-transformer').default;
 const providerName = require('./constants').ProviderName;
 const TransformPackage = require('graphql-transformer-core');
+const { hashElement } = require('folder-hash');
 
 const { collectDirectivesByTypeNames, readTransformerConfiguration, writeTransformerConfiguration } = TransformPackage;
 
@@ -19,6 +20,7 @@ const category = 'api';
 const parametersFileName = 'parameters.json';
 const schemaFileName = 'schema.graphql';
 const schemaDirName = 'schema';
+const ROOT_APPSYNC_S3_KEY = 'amplify-appsync-files';
 
 function warnOnAuth(context, map) {
   const unAuthModelTypes = Object.keys(map).filter(type => !map[type].includes('auth') && map[type].includes('model'));
@@ -134,6 +136,7 @@ async function migrateProject(context, options) {
 }
 
 async function transformGraphQLSchema(context, options) {
+  const backEndDir = context.amplify.pathManager.getBackendDirPath();
   const flags = context.parameters.options;
   if (flags['no-gql-override']) {
     return;
@@ -145,6 +148,19 @@ async function transformGraphQLSchema(context, options) {
   // Compilation during the push step
   const { resourcesToBeCreated, resourcesToBeUpdated, allResources } = await context.amplify.getResourceStatus(category);
   let resources = resourcesToBeCreated.concat(resourcesToBeUpdated);
+
+  // When build folder is missing include the API
+  // to be compiled without the backend/api/<api-name>/build
+  // cloud formation push will fail even if there is no changes in the GraphQL API
+  // https://github.com/aws-amplify/amplify-console/issues/10
+  const resourceNeedCompile = allResources
+    .filter(r => !resources.includes(r))
+    .filter(r => {
+      const buildDir = path.normalize(path.join(backEndDir, category, r.resourceName, 'build'));
+      return !fs.existsSync(buildDir);
+    });
+  resources = resources.concat(resourceNeedCompile);
+
   if (forceCompile) {
     resources = resources.concat(allResources);
   }
@@ -158,7 +174,6 @@ async function transformGraphQLSchema(context, options) {
         return;
       }
       const { category, resourceName } = resource;
-      const backEndDir = context.amplify.pathManager.getBackendDirPath();
       resourceDir = path.normalize(path.join(backEndDir, category, resourceName));
     } else {
       // No appsync resource to update/add
@@ -254,9 +269,20 @@ async function transformGraphQLSchema(context, options) {
     }
   }
 
-  const buildDir = `${resourceDir}/build`;
-  const schemaFilePath = `${resourceDir}/${schemaFileName}`;
-  const schemaDirPath = `${resourceDir}/${schemaDirName}`;
+  const buildDir = path.normalize(path.join(resourceDir, 'build'));
+  const schemaFilePath = path.normalize(path.join(resourceDir, schemaFileName));
+  const schemaDirPath = path.normalize(path.join(resourceDir, schemaDirName));
+  let deploymentRootKey = await getPreviousDeploymentRootKey(previouslyDeployedBackendDir);
+  if (!deploymentRootKey) {
+    const deploymentSubKey = await hashDirectory(resourceDir);
+    deploymentRootKey = `${ROOT_APPSYNC_S3_KEY}/${deploymentSubKey}`;
+  }
+  const projectBucket = getProjectBucket(context);
+  const buildParameters = {
+    ...parameters,
+    S3DeploymentBucket: projectBucket,
+    S3DeploymentRootKey: deploymentRootKey,
+  };
 
   fs.ensureDirSync(buildDir);
   // Transformer compiler code
@@ -278,14 +304,15 @@ async function transformGraphQLSchema(context, options) {
       new HTTPTransformer(),
       new KeyTransformer(),
       new ModelConnectionTransformer(),
-      // TODO: Build dependency mechanism into transformers. Auth runs last
-      // so any resolvers that need to be protected will already be created.
-      new ModelAuthTransformer({ authConfig }),
     ];
 
     if (addSearchableTransformer) {
       transformerList.push(new SearchableModelTransformer());
     }
+
+    // TODO: Build dependency mechanism into transformers. Auth runs last
+    // so any resolvers that need to be protected will already be created.
+    transformerList.push(new ModelAuthTransformer({ authConfig }));
 
     return transformerList;
   };
@@ -297,6 +324,7 @@ async function transformGraphQLSchema(context, options) {
   }
 
   const buildConfig = {
+    buildParameters,
     projectDirectory: options.dryrun ? false : resourceDir,
     transformersFactory: transformerListFactory,
     transformersFactoryArgs: [searchableTransformerFlag],
@@ -315,6 +343,39 @@ place .graphql files in a directory at ${schemaDirPath}`);
     fs.writeFileSync(parametersFilePath, jsonString, 'utf8');
   }
   return transformerOutput;
+}
+
+function getProjectBucket(context) {
+  const projectDetails = context.amplify.getProjectDetails();
+  const projectBucket = projectDetails.amplifyMeta.providers ? projectDetails.amplifyMeta.providers[providerName].DeploymentBucketName : '';
+  return projectBucket;
+}
+
+async function hashDirectory(directory) {
+  const options = {
+    encoding: 'hex',
+    folders: {
+      exclude: ['build'],
+    },
+  };
+
+  return hashElement(directory, options).then(result => result.hash);
+}
+
+async function getPreviousDeploymentRootKey(previouslyDeployedBackendDir) {
+  // this is the function
+  let parameters;
+  try {
+    const parametersPath = path.join(previouslyDeployedBackendDir, `build/${parametersFileName}`);
+    const parametersExists = await fs.exists(parametersPath);
+    if (parametersExists) {
+      const parametersString = await fs.readFile(parametersPath);
+      parameters = JSON.parse(parametersString.toString());
+    }
+    return parameters.S3DeploymentRootKey;
+  } catch (err) {
+    return undefined;
+  }
 }
 
 // TODO: Remove until further discussion
