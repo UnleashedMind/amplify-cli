@@ -2,7 +2,7 @@ import * as nexpect from 'nexpect';
 import { getCLIPath, isCI } from '../utils';
 
 
-export function pluginHelp(
+export function help(
   cwd: string,
   verbose: Boolean = isCI() ? false : true
 ) {
@@ -20,7 +20,7 @@ export function pluginHelp(
     });
 }
 
-export function pluginScan(
+export function scan(
     cwd: string,
     verbose: Boolean = isCI() ? false : true
 ) {
@@ -38,7 +38,7 @@ export function pluginScan(
     });
 }
 
-export function pluginListActive(
+export function listActive(
     cwd: string,
     verbose: Boolean = isCI() ? false : true
 ) {
@@ -59,7 +59,7 @@ export function pluginListActive(
     });
 }
 
-export function pluginListExcluded(
+export function listExcluded(
     cwd: string,
     verbose: Boolean = isCI() ? false : true
 ) {
@@ -79,7 +79,7 @@ export function pluginListExcluded(
     });
 }
 
-export function pluginListGeneralInfo(
+export function listGeneralInfo(
     cwd: string,
     verbose: Boolean = isCI() ? false : true
 ) {

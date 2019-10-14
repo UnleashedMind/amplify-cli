@@ -1,9 +1,9 @@
 import {
-    pluginHelp,
-    pluginScan,
-    pluginListActive,
-    pluginListExcluded,
-    pluginListGeneralInfo
+    help,
+    scan,
+    listActive,
+    listExcluded,
+    listGeneralInfo
 } from '../src/plugin';
 
 
@@ -31,7 +31,7 @@ describe('amplify plugin', () => {
     //     await pluginListExcluded(process.cwd()); 
     // }); 
 
-    // it('plugin list general info', async () => {
-    //     await pluginListGeneralInfo(process.cwd()); 
-    // }); 
+    it('plugin list general info', async () => {
+        await listGeneralInfo(process.cwd()); 
+    }); 
 })
