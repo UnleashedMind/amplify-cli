@@ -87,6 +87,12 @@ async function deletePinpointAppForEnv(context, envName) {
     pinpointApp = teamProviderInfo[envName].categories[constants.CategoryName][constants.PinpointName];
   }
 
+  if (!pinpointApp) {
+    const amplifyMeta = context.amplify.getProjectMeta();
+    const analyticsMeta = amplifyMeta[constants.AnalyticsCategoryName];
+    pinpointApp = pinpointHelper.scanCategoryMetaForPinpoint(analyticsMeta);
+  }
+
   if (pinpointApp) {
     const params = {
       ApplicationId: pinpointApp.Id,
