@@ -1,0 +1,68 @@
+{
+	"AWSTemplateFormatVersion": "2010-09-09",
+	"Description": "Lambda resource stack creation using Amplify CLI",
+	"Parameters": {
+		"env": {
+			"Type": "String"
+		}
+	},
+	"Conditions": {
+		"ShouldNotCreateEnvResources": {
+			"Fn::Equals": [
+				{
+					"Ref": "env"
+				},
+				"NONE"
+			]
+		}
+	},
+	"Resources": {
+		"LambdaLayer": {
+			"Type": "AWS::Lambda::LayerVersion",
+			"DeletionPolicy": "Retain",
+			"UpdateReplacePolicy": "Retain",
+			"Properties": {
+				"CompatibleRuntimes": [
+					"nodejs12.x"
+				],
+				"Content": {
+					"S3Bucket": "amplify-testlayer4-dev-231647-deployment",
+					"S3Key": "amplify-builds/testlayer407522197-446b73425a6644715a6a-build.zip"
+				},
+				"Description": "test lambda layer",
+				"LayerName": "<layer-name>",
+				"LicenseInfo": "MIT"
+			}
+		},
+		"LambdaLayerPermission": {
+			"Type": "AWS::Lambda::LayerVersionPermission",
+			"DeletionPolicy": "Retain",
+			"UpdateReplacePolicy": "Retain",
+			"DependsOn": "LambdaLayer",
+			"Properties": {
+				"Action": "lambda:GetLayerVersion",
+				"LayerVersionArn": {
+					"Ref": "LambdaLayer"
+				},
+				"Principal": "*"
+			}
+		}
+	},
+	"Outputs": {
+		"Arn": {
+			"Value": {
+				"Ref": "LambdaLayer"
+			}
+		},
+		"Region": {
+			"Value": {
+				"Ref": "AWS::Region"
+			}
+		},
+		"PermissionRef": {
+			"Value": {
+				"Ref": "LambdaLayerPermission"
+			}
+		}
+	}
+}

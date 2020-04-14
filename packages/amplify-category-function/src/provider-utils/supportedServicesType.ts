@@ -11,6 +11,7 @@ export interface ServiceConfig {
 
 export enum Service {
   Lambda = 'Lambda',
+  LambdaLayer = "LambdaLayer"
 }
 
 export interface WalkthroughProvider {

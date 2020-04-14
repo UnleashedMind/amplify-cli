@@ -253,16 +253,25 @@ function packageResources(context, resources) {
 
         const cfnMeta = context.amplify.readJsonFile(cfnFilePath);
 
-        if (cfnMeta.Resources.LambdaFunction.Type === 'AWS::Serverless::Function') {
-          cfnMeta.Resources.LambdaFunction.Properties.CodeUri = {
-            Bucket: s3Bucket,
-            Key: s3Key,
-          };
-        } else {
-          cfnMeta.Resources.LambdaFunction.Properties.Code = {
+        if(cfnMeta.Resources.LambdaFunction){
+          if (cfnMeta.Resources.LambdaFunction.Type === 'AWS::Serverless::Function') {
+            cfnMeta.Resources.LambdaFunction.Properties.CodeUri = {
+              Bucket: s3Bucket,
+              Key: s3Key,
+            };
+          } else {
+            cfnMeta.Resources.LambdaFunction.Properties.Code = {
+              S3Bucket: s3Bucket,
+              S3Key: s3Key,
+            };
+          }
+        }else if(cfnMeta.Resources.LambdaLayer && cfnMeta.Resources.LambdaLayer.Type  === 'AWS::Lambda::LayerVersion'){
+          cfnMeta.Resources.LambdaLayer.Properties.Content = {
             S3Bucket: s3Bucket,
             S3Key: s3Key,
           };
+          console.log('////////changed/////////////')
+          console.log(cfnMeta.Resources.LambdaLayer.Properties.Content);
         }
 
         const jsonString = JSON.stringify(cfnMeta, null, '\t');
