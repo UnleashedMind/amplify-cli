@@ -1,0 +1,18 @@
+type Draft @model
+  @auth(rules: [
+
+    # Defaults to use the "owner" field.
+    { allow: owner },
+
+    # Authorize the update mutation and both queries. Use `queries: null` to disable auth for queries.
+    { allow: owner, ownerField: "editors", operations: [update] },
+
+    # Admin users can access any operation.
+    { allow: groups, groups: ["Admin"] }
+  ]) {
+  id: ID!
+  title: String!
+  content: String
+  owner: String
+  editors: [String]!
+}

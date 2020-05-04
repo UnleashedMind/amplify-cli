@@ -1,0 +1,10 @@
+{
+    "data": {
+        "createDraft": {
+            "id": "...",
+            "title": "A new draft",
+            "owner": "someuser@my-domain.com",
+            "editors": []
+        }
+    }
+}

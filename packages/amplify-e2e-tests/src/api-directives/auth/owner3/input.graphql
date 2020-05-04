@@ -1,0 +1,6 @@
+type Todo @model
+  @auth(rules: [{ allow: owner, operations: [read] }]) {
+  id: ID!
+  updatedAt: AWSDateTime! 
+  content: String!
+}

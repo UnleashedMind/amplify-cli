@@ -1,0 +1,10 @@
+mutation CreateDraft {
+  createDraft(input: {
+    title: "A new draft",
+    editors: [],
+    groupsCanAccess: ["BizDev"]
+  }) {
+    id
+    groupsCanAccess
+  }
+}

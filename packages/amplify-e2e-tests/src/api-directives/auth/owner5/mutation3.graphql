@@ -1,0 +1,14 @@
+mutation CreateDraft {
+  createDraft(
+    input: {
+      title: "A new draft",
+      editors: [],
+      owner: null
+    }
+  ) {
+    id
+    title
+    owner
+    editors
+  }
+}

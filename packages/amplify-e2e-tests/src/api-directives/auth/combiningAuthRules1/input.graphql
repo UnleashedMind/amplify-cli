@@ -1,0 +1,11 @@
+type Post @model
+  @auth (
+    rules: [
+      { allow: owner },
+      { allow: private, provider: iam, operations: [read] }
+    ]
+  ) {
+  id: ID!
+  title: String
+  owner: String
+}

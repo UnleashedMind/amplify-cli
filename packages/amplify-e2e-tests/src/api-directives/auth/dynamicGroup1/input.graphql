@@ -1,0 +1,6 @@
+# Dynamic group authorization with multiple groups
+type Post @model @auth(rules: [{allow: groups, groupsField: "groups"}]) {
+  id: ID!
+  title: String
+  groups: [String]
+}

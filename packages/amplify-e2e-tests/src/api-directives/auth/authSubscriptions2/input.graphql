@@ -1,0 +1,9 @@
+#error: remove duplicate @model in doc
+type Post @model
+@auth(rules: [{allow: groups, groups: ["Admin"]}]) {
+{
+  id: ID!
+  owner: String
+  postname: String
+  content: String
+}

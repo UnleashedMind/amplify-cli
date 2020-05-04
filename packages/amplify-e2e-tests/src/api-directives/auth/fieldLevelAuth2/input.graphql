@@ -1,0 +1,16 @@
+#change: added type Post definition which is omitted in the doc
+type User @model {
+  id: ID!
+  username: String
+  posts: [Post]
+    @connection(name: "UserPosts")
+    @auth(rules: [{ allow: owner, ownerField: "username" }])
+}
+
+type Post @model(queries: null) 
+{
+  id: ID!
+  owner: String
+  postname: String
+  content: String
+}

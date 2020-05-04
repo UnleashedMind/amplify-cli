@@ -1,0 +1,13 @@
+type Employee @model {
+  id: ID!
+  email: String
+
+  # Owners & members of the "Admin" group may read employee salaries.
+  # Only members of the "Admin" group may create an employee with a salary
+  # or update a salary.
+  salary: String
+    @auth(rules: [
+      { allow: owner, ownerField: "username", operations: [read] },
+      { allow: groups, groups: ["Admin"], operations: [create, update, read] }
+    ])
+}

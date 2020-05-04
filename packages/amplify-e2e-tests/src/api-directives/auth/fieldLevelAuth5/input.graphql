@@ -1,0 +1,7 @@
+type Todo 
+  @model
+{
+  id: ID! 
+  updatedAt: AWSDateTime! @auth(rules: [{ allow: owner, operations: [update] }]) // or @auth(rules: [{ allow: groups, groups: ["Admins"] }])
+  content: String! @auth(rules: [{ allow: owner, operations: [update] }])
+}
