@@ -1,0 +1,7 @@
+mutation Create {
+  createPost(input: { title: "Conflict detection in the cloud!" }) {
+    id
+    title
+    version # will be 1
+  }
+}

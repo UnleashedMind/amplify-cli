@@ -1,0 +1,5 @@
+type Order @model @key(fields: ["customerEmail", "createdAt"]) {
+  customerEmail: String!
+  createdAt: String!
+  orderId: ID!
+}

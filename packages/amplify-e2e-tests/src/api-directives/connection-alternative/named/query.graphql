@@ -1,0 +1,12 @@
+query GetPostAndComments {
+  getPost(id: "...") {
+    id
+    title
+    comments {
+      items {
+        content
+        createdAt
+      }
+    }
+  }
+}

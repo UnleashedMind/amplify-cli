@@ -1,0 +1,14 @@
+mutation CreateCommentOnPost {
+  createComment(input: { content: "A comment", commentPostId: "a-post-id" }) {
+    id
+    content
+    post {
+      id
+      title
+      comments {
+        id
+        # and so on...
+      }
+    }
+  }
+}

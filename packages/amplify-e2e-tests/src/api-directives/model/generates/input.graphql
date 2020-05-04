@@ -1,0 +1,12 @@
+type Post @model {
+  id: ID!
+  title: String
+  metadata: MetaData
+}
+type MetaData {
+  category: Category
+}
+enum Category {
+  comedy
+  news
+}

@@ -1,0 +1,14 @@
+mutation CreateData {
+  p1: createPost(input: { id: "P1", title: "Post 1" }) {
+    id
+  }
+  p2: createPost(input: { id: "P2", title: "Post 2" }) {
+    id
+  }
+  u1: createUser(input: { id: "U1", username: "user1" }) {
+    id
+  }
+  u2: createUser(input: { id: "U2", username: "user2" }) {
+    id
+  }
+}

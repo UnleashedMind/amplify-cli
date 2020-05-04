@@ -22,10 +22,12 @@
   },
   "dependencies": {
     "amplify-e2e-core": "1.1.1",
+    "aws-amplify": "^3.0.8",
     "aws-sdk": "^2.608.0",
     "dotenv": "^8.2.0",
     "esm": "^3.2.25",
     "fs-extra": "^8.1.0",
+    "promise-sequential": "^1.1.1",
     "graphql-transformer-core": "6.17.0",
     "rimraf": "^3.0.0"
   },
