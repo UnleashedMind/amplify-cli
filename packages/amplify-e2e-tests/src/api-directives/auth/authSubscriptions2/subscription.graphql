@@ -1,0 +1,4 @@
+subscription onCreatePost(owner: “Bob”){
+  postname
+  content
+}

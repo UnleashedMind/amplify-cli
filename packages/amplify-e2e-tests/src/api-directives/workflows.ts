@@ -280,3 +280,42 @@ export function amplifyPush(projectDir: string) {
       });
   });
 }
+
+//codegen:
+export function addCoeGen(projectDir: string) {
+  return new Promise((resolve, reject) => {
+    spawn(getCLIPath(), ['codegen', 'add'], { cwd: projectDir, stripColors: true })
+      .wait('Choose the code generation language target')
+      .sendCarriageReturn()
+      .wait('Enter the file name pattern of graphql queries, mutations and subscriptions')
+      .sendCarriageReturn()
+      .wait('Do you want to generate/update all possible GraphQL operations')
+      .sendCarriageReturn()
+      .wait('Enter maximum statement depth')
+      .sendCarriageReturn()
+      .wait('Generated GraphQL operations successfully and saved at src/graphql')
+      .run((err: Error) => {
+        if (!err) {
+          resolve();
+        } else {
+          reject(err);
+        }
+      });
+  });
+}
+
+
+export function runCodeGen(projectDir: string) {
+  return new Promise((resolve, reject) => {
+    spawn(getCLIPath(), ['codegen'], { cwd: projectDir, stripColors: true })
+      .wait('Generated GraphQL operations successfully and saved at src/graphql')
+      .run((err: Error) => {
+        if (!err) {
+          resolve();
+        } else {
+          reject(err);
+        }
+      });
+  });
+}
+
