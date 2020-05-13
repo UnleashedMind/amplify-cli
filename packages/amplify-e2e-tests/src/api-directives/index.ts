@@ -2,6 +2,11 @@ import path from 'path';
 import fs from 'fs-extra';
 import { runTest } from './common';
 
+// to deal with bug in cognito-identity-js
+(global as any).fetch = require('node-fetch');
+// to deal with subscriptions in node env
+(global as any).WebSocket = require('ws');
+
 export async function testSchema(projectDir: string, directive: string, section: string): Promise<boolean> {
   try {
     const schemaDocDirPath = path.join(__dirname, directive, section);
