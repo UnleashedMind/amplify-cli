@@ -5,7 +5,7 @@ describe('api directives @model @key @connection @versioned', () => {
   let projectDir: string;
 
   beforeEach(async () => {
-    projectDir = await createNewProjectDir('init');
+    projectDir = await createNewProjectDir('apidirective1');
     await initJSProjectWithProfile(projectDir, {});
   });
 

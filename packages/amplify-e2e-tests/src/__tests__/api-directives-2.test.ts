@@ -5,8 +5,8 @@ describe('api directives @auth', () => {
   let projectDir: string;
 
   beforeEach(async () => {
-    projectDir = await createNewProjectDir('init');
-    // await initJSProjectWithProfile(projectDir, {});
+    projectDir = await createNewProjectDir('apidirective1');
+    await initJSProjectWithProfile(projectDir, {});
   });
 
   afterEach(async () => {
