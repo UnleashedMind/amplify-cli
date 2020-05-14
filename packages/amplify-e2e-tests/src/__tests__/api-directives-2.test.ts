@@ -6,12 +6,12 @@ describe('api directives @auth', () => {
 
   beforeEach(async () => {
     projectDir = await createNewProjectDir('init');
-    await initJSProjectWithProfile(projectDir, {});
+    // await initJSProjectWithProfile(projectDir, {});
   });
 
   afterEach(async () => {
-    await deleteProject(projectDir);
-    deleteProjectDir(projectDir);
+    // await deleteProject(projectDir);
+    // deleteProjectDir(projectDir);
   });
 
   // it('auth owner1', async () => {
@@ -34,10 +34,10 @@ describe('api directives @auth', () => {
   //   expect(testresult).toBeTruthy();
   // });
 
-  // it('auth owner5', async () => {
-  //   const testresult = await testSchema(projectDir, 'auth', 'owner5');
-  //   expect(testresult).toBeTruthy();
-  // });
+  it('auth owner5', async () => {
+    const testresult = await testSchema(projectDir, 'auth', 'owner5');
+    expect(testresult).toBeTruthy();
+  });
 
   // it('auth staticGroup1', async () => {
   //   const testresult = await testSchema(projectDir, 'auth', 'staticGroup1');
@@ -99,10 +99,10 @@ describe('api directives @auth', () => {
   //   expect(testresult).toBeTruthy();
   // });
 
-  it('auth authSubscriptions1', async () => {
-    const testresult = await testSchema(projectDir, 'auth', 'authSubscriptions1');
-    expect(testresult).toBeTruthy();
-  });
+  // it('auth authSubscriptions1', async () => {
+  //   const testresult = await testSchema(projectDir, 'auth', 'authSubscriptions1');
+  //   expect(testresult).toBeTruthy();
+  // });
 
   // it('auth authSubscriptions2', async () => {
   //   const testresult = await testSchema(projectDir, 'auth', 'authSubscriptions2');

@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs-extra';
+import _ from 'lodash';
 import sequential from 'promise-sequential';
 import Amplify, { API, graphqlOperation } from 'aws-amplify';
 import AWSAppSyncClient, { AUTH_TYPE } from 'aws-appsync';
@@ -7,6 +8,8 @@ import { getAWSExports } from '../aws-exports/awsExports';
 import Observable from 'zen-observable';
 import { addApi, amplifyPushWithoutCodeGen } from './workflows';
 import gql from 'graphql-tag';
+import {readJsonFile} from 'amplify-e2e-core';
+
 
 
 //The following runTest method runs the common test pattern schemas in the document.
@@ -66,58 +69,127 @@ export async function testGqlCompiled(actualCompileSchema: string, schemaInDoc: 
 }
 
 export async function testMutations(schemaDocDirPath: string) {
-  let mutationFileNames = fs.readdirSync(schemaDocDirPath).filter(fileName => /^mutation*/.test(fileName));
+  const fileNames = fs.readdirSync(schemaDocDirPath); 
+  console.log('///fileNames', fileNames);
+  let mutationFileNames = fileNames.filter(fileName => /^mutation[0-9]*\.graphql$/.test(fileName));
+  
+  console.log('///mutationFileNames', mutationFileNames);
 
   if (mutationFileNames.length > 1) {
     mutationFileNames = mutationFileNames.sort((fn1, fn2) => {
-      const n1 = parseInt(fn1.replace('mutation', ''));
-      const n2 = parseInt(fn2.replace('mutation', ''));
+      const n1 = parseInt(fn1.replace(/mutation|\.graphq/g, ''));
+      const n2 = parseInt(fn2.replace(/mutation|\.graphq/g, ''));
       return n1 - n2;
     });
   }
 
+  console.log('///sorted mutationFileNames', mutationFileNames);
+
   const mutationTasks = [];
   mutationFileNames.forEach(mutationFileName => {
+    const mutationResultFileName = 'result-' + mutationFileName.replace('.graphql', '.json');
     const mutationFilePath = path.join(schemaDocDirPath, mutationFileName);
+    const mutationResultFilePath = path.join(schemaDocDirPath, mutationResultFileName);
     const mutation = fs.readFileSync(mutationFilePath).toString();
+    let mutationResult: any; 
+    if(fs.existsSync(mutationResultFilePath)){
+      mutationResult = readJsonFile(mutationResultFilePath);
+    }
     mutationTasks.push(async () => {
-      await API.graphql(graphqlOperation(mutation));
+      await testMutation(mutation, mutationResult);
     });
   });
 
   await sequential(mutationTasks);
 }
 
-export async function testMutation(mutation: any, response: any){
-  await API.graphql(graphqlOperation(mutation));
+export async function testMutation(mutation: any, mutationResult?: any){
+  console.log('////test mutation: ', mutation);
+  console.log('////expected mutation result: ', mutationResult);
+  let resultMatch = true;
+  let errorMatch = true;
+  try{
+    const result = await API.graphql(graphqlOperation(mutation)) as any;
+    console.log('////mutation result ', result);
+    if(mutationResult && (!mutationResult.data || !_.isEqual(result.data, mutationResult.data))){
+      resultMatch = false;
+    }
+  }catch(err){
+    console.log('///mutation error', err);
+    if(mutationResult && mutationResult.errors){
+      errorMatch = mutationResult.errors.every((expectedError: any)=>{
+        return err.errors.some((error: any) => {
+          return expectedError.errorType === error.errorType;
+        });
+      })
+    }else{
+      errorMatch = false;
+    }
+  }
+  if(!resultMatch || !errorMatch){
+    throw new Error('Mutation test failed.');
+  }
 }
 
 export async function testQueries(schemaDocDirPath: string) {
-  let queryFileNames = fs.readdirSync(schemaDocDirPath);
-
-  queryFileNames = queryFileNames.filter(fileName => /^query*/.test(fileName));
+  const fileNames = fs.readdirSync(schemaDocDirPath); 
+  console.log('///fileNames', fileNames);
+  let queryFileNames = fileNames.filter(fileName => /^query[0-9]*\.graphql$/.test(fileName));
+  
+  console.log('///queryFileNames', queryFileNames);
 
   if (queryFileNames.length > 1) {
     queryFileNames = queryFileNames.sort((fn1, fn2) => {
-      const n1 = parseInt(fn1.replace('query', ''));
-      const n2 = parseInt(fn2.replace('query', ''));
+      const n1 = parseInt(fn1.replace(/query|\.graphq/g, ''));
+      const n2 = parseInt(fn2.replace(/query|\.graphq/g, ''));
       return n1 - n2;
     });
   }
 
+  console.log('///sorted queryFileNames', queryFileNames);
+
   const queryTasks = [];
   queryFileNames.forEach(queryFileName => {
+    const queryResultFileName = 'result-' + queryFileName.replace('.graphql', '.json');
     const queryFilePath = path.join(schemaDocDirPath, queryFileName);
+    const queryResultFilePath = path.join(schemaDocDirPath, queryResultFileName);
     const query = fs.readFileSync(queryFilePath).toString();
-
+    let queryResult: any; 
+    if(fs.existsSync(queryResultFilePath)){
+      queryResult = readJsonFile(queryResultFilePath);
+    }
     queryTasks.push(async () => {
-      await API.graphql(graphqlOperation(query));
+      await testQuery(query, queryResult);
     });
   });
 
   await sequential(queryTasks);
 }
 
-export async function testQuery(query: any, response: any){
-  await API.graphql(graphqlOperation(query));
+export async function testQuery(query: any, queryResult?: any){
+  console.log('////test query: ', query);
+  console.log('////expected query result: ', queryResult);
+  let resultMatch = true;
+  let errorMatch = true;
+  try{
+    const result = await API.graphql(graphqlOperation(query)) as any;
+    console.log('////query result ', result);
+    if(queryResult && (!queryResult.data || !_.isEqual(result.data, queryResult.data))){
+      resultMatch = false;
+    }
+  }catch(err){
+    console.log('///query error', err);
+    if(queryResult && queryResult.errors){
+      errorMatch = queryResult.errors.every((expectedError: any)=>{
+        return err.errors.some((error: any) => {
+          return expectedError.errorType === error.errorType;
+        });
+      })
+    }else{
+      errorMatch = false;
+    }
+  }
+  if(!resultMatch || !errorMatch){
+    throw new Error('Query test failed.');
+  }
 }

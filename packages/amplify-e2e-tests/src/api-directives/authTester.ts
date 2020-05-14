@@ -29,10 +29,16 @@ const PASSWORD = 'user1Password'
 
 export async function runTest(projectDir: string, schemaDocDirPath: string) {
   const schemaFilePath = path.join(schemaDocDirPath, 'input.graphql');
+  
+  console.log('///schemaFilePath', schemaFilePath);
+
   await addApiWithCognitoUserPoolAuthType(projectDir, schemaFilePath);
   await updateAuthAddFirstUserGroup(projectDir, GROUPNAME);
   await amplifyPushWithoutCodeGen(projectDir);
-  await setupUser(getUserPoolId(projectDir), USERNAME, PASSWORD, GROUPNAME);
+
+  const userPoolId = getUserPoolId(projectDir);
+  console.log('///userPoolId', userPoolId);
+  await setupUser(userPoolId, USERNAME, PASSWORD, GROUPNAME);
 
   await configureAmplify(projectDir);
 
@@ -46,4 +52,3 @@ function getUserPoolId(projectDir: string): string{
     const cognitoResource = Object.values(amplifyMeta.auth).find((res: any) => { return res.service === "Cognito" }) as any;
     return cognitoResource.output.UserPoolId;
 }
-  
