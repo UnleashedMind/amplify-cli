@@ -22,12 +22,43 @@ export function addAuth(projectDir: string) {
 }
 
 //update auth to add user group
-export function updateAuthAddUserGroup(projectDir: string, groupName: string) {
+export function updateAuthAddFirstUserGroup(projectDir: string, groupName: string) {
   return new Promise((resolve, reject) => {
     spawn(getCLIPath(), ['update', 'auth'], { cwd: projectDir, stripColors: true })
       .wait('What do you want to do?')
       .send(KEY_DOWN_ARROW)
       .send(KEY_DOWN_ARROW)
+      .sendCarriageReturn()
+      .wait('Provide a name for your user pool group')
+      .send(groupName)
+      .sendCarriageReturn()
+      .wait('Do you want to add another User Pool Group')
+      .sendCarriageReturn()
+      .wait('Sort the user pool groups in order of preference')
+      .sendCarriageReturn()
+      .wait('"amplify publish" will build all your local backend and frontend resources')
+      .run((err: Error) => {
+        if (!err) {
+          resolve();
+        } else {
+          reject(err);
+        }
+      });
+  });
+}
+
+//update auth to add user group
+export function updateAuthAddAdditionalUserGroup(projectDir: string, groupName: string) {
+  return new Promise((resolve, reject) => {
+    spawn(getCLIPath(), ['update', 'auth'], { cwd: projectDir, stripColors: true })
+      .wait('What do you want to do?')
+      .send(KEY_DOWN_ARROW)
+      .send(KEY_DOWN_ARROW)
+      .sendCarriageReturn()
+      .wait('Select any user pool groups you want to delete')
+      .sendCarriageReturn()
+      .wait('Do you want to add another User Pool Group')
+      .send('y')
       .sendCarriageReturn()
       .wait('Provide a name for your user pool group')
       .send(groupName)
@@ -106,7 +137,7 @@ export function addApi(projectDir: string, schemaFilePath: string) {
   });
 }
 
-//need edit:
+//checked
 export function addApiWithCognitoUserPoolAuthType(projectDir: string, schemaFilePath: string) {
   return new Promise((resolve, reject) => {
     spawn(getCLIPath(), ['add', 'api'], { cwd: projectDir, stripColors: true })
@@ -114,10 +145,10 @@ export function addApiWithCognitoUserPoolAuthType(projectDir: string, schemaFile
       .sendCarriageReturn()
       .wait('Provide API name:')
       .sendCarriageReturn()
-      .wait(/.*Choose the default authorization type for the API.*/)
-      .send(KEY_UP_ARROW)
+      .wait('Choose the default authorization type for the API')
+      .send(KEY_DOWN_ARROW)
       .sendCarriageReturn()
-      .wait(/.*Do you want to configure advanced settings for the GraphQL API.*/)
+      .wait('Do you want to configure advanced settings for the GraphQL AP')
       .sendCarriageReturn()
       .wait('Do you have an annotated GraphQL schema?')
       .sendLine('y')
@@ -247,13 +278,69 @@ export function gqlCompile(projectDir: string) {
   });
 }
 
-export function amplifyPushAdd(projectDir: string) {
+export function amplifyPushWithoutCodeGen(projectDir: string) {
   return new Promise((resolve, reject) => {
     spawn(getCLIPath(), ['push'], { cwd: projectDir, stripColors: true })
       .wait('Are you sure you want to continue?')
       .sendLine('y')
       .wait('Do you want to generate code for your newly created GraphQL API')
       .sendLine('n')
+      .wait('GraphQL API KEY:')
+      .run((err: Error) => {
+        if (!err) {
+          resolve();
+        } else {
+          reject(err);
+        }
+      });
+  });
+}
+
+
+export function amplifyPushWithJavascriptCodeGen(projectDir: string) {
+  return new Promise((resolve, reject) => {
+    spawn(getCLIPath(), ['push'], { cwd: projectDir, stripColors: true })
+      .wait('Are you sure you want to continue?')
+      .sendLine('y')
+      .wait('Do you want to generate code for your newly created GraphQL API')
+      .sendLine('y')
+      .wait('Choose the code generation language target')
+      .sendCarriageReturn()
+      .wait('Enter the file name pattern of graphql queries, mutations and subscriptions')
+      .sendCarriageReturn()
+      .wait('Do you want to generate/update all possible GraphQL operations')
+      .sendCarriageReturn()
+      .wait('Enter maximum statement depth')
+      .sendCarriageReturn()
+      .wait('GraphQL API KEY:')
+      .run((err: Error) => {
+        if (!err) {
+          resolve();
+        } else {
+          reject(err);
+        }
+      });
+  });
+}
+
+export function amplifyPushWithTypescriptCodeGen(projectDir: string) {
+  return new Promise((resolve, reject) => {
+    spawn(getCLIPath(), ['push'], { cwd: projectDir, stripColors: true })
+      .wait('Are you sure you want to continue?')
+      .sendLine('y')
+      .wait('Do you want to generate code for your newly created GraphQL API')
+      .sendLine('y')
+      .wait('Choose the code generation language target')
+      .send(KEY_UP_ARROW)
+      .sendCarriageReturn()
+      .wait('Enter the file name pattern of graphql queries, mutations and subscriptions')
+      .sendCarriageReturn()
+      .wait('Do you want to generate/update all possible GraphQL operations')
+      .sendCarriageReturn()
+      .wait('Enter maximum statement depth')
+      .sendCarriageReturn()
+      .wait('Enter the file name for the generated code (src/API.ts)')
+      .sendCarriageReturn()
       .wait('GraphQL API KEY:')
       .run((err: Error) => {
         if (!err) {
@@ -282,7 +369,7 @@ export function amplifyPush(projectDir: string) {
 }
 
 //codegen:
-export function addCoeGen(projectDir: string) {
+export function addCodeGen(projectDir: string) {
   return new Promise((resolve, reject) => {
     spawn(getCLIPath(), ['codegen', 'add'], { cwd: projectDir, stripColors: true })
       .wait('Choose the code generation language target')

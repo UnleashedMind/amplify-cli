@@ -14,10 +14,10 @@ describe('api directives @auth', () => {
     deleteProjectDir(projectDir);
   });
 
-  it('auth owner1', async () => {
-    const testresult = await testSchema(projectDir, 'auth', 'owner1');
-    expect(testresult).toBeTruthy();
-  });
+  // it('auth owner1', async () => {
+  //   const testresult = await testSchema(projectDir, 'auth', 'owner1');
+  //   expect(testresult).toBeTruthy();
+  // });
 
   // it('auth owner2', async () => {
   //   const testresult = await testSchema(projectDir, 'auth', 'owner2');
@@ -99,10 +99,10 @@ describe('api directives @auth', () => {
   //   expect(testresult).toBeTruthy();
   // });
 
-  // it('auth authSubscriptions1', async () => {
-  //   const testresult = await testSchema(projectDir, 'auth', 'authSubscriptions1');
-  //   expect(testresult).toBeTruthy();
-  // });
+  it('auth authSubscriptions1', async () => {
+    const testresult = await testSchema(projectDir, 'auth', 'authSubscriptions1');
+    expect(testresult).toBeTruthy();
+  });
 
   // it('auth authSubscriptions2', async () => {
   //   const testresult = await testSchema(projectDir, 'auth', 'authSubscriptions2');
