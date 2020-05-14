@@ -1,3 +1,4 @@
+#change: removed id from the response so result can be verified
 mutation CreateDraft {
   createDraft(
     input: {
@@ -5,7 +6,6 @@ mutation CreateDraft {
       editors: []
     }
   ) {
-    id
     title
     owner
     editors
