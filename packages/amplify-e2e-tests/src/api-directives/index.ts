@@ -42,7 +42,7 @@ export async function testSchema(projectDir: string, directive: string, section:
 
     return true;
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
     return false;
   }
 }

@@ -9,6 +9,7 @@ import Observable from 'zen-observable';
 import { addApi, amplifyPushWithoutCodeGen } from './workflows';
 import gql from 'graphql-tag';
 import {readJsonFile} from 'amplify-e2e-core';
+import {configureAmplify} from './authHelper';
 
 
 
@@ -35,11 +36,6 @@ export async function runTest(projectDir: string, schemaDocDirPath: string) {
   await testCompiledSchema(projectDir, schemaDocDirPath);
   await testMutations(schemaDocDirPath);
   await testQueries(schemaDocDirPath);
-}
-
-export async function configureAmplify(projectDir) {
-  const awsconfig = getAWSExports(projectDir).default;
-  Amplify.configure(awsconfig);
 }
 
 export async function testCompiledSchema(projectDir: string, schemaDocDirPath: string) {
@@ -70,10 +66,7 @@ export async function testGqlCompiled(actualCompileSchema: string, schemaInDoc: 
 
 export async function testMutations(schemaDocDirPath: string) {
   const fileNames = fs.readdirSync(schemaDocDirPath); 
-  console.log('///fileNames', fileNames);
   let mutationFileNames = fileNames.filter(fileName => /^mutation[0-9]*\.graphql$/.test(fileName));
-  
-  console.log('///mutationFileNames', mutationFileNames);
 
   if (mutationFileNames.length > 1) {
     mutationFileNames = mutationFileNames.sort((fn1, fn2) => {
@@ -82,8 +75,6 @@ export async function testMutations(schemaDocDirPath: string) {
       return n1 - n2;
     });
   }
-
-  console.log('///sorted mutationFileNames', mutationFileNames);
 
   const mutationTasks = [];
   mutationFileNames.forEach(mutationFileName => {
@@ -133,10 +124,7 @@ export async function testMutation(mutation: any, mutationResult?: any){
 
 export async function testQueries(schemaDocDirPath: string) {
   const fileNames = fs.readdirSync(schemaDocDirPath); 
-  console.log('///fileNames', fileNames);
   let queryFileNames = fileNames.filter(fileName => /^query[0-9]*\.graphql$/.test(fileName));
-  
-  console.log('///queryFileNames', queryFileNames);
 
   if (queryFileNames.length > 1) {
     queryFileNames = queryFileNames.sort((fn1, fn2) => {
@@ -145,8 +133,6 @@ export async function testQueries(schemaDocDirPath: string) {
       return n1 - n2;
     });
   }
-
-  console.log('///sorted queryFileNames', queryFileNames);
 
   const queryTasks = [];
   queryFileNames.forEach(queryFileName => {
@@ -167,18 +153,14 @@ export async function testQueries(schemaDocDirPath: string) {
 }
 
 export async function testQuery(query: any, queryResult?: any){
-  console.log('////test query: ', query);
-  console.log('////expected query result: ', queryResult);
   let resultMatch = true;
   let errorMatch = true;
   try{
     const result = await API.graphql(graphqlOperation(query)) as any;
-    console.log('////query result ', result);
     if(queryResult && (!queryResult.data || !_.isEqual(result.data, queryResult.data))){
       resultMatch = false;
     }
   }catch(err){
-    console.log('///query error', err);
     if(queryResult && queryResult.errors){
       errorMatch = queryResult.errors.every((expectedError: any)=>{
         return err.errors.some((error: any) => {

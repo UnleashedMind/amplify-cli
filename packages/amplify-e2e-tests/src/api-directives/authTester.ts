@@ -1,5 +1,5 @@
 import path from 'path';
-import {configureAmplify, testCompiledSchema, testMutations, testQueries} from './common';
+import {testCompiledSchema, testMutations, testQueries} from './common';
 import {
     addApiWithCognitoUserPoolAuthType, 
     updateAuthAddFirstUserGroup, 
@@ -7,7 +7,7 @@ import {
 } from './workflows';
 import {getProjectMeta} from 'amplify-e2e-core';
 
-import {setupUser} from './authHelper';
+import {setupUser, configureAmplify, signInUser} from './authHelper';
 
 const GROUPNAME = 'admin';
 const USERNAME = 'user1';
@@ -29,18 +29,14 @@ const PASSWORD = 'user1Password'
 
 export async function runTest(projectDir: string, schemaDocDirPath: string) {
   const schemaFilePath = path.join(schemaDocDirPath, 'input.graphql');
-  
-  console.log('///schemaFilePath', schemaFilePath);
-
   await addApiWithCognitoUserPoolAuthType(projectDir, schemaFilePath);
   await updateAuthAddFirstUserGroup(projectDir, GROUPNAME);
   await amplifyPushWithoutCodeGen(projectDir);
 
   const userPoolId = getUserPoolId(projectDir);
-  console.log('///userPoolId', userPoolId);
   await setupUser(userPoolId, USERNAME, PASSWORD, GROUPNAME);
-
   await configureAmplify(projectDir);
+  await signInUser(projectDir, USERNAME, PASSWORD);
 
   await testCompiledSchema(projectDir, schemaDocDirPath);
   await testMutations(schemaDocDirPath);

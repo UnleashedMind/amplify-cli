@@ -1,6 +1,6 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { getProjectMeta } from 'amplify-e2e-core';
-import Amplify, { Auth, API } from 'aws-amplify';
+import Amplify, { Auth } from 'aws-amplify';
 import { AuthenticationDetails } from 'amazon-cognito-identity-js';
 import fs from 'fs-extra';
 import path from 'path';
@@ -72,7 +72,6 @@ export function getUserPoolId(projectDir: string){
 }
 
 export async function signInUser(projectDir: string, username: string, password: string){
-    await configureAmplify(projectDir);
     const user = await Auth.signIn(username, password);
     return user;
 }
@@ -90,7 +89,6 @@ function getAWSExports(projectDir: string){
 }
 
 export async function signInUser2(projectDir: string, username: string, realPw: string){
-    configureAmplify(projectDir);
     const authDetails = new AuthenticationDetails({
         Username: username,
         Password: realPw,
