@@ -1,10 +1,9 @@
 {
     "data": {
         "createDraft": {
-            "id": "...",
             "title": "A new draft",
             "owner": null,
-            "editors": ["someuser@my-domain.com"]
+            "editors": ["user1"]
         }
     }
 }

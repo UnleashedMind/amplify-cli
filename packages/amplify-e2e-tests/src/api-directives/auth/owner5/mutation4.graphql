@@ -3,7 +3,7 @@ mutation CreateDraft {
   createDraft(
     input: {
       title: "A new draft",
-      editors: ["someuser@my-domain.com"],
+      editors: ["user1"],
       owner: null
     }
   ) {

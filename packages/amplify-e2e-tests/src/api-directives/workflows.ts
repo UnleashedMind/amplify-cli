@@ -148,6 +148,12 @@ export function addApiWithCognitoUserPoolAuthType(projectDir: string, schemaFile
       .wait('Choose the default authorization type for the API')
       .send(KEY_DOWN_ARROW)
       .sendCarriageReturn()
+      .wait('Do you want to use the default authentication and security configuration')
+      .sendCarriageReturn()
+      .wait('How do you want users to be able to sign in')
+      .sendCarriageReturn()
+      .wait('Do you want to configure advanced settings?')
+      .sendCarriageReturn()
       .wait('Do you want to configure advanced settings for the GraphQL AP')
       .sendCarriageReturn()
       .wait('Do you have an annotated GraphQL schema?')
@@ -285,7 +291,6 @@ export function amplifyPushWithoutCodeGen(projectDir: string) {
       .sendLine('y')
       .wait('Do you want to generate code for your newly created GraphQL API')
       .sendLine('n')
-      .wait('GraphQL API KEY:')
       .run((err: Error) => {
         if (!err) {
           resolve();

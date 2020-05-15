@@ -1,8 +1,9 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { getProjectMeta } from 'amplify-e2e-core';
 import Amplify, { Auth, API } from 'aws-amplify';
-import { getAWSExports } from '../aws-exports/awsExports';
 import { AuthenticationDetails } from 'amazon-cognito-identity-js';
+import fs from 'fs-extra';
+import path from 'path';
 
 //setupUser will add user to a cognito group and make its status to be "CONFIRMED",
 //if groupName is specified, add the user to the group. 
@@ -76,9 +77,16 @@ export async function signInUser(projectDir: string, username: string, password:
     return user;
 }
 
-export async function configureAmplify(projectDir) {
-    const awsconfig = getAWSExports(projectDir).default;
+export async function configureAmplify(projectDir: string) {
+    const awsconfig = getAWSExports(projectDir);
     Amplify.configure(awsconfig);
+}
+
+function getAWSExports(projectDir: string){
+    const awsExportsFilePath = path.join(projectDir, 'src', 'aws-exports.js');
+    let fileContent = fs.readFileSync(awsExportsFilePath).toString();
+    fileContent = '{' + fileContent.split('= {')[1].split('};')[0] + '}';
+    return JSON.parse(fileContent);
 }
 
 export async function signInUser2(projectDir: string, username: string, realPw: string){
