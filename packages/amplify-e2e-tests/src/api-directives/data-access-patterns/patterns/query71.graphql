@@ -1,0 +1,13 @@
+#We can also query and have the results returned by start date by using the `employeesNewHireByStartDate` query:
+
+query employeesNewHireByDate {
+  employeesNewHireByStartDate(newHire: "true") {
+    items {
+      id
+      name
+      phoneNumber
+      startDate
+      jobTitle
+    }
+  }
+}

@@ -1,0 +1,14 @@
+query SpeakTranslatedImageText($input: SpeakTranslatedImageTextInput!) {
+  speakTranslatedImageText(input: {
+    identifyText: {
+      key: "myimage.jpg"
+    }
+    translateText: {
+      sourceLanguage: "en"
+      targetLanguage: "es"
+    }
+    convertTextToSpeech: {
+      voiceID: "Conchita"
+    }
+  })
+}

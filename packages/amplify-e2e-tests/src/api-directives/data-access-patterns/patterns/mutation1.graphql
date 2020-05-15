@@ -1,0 +1,6 @@
+# first
+mutation createWarehouse {
+  createWarehouse(input: {id: "1"}) {
+    id
+  }
+}

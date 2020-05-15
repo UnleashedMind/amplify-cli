@@ -1,0 +1,9 @@
+mutation CreatePost {
+  createPost(input: { title: "Stream me to Elasticsearch!" }) {
+    id
+    title
+    createdAt
+    updatedAt
+    upvotes
+  }
+}

@@ -2,32 +2,18 @@ import path from 'path';
 import fs from 'fs-extra';
 import _ from 'lodash';
 import sequential from 'promise-sequential';
-import Amplify, { API, graphqlOperation } from 'aws-amplify';
-import AWSAppSyncClient, { AUTH_TYPE } from 'aws-appsync';
-import { getAWSExports } from '../aws-exports/awsExports';
-import Observable from 'zen-observable';
 import gql from 'graphql-tag';
 import {readJsonFile} from 'amplify-e2e-core';
 import {
   addApiWithAPIKeyAuthType,
-  addApiWithCognitoUserPoolAuthType, 
-  updateAuthAddFirstUserGroup, 
   amplifyPushWithoutCodeGen
 } from './workflows';
 
 import {
-  setupUser,
-  getUserPoolId,
   getApiKey,
   configureAmplify,
-  signInUser,
-  getConfiguredAppsyncClientCognitoAuth,
   getConfiguredAppsyncClientAPIKeyAuth
 } from './authHelper';
-
-const GROUPNAME = 'admin';
-const USERNAME = 'user1';
-const PASSWORD = 'user1Password'
 
 //The following runTest method runs the common test pattern schemas in the document.
 //It sets up the GraphQL API with "API key" as the default authorization type.
@@ -59,43 +45,6 @@ export async function runTest(projectDir: string, schemaDocDirPath: string) {
   await testMutations(schemaDocDirPath, appsyncClient);
   await testQueries(schemaDocDirPath, appsyncClient);
 }
-
-//The following runTest method runs the common test pattern for schemas in the @auth section of the document.
-//It does not test subscriptions. Subscription tests are handled individually in the schema doc directory.
-//It carries out the following steps in sequence:
-//Add the GraphQL API with "Amazon Cognito User Pool" as the default authorization type.
-//Update the auth to create the "admin" Cognito User Pool user group
-//Run `amplify push` to create the GraphQL API and the auth resources.
-//Create "user1" in the User Pool and Add "user1" to the "admin" group. 
-//Configure Amplify of the Amplify JS library, its Auth module will be used to sign in user, and its API module will be used for mutations and queries
-//Sign in "user1" with Ampify js library's Auth module
-//Send the mutations, and if the corresponding mutation responses are present in the directory, 
-//the actual received mutation responses will be checked against the responses in the document. 
-//Send the queries, and if the corresponding query responses are present in the directory, 
-//the actual received query responses will be checked against the responses in the document. 
-
-export async function runAutTest(projectDir: string, schemaDocDirPath: string) {
-  const schemaFilePath = path.join(schemaDocDirPath, 'input.graphql');
-  await addApiWithCognitoUserPoolAuthType(projectDir, schemaFilePath);
-  await updateAuthAddFirstUserGroup(projectDir, GROUPNAME);
-  await amplifyPushWithoutCodeGen(projectDir);
-
-  const userPoolId = getUserPoolId(projectDir);
-  await setupUser(userPoolId, USERNAME, PASSWORD, GROUPNAME);
-  const awsconfig = configureAmplify(projectDir);
-  const user = await signInUser(USERNAME, PASSWORD);
-  const appsyncClient = getConfiguredAppsyncClientCognitoAuth(
-    awsconfig.aws_appsync_graphqlEndpoint,
-    awsconfig.aws_appsync_region,
-    user
-  );
-
-  await testCompiledSchema(projectDir, schemaDocDirPath);
-  await testMutations(schemaDocDirPath, appsyncClient);
-  await testQueries(schemaDocDirPath, appsyncClient);
-}
-
-
 
 export async function testCompiledSchema(projectDir: string, schemaDocDirPath: string) {
   const docCompiledSchemaFilePath = path.join(schemaDocDirPath, 'generated.graphql');

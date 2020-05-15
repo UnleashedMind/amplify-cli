@@ -1,0 +1,12 @@
+# sixth
+mutation createInventory {
+  createInventory(input: {
+    productID: "yeezyboost"
+    warehouseID: "1"
+    inventoryAmount: 300
+  }) {
+    productID
+    inventoryAmount
+    warehouseID
+  }
+}

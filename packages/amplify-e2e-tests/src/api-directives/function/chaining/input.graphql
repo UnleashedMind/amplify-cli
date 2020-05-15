@@ -1,0 +1,4 @@
+#change: todo: add complete schema, and change function name accordingly
+type Mutation {
+  doSomeWork(msg: String): String @function(name: "worker-function") @function(name: "audit-function")
+}

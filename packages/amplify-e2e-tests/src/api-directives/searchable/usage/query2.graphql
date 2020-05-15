@@ -1,0 +1,8 @@
+query SearchPosts {
+  searchPost(filter: { title: { wildcard: "S*Elasticsearch!" }}) {
+    items {
+      id
+      title
+    }
+  }
+}

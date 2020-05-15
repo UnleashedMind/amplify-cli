@@ -1,0 +1,7 @@
+type Query {
+  speakTranslatedImageText: String @predictions(actions: [
+    identifyText
+    translateText
+    convertTextToSpeech
+  ])
+}

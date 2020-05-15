@@ -1,0 +1,20 @@
+# second
+mutation createEmployee {
+  createEmployee(input: {
+    id: "amanda"
+    name: "Amanda",
+    startDate: "2018-05-22",
+    phoneNumber: "6015555555",
+    warehouseID: "1",
+    jobTitle: "Manager",
+    newHire: "true"}
+  ) {
+    id
+    jobTitle
+    name
+    newHire
+    phoneNumber
+    startDate
+    warehouseID
+  }
+}

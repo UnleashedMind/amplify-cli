@@ -1,0 +1,16 @@
+## 11. Get customers by account representative:
+#This uses a one-to-many connection between account representatives and customers:
+
+#The query needed would look like this:
+
+query getCustomersForAccountRepresentative($representativeId: ID!) {
+  getAccountRepresentative(id: $representativeId) {
+    customers {
+      items {
+        id
+        name
+        phoneNumber
+      }
+    }
+  }
+}
