@@ -1,7 +1,6 @@
 import path from 'path';
 import fs from 'fs-extra';
-import { runTest } from './common';
-import { runTest as authTest } from './authTester';
+import { runTest, runAutTest } from './common';
 
 //The contents of files in the schema doc testing directories might be modified,
 //and extra files might be added to test the input schema.
@@ -35,7 +34,7 @@ export async function testSchema(projectDir: string, directive: string, section:
     if (schemaDocTestingModule && schemaDocTestingModule.runTest) {
       await schemaDocTestingModule.runTest(projectDir);
     } else if(directive.includes('auth')){
-      await authTest(projectDir, schemaDocDirPath);
+      await runAutTest(projectDir, schemaDocDirPath);
     } else{
       await runTest(projectDir, schemaDocDirPath);
     }

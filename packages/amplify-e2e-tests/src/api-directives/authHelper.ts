@@ -4,6 +4,7 @@ import Amplify, { Auth } from 'aws-amplify';
 import { AuthenticationDetails } from 'amazon-cognito-identity-js';
 import fs from 'fs-extra';
 import path from 'path';
+import AWSAppSyncClient, { AUTH_TYPE } from 'aws-appsync';
 
 //setupUser will add user to a cognito group and make its status to be "CONFIRMED",
 //if groupName is specified, add the user to the group. 
@@ -65,30 +66,67 @@ export function getConfiguredCognitoClient(): CognitoIdentityServiceProvider{
     return cognitoClient;
 }
 
-export function getUserPoolId(projectDir: string){
-    const amplifyMeta = getProjectMeta(projectDir);
-    const authResourceName = Object.keys(amplifyMeta.auth)[0];
-    return amplifyMeta.auth[authResourceName].output.UserPoolId;
+export function getConfiguredAppsyncClientCognitoAuth(url: string, region: string, user: any): any{
+    return new AWSAppSyncClient({
+        url,
+        region,
+        disableOffline: true,
+        offlineConfig: {
+          keyPrefix: 'userPools',
+        },
+        auth: {
+          type: AUTH_TYPE.AMAZON_COGNITO_USER_POOLS,
+          jwtToken: user.signInUserSession.idToken.jwtToken
+        },
+    });
 }
 
-export async function signInUser(projectDir: string, username: string, password: string){
+export function getConfiguredAppsyncClientAPIKeyAuth(url: string, region: string, apiKey: string): any{
+    return new AWSAppSyncClient({
+        url,
+        region,
+        disableOffline: true,
+        offlineConfig: {
+          keyPrefix: 'userPools',
+        },
+        auth: {
+          type: AUTH_TYPE.API_KEY,
+          apiKey
+        },
+    });
+}
+
+export async function signInUser(username: string, password: string){
     const user = await Auth.signIn(username, password);
     return user;
 }
 
-export async function configureAmplify(projectDir: string) {
+export function configureAmplify(projectDir: string) {
     const awsconfig = getAWSExports(projectDir);
     Amplify.configure(awsconfig);
+    return awsconfig;
 }
 
-function getAWSExports(projectDir: string){
+export function getAWSExports(projectDir: string){
     const awsExportsFilePath = path.join(projectDir, 'src', 'aws-exports.js');
     let fileContent = fs.readFileSync(awsExportsFilePath).toString();
     fileContent = '{' + fileContent.split('= {')[1].split('};')[0] + '}';
     return JSON.parse(fileContent);
 }
 
-export async function signInUser2(projectDir: string, username: string, realPw: string){
+export function getUserPoolId(projectDir: string): string{
+    const amplifyMeta = getProjectMeta(projectDir);
+    const cognitoResource = Object.values(amplifyMeta.auth).find((res: any) => { return res.service === "Cognito" }) as any;
+    return cognitoResource.output.UserPoolId;
+}
+
+export function getApiKey(projectDir: string): string{
+    const amplifyMeta = getProjectMeta(projectDir);
+    const appsyncResource = Object.values(amplifyMeta.api).find((res: any) => { return res.service === "AppSync" }) as any;
+    return appsyncResource.output.GraphQLAPIKeyOutput;
+}
+
+export async function signInUser2(username: string, realPw: string){
     const authDetails = new AuthenticationDetails({
         Username: username,
         Password: realPw,

@@ -1,0 +1,10 @@
+#extra
+ query GetDraft {
+    getDraft(id: "b934ecd8-2b89-42de-ae92-a40efe030a6b") {
+      id
+      title
+      content
+      owner
+      editors
+    }
+}

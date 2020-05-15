@@ -5,9 +5,9 @@ import Amplify, { API, graphqlOperation } from 'aws-amplify';
 import AWSAppSyncClient, { AUTH_TYPE } from 'aws-appsync';
 import { getAWSExports } from '../aws-exports/awsExports';
 import Observable from 'zen-observable';
-import { addApi, amplifyPushWithoutCodeGen } from './workflows';
+import { addApiWithAPIKeyAuthType, amplifyPushWithoutCodeGen } from './workflows';
 import gql from 'graphql-tag';
-import {configureAmplify} from './common';
+import {configureAmplify} from './authHelper';
 
 
 export async function testSubscriptions(schemaDocDirPath: string) {
@@ -100,7 +100,7 @@ export async function testSubscriptions(schemaDocDirPath: string) {
      const observer = appSyncClient.subscribe({
       query: gql(subscription)
     });
-  
+
     const received: any[] = [];
     const sub = observer.subscribe((event: any) => {
       received.push(event.data);

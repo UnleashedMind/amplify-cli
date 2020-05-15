@@ -107,7 +107,7 @@ export function updateAuthAddAdminQueries(projectDir: string, adminGroupName: st
 }
 
 //add default api
-export function addApi(projectDir: string, schemaFilePath: string) {
+export function addApiWithAPIKeyAuthType(projectDir: string, schemaFilePath: string) {
   return new Promise((resolve, reject) => {
     spawn(getCLIPath(), ['add', 'api'], { cwd: projectDir, stripColors: true })
       .wait('Please select from one of the below mentioned services:')
