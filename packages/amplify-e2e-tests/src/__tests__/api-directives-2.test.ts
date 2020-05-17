@@ -4,9 +4,12 @@ import { testSchema } from '../api-directives';
 describe('api directives @auth', () => {
   let projectDir: string;
 
+  //  projectDir = '/tmp/amplify-e2e-tests/apidirective1_643cd3b8_8ceb9403';
+  // projectDir  = '/tmp/amplify-e2e-tests/apidirective1_643cd3b8_366fcaee';
+  projectDir = '/tmp/amplify-e2e-tests/apidirective2_643cd3b8_d5ee0b20';
   beforeEach(async () => {
-    projectDir = await createNewProjectDir('apidirective1');
-    await initJSProjectWithProfile(projectDir, {});
+    // projectDir = await createNewProjectDir('apidirective2');
+    // await initJSProjectWithProfile(projectDir, {});
   });
 
   afterEach(async () => {
@@ -34,10 +37,10 @@ describe('api directives @auth', () => {
   //   expect(testresult).toBeTruthy();
   // });
 
-  it('auth owner5', async () => {
-    const testresult = await testSchema(projectDir, 'auth', 'owner5');
-    expect(testresult).toBeTruthy();
-  });
+  // it('auth owner5', async () => {
+  //   const testresult = await testSchema(projectDir, 'auth', 'owner5');
+  //   expect(testresult).toBeTruthy();
+  // });
 
   // it('auth staticGroup1', async () => {
   //   const testresult = await testSchema(projectDir, 'auth', 'staticGroup1');
@@ -109,10 +112,10 @@ describe('api directives @auth', () => {
   //   expect(testresult).toBeTruthy();
   // });
 
-  // it('auth authSubscriptions3', async () => {
-  //   const testresult = await testSchema(projectDir, 'auth', 'authSubscriptions3');
-  //   expect(testresult).toBeTruthy();
-  // });
+  it('auth authSubscriptions3', async () => {
+    const testresult = await testSchema(projectDir, 'auth', 'authSubscriptions3');
+    expect(testresult).toBeTruthy();
+  });
   
   // it('auth fieldLevelAuth1', async () => {
   //   const testresult = await testSchema(projectDir, 'auth', 'fieldLevelAuth1');

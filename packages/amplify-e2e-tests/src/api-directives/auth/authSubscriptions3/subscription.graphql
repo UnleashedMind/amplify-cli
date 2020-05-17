@@ -1,4 +1,7 @@
-subscription onCreatePost(owner: “Bob”){
-  postname
-  content
+#extra
+subscription OnCreatePost {
+  onCreatePost {
+    postname
+    content
+  }
 }
