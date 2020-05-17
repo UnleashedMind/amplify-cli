@@ -1,6 +1,8 @@
 #error: remove duplicate @model in doc
+#error: there's the ending "{" 
+#change: changed "Admin" to "admin"
 type Post @model
-@auth(rules: [{allow: groups, groups: ["Admin"]}]) {
+@auth(rules: [ {allow: groups, groups: ["admin"]} ])
 {
   id: ID!
   owner: String
