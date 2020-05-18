@@ -2,10 +2,6 @@ import path from 'path';
 import fs from 'fs-extra';
 import _ from 'lodash';
 import sequential from 'promise-sequential';
-import Amplify, { API, graphqlOperation } from 'aws-amplify';
-import AWSAppSyncClient, { AUTH_TYPE } from 'aws-appsync';
-import { getAWSExports } from '../aws-exports/awsExports';
-import Observable from 'zen-observable';
 import gql from 'graphql-tag';
 import {readJsonFile} from 'amplify-e2e-core';
 import {
@@ -32,7 +28,6 @@ const PASSWORD = 'user1Password'
 //The following runTest method runs the common test pattern schemas in the document.
 //It sets up the GraphQL API with "API key" as the default authorization type.
 //It does not test schemas in the @auth section.
-//It does not test subscriptions.
 //It carries out the following steps in sequence:
 //Add the GraphQL API with "API key" as the default authorization type.
 //Run `amplify push` to create the GraphQL API resouces.
@@ -49,19 +44,19 @@ export async function runTest(projectDir: string, schemaDocDirPath: string) {
 
   const awsconfig = configureAmplify(projectDir);
   const apiKey = getApiKey(projectDir);
-  const appsyncClient = getConfiguredAppsyncClientAPIKeyAuth(
+  const appSyncClient = getConfiguredAppsyncClientAPIKeyAuth(
     awsconfig.aws_appsync_graphqlEndpoint,
     awsconfig.aws_appsync_region,
     apiKey
   );
 
   await testCompiledSchema(projectDir, schemaDocDirPath);
-  await testMutations(schemaDocDirPath, appsyncClient);
-  await testQueries(schemaDocDirPath, appsyncClient);
+  await testMutations(schemaDocDirPath, appSyncClient);
+  await testQueries(schemaDocDirPath, appSyncClient);
+  await testSubscriptions(schemaDocDirPath, appSyncClient);
 }
 
 //The following runTest method runs the common test pattern for schemas in the @auth section of the document.
-//It does not test subscriptions. Subscription tests are handled individually in the schema doc directory.
 //It carries out the following steps in sequence:
 //Add the GraphQL API with "Amazon Cognito User Pool" as the default authorization type.
 //Update the auth to create the "admin" Cognito User Pool user group
@@ -75,13 +70,13 @@ export async function runTest(projectDir: string, schemaDocDirPath: string) {
 //the actual received query responses will be checked against the responses in the document. 
 
 export async function runAutTest(projectDir: string, schemaDocDirPath: string) {
-  // const schemaFilePath = path.join(schemaDocDirPath, 'input.graphql');
-  // await addApiWithCognitoUserPoolAuthType(projectDir, schemaFilePath);
-  // await updateAuthAddFirstUserGroup(projectDir, GROUPNAME);
-  // await amplifyPushWithoutCodeGen(projectDir);
+  const schemaFilePath = path.join(schemaDocDirPath, 'input.graphql');
+  await addApiWithCognitoUserPoolAuthType(projectDir, schemaFilePath);
+  await updateAuthAddFirstUserGroup(projectDir, GROUPNAME);
+  await amplifyPushWithoutCodeGen(projectDir);
 
-  // const userPoolId = getUserPoolId(projectDir);
-  // await setupUser(userPoolId, USERNAME, PASSWORD, GROUPNAME);
+  const userPoolId = getUserPoolId(projectDir);
+  await setupUser(userPoolId, USERNAME, PASSWORD, GROUPNAME);
   
   const awsconfig = configureAmplify(projectDir);
   const user = await signInUser(USERNAME, PASSWORD);
@@ -91,9 +86,9 @@ export async function runAutTest(projectDir: string, schemaDocDirPath: string) {
     user
   );
 
-  // await testCompiledSchema(projectDir, schemaDocDirPath);
-  // await testMutations(schemaDocDirPath, appSyncClient);
-  // await testQueries(schemaDocDirPath, appSyncClient);
+  await testCompiledSchema(projectDir, schemaDocDirPath);
+  await testMutations(schemaDocDirPath, appSyncClient);
+  await testQueries(schemaDocDirPath, appSyncClient);
   await testSubscriptions(schemaDocDirPath, appSyncClient);
 }
 
