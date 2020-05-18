@@ -1,1 +1,4 @@
-#extra: add the mutation to test the Mutation type definition
+#extra
+mutation DoSomeWork {
+    doSomeWork(msg: "initial mutation message")
+}

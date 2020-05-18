@@ -1,3 +1,4 @@
-exports.handler = function (event, context) {
-    context.done(null, event.arguments.msg);
+//#extra
+exports.handler = async (event) => {
+    return event.arguments.msg + '|processed by worker-function';
 };

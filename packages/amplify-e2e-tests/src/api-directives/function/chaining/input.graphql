@@ -1,4 +1,5 @@
-#change: todo: add complete schema, and change function name accordingly
+#change: replace the dummy "worker-function" function name with  "<function1-name>" placeholder, the test will replace it with the actual function name
+#change: replace the dummy "audit-function" function name with  "<function2-name>" placeholder, the test will replace it with the actual function name
 type Mutation {
-  doSomeWork(msg: String): String @function(name: "worker-function") @function(name: "audit-function")
+  doSomeWork(msg: String): String @function(name: "<function1-name>") @function(name: "<function2-name>")
 }

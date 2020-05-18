@@ -1,3 +1,4 @@
-exports.handler = function (event, context) {
-    context.done(null, event.arguments.msg);
+//#error: context.done is deprecated, use async
+exports.handler = async (event) => {
+    return event.arguments.msg;
 };

@@ -1,3 +1,5 @@
-exports.handler = function (event, context) {
-    context.done(null, event.arguments.msg);
+//#extra
+//create the lambda function in region other than the amplify project region
+exports.handler = async (event) => {
+    return event.arguments.msg;
 };

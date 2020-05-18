@@ -1,3 +1,5 @@
+#change: replace the dummy function name with  "<function-name>" placeholder, the test will replace it with the actual function name
+#change: replaced the dummy region "us-east-1" with the  "<region>" placeholder, the test will replace is with the actual region of the function
 type Query {
-  echo(msg: String): String @function(name: "echofunction", region: "us-east-1")
+  echo(msg: String): String @function(name: "<function-name>", region: "<region>")
 }
