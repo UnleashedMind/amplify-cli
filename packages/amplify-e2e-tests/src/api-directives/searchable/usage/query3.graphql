@@ -1,5 +1,8 @@
+#error: add "s" for searchPosts
+#error: either AppSync or Elasticsearch has an error, the query does not work on AppSync Console
+#error: date format is like "2020-05-19T09:07:42.599Z"
 query SearchPosts {
-  searchPost(filter: {
+  searchPosts(filter: {
     title: { wildcard: "S*" }
     or: [
       { createdAt: { eq: "08/20/2018" } },

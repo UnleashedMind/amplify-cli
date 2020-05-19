@@ -1,5 +1,7 @@
+#error: add "s" for searchPosts
+#error: either AppSync or Elasticsearch has an error, the query does not work
 query SearchPosts {
-  searchPost(filter: { title: { wildcard: "S*Elasticsearch!" }}) {
+  searchPosts(filter: { title: { wildcard: "S*Elasticsearch!" }}) {
     items {
       id
       title
