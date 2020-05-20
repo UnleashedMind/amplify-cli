@@ -1,0 +1,7 @@
+query posts{
+  listPosts(query: {sort: "DESC", from: "last-week", limit: 5}) {
+    id
+    title
+    description
+  }
+}

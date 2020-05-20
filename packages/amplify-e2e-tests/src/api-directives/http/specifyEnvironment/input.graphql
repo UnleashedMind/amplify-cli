@@ -1,0 +1,11 @@
+#change: add the type Post definition
+type Post {
+  id: ID!
+  title: String
+  description: String
+  views: Int
+}
+
+type Query {
+  listPosts: [Post] @http(url: "https://www.example.com/${env}/posts")
+}

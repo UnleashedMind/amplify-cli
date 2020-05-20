@@ -1,0 +1,13 @@
+#error: in the Query definition, listPosts: is of type [Post]
+#to investigate: from does not make much sense
+type Post {
+  id: ID!
+  title: String
+  description: String
+  views: Int
+}
+
+type Query {
+  listPosts(sort: String!, from: String!, limit: Int!): [Post] 
+    @http(url: "https://www.example.com/posts")
+}

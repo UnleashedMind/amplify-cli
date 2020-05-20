@@ -1,0 +1,26 @@
+type Post {
+  id: ID!
+  title: String
+  description: String
+  views: Int
+  comments: [Comment]
+}
+
+type Comment {
+  id: ID!
+  content: String
+}
+
+type Mutation {
+  updatePost(
+    title: String!
+    description: String!
+    views: Int
+    withComments: Boolean
+  ): Post
+    @http(
+      method: PUT
+      url: "https://www.example.com/${env}/posts/:id"
+      headers: [{ key: "X-Header", value: "X-Header-Value" }]
+    )
+}

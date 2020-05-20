@@ -1,0 +1,12 @@
+#change: added the type Post definition
+#error: listPosts: type is [Post]
+type Post {
+  id: ID!
+  title: String
+  description: String
+  views: Int
+}
+
+type Query {
+  listPosts: [Post]
+}

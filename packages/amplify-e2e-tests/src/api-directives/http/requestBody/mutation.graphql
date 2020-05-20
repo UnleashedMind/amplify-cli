@@ -1,0 +1,5 @@
+mutation add {
+  addPost(body: {title: "new post", description: "fresh content"}) {
+    id
+  }
+}

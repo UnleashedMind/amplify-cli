@@ -1,0 +1,16 @@
+#change: add the type definitions for Post and Query
+type Post {
+  id: ID!
+  title: String
+  description: String
+  views: Int
+}
+
+type Query {
+  getPost: Post @http(url: "https://www.example.com/posts/:id")
+}
+
+type Mutation {
+  addPost(title: String!, description: String!, views: Int): Post
+    @http(method: POST, url: "https://www.example.com/post")
+}

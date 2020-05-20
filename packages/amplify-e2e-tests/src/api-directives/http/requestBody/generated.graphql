@@ -1,0 +1,31 @@
+#change: added the type Post and Query definitions
+type Post {
+  id: ID!
+  title: String
+  description: String
+  views: Int
+}
+
+type Query {
+  getPost(params: QueryGetPostParamsInput!): Post
+}
+
+input QueryGetPostParamsInput {
+  id: String!
+}
+
+type Mutation {
+  addPost(query: QueryAddPostQueryInput, body: QueryAddPostBodyInput): Post
+}
+
+input QueryAddPostQueryInput {
+  title: String
+  description: String
+  views: Int
+}
+
+input QueryAddPostBodyInput {
+  title: String
+  description: String
+  views: Int
+}

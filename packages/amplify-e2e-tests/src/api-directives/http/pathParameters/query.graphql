@@ -1,0 +1,9 @@
+#change: changed id from the dummy "POST_ID" to "1"
+query GetPost {
+    getPost(params: {id: "1"}) {
+    id
+    title
+    description
+    views
+  }
+}

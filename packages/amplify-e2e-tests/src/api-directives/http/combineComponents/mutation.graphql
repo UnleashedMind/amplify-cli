@@ -1,0 +1,14 @@
+mutation update {
+  updatePost(
+    body: {title: "new title", description: "updated description", views: 100}
+    params: {id: "EXISTING_ID"}
+    query: {withComments: true}) {
+    id
+    title
+    description
+    comments {
+      id
+      content
+    }
+  }
+}

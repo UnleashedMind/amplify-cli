@@ -1,0 +1,9 @@
+#extra
+query GetPost {
+  getPost(params: {id: "1"}) {
+    id
+    title
+    description
+    views
+  }
+}

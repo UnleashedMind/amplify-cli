@@ -1,0 +1,9 @@
+#extra
+query ListPosts {
+  listPosts {
+    id
+    title
+    description
+    views
+  }
+}
