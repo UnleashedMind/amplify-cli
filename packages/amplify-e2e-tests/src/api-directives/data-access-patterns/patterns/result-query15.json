@@ -1,0 +1,9 @@
+{
+  "data": {
+    "getInventory": {
+      "productID": "yeezyboost",
+      "warehouseID": "1",
+      "inventoryAmount": 300
+    }
+  }
+}

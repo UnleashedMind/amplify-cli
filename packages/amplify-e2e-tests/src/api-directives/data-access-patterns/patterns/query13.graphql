@@ -1,2 +1,16 @@
 ## 13. Get all items on order for a given product:
 #This is the same as number 9.
+
+query getProductOrders($productID: ID!) {
+  getProduct(id: $productID) {
+    id
+    orders {
+      items {
+        id
+        status
+        amount
+        date
+      }
+    }
+  }
+}

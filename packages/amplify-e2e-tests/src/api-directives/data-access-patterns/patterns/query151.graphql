@@ -1,10 +1,5 @@
+#We can also get all inventory from an individual warehouse by using the `itemsByWarehouseID` query created by the `byWarehouseID` key:
 
-
-```
-
-We can also get all inventory from an individual warehouse by using the `itemsByWarehouseID` query created by the `byWarehouseID` key:
-
-```graphql
 query byWarehouseId($warehouseID: ID!) {
   itemsByWarehouseID(warehouseID: $warehouseID) {
     items {
@@ -13,38 +8,3 @@ query byWarehouseId($warehouseID: ID!) {
     }
   }
 }
-```
-
-## 16. Get total product inventory:
-How this would be done depends on the use case. If one just wants a list of all inventories in all warehouses, one could just run a list inventories on the Inventory model:
-
-```graphql
-query listInventorys {
-  listInventorys {
-    items {
-      productID
-      warehouseID
-      inventoryAmount
-    }
-  }
-}
-```
-
-## 17. Get sales representatives ranked by order total and sales period:
-It's uncertain exactly what this means. My take is that the sales period is either a date range or maybe even a month or week. Therefore we can set the sales period as a string and query using the combination of `salesPeriod` and `orderTotal`. We can also set the `sortDirection` in order to get the return values from largest to smallest:
-
-```graphql
-query repsByPeriodAndTotal {
-  repsByPeriodAndTotal(
-    sortDirection: DESC,
-    salesPeriod: "January 2019",
-    orderTotal: {
-      ge: 1000
-    }) {
-    items {
-      id
-      orderTotal
-    }
-  }
-}
-```
