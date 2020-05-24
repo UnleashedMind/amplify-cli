@@ -1,9 +1,12 @@
 import path from 'path';
+import uuid from 'uuid';
+import fs from 'fs-extra';
 import _ from 'lodash';
 import {
   addApiWithCognitoUserPoolAuthType, 
   updateAuthAddFirstUserGroup, 
-  amplifyPushWithoutCodeGen
+  amplifyPushWithoutCodeGen,
+  addSimpleFunction
 } from './workflows';
 
 import {
@@ -40,7 +43,9 @@ const PASSWORD = 'user1Password'
 
 export async function runFunctionTest(projectDir: string, schemaDocDirPath: string) {
     const schemaFilePath = path.join(schemaDocDirPath, 'input.graphql');
+    const functionName = await addFunction(projectDir, schemaDocDirPath, 'function.js');
     await addApiWithCognitoUserPoolAuthType(projectDir, schemaFilePath);
+    updateFunctionNameInSchema(projectDir, '<function-name>', functionName);
     await updateAuthAddFirstUserGroup(projectDir, GROUPNAME);
     await amplifyPushWithoutCodeGen(projectDir);
   
@@ -53,8 +58,35 @@ export async function runFunctionTest(projectDir: string, schemaDocDirPath: stri
       awsconfig.aws_appsync_region,
       user
     );
-  
-    await testCompiledSchema(projectDir, schemaDocDirPath);
-    await testMutations(schemaDocDirPath, appsyncClient);
+
     await testQueries(schemaDocDirPath, appsyncClient);
+}
+
+export async function addFunction(projectDir: string, schemaDocDirPath: string, functionFileName: string): Promise<string>{
+  const functionFilePath = path.join(schemaDocDirPath, functionFileName)
+  const functionName = randomizedFunctionName(functionFileName.split['.'][0]);
+  await addSimpleFunction(projectDir, functionName);
+
+  const backendApiDirPath = path.join(projectDir, 'amplify', 'backend', 'api');
+  const amplifyFunctionIndexFilePath = path.join(backendApiDirPath, 'function', functionName, 'src', 'index.js');
+
+  fs.copySync(functionFilePath, amplifyFunctionIndexFilePath);
+
+  return functionName;
+}
+
+export function randomizedFunctionName(functionName: string){
+  functionName = functionName.toLowerCase().replace(/[^0-9a-zA-Z]/gi, '');
+  const [shortId] = uuid().split('-');
+  return `${functionName}${shortId}`;
+}
+
+export function updateFunctionNameInSchema(projectDir: string, functionNamePlaceHolder: string, functionName: string){
+  const backendApiDirPath = path.join(projectDir, 'amplify', 'backend', 'api');
+  const apiResDirName = fs.readdirSync(backendApiDirPath)[0];
+  const amplifySchemaFilePath = path.join(backendApiDirPath, apiResDirName, 'schema.graphql');
+
+  const amplifySchemaFileContents = fs.readFileSync(amplifySchemaFilePath).toString();
+  amplifySchemaFileContents.replace(functionNamePlaceHolder, functionName);
+  fs.writeFileSync(amplifySchemaFilePath, amplifySchemaFileContents);
 }

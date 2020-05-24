@@ -1,6 +1,7 @@
+#change: replaced "ResolverFunction" with the "<function-name>" placeholder, the test will replace it with the actual function name
 type Query {
-  me: User @function(name: "ResolverFunction")
-  echo(msg: String): String @function(name: "ResolverFunction")
+  me: User @function(name: "<function-name>-${env}")
+  echo(msg: String): String @function(name: "<function-name>-${env}")
 }
 # These types derived from https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CognitoIdentityServiceProvider.html#adminGetUser-property
 type User {

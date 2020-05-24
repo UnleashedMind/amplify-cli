@@ -1,4 +1,4 @@
 #change: inserted "<function-name>" placeholder, the test will replace it with the actual function name
 type Query {
-  echo(msg: String): String @function(name: "<function-name>")
+  echo(msg: String): String @function(name: "<function-name>-${env}")
 }

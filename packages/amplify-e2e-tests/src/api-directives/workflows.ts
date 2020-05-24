@@ -1,5 +1,49 @@
 import { nspawn as spawn, getCLIPath, KEY_UP_ARROW, KEY_DOWN_ARROW} from 'amplify-e2e-core';
 
+
+export function initProjectWithAccessKeyAndRegion(cwd: string, accessKeyId: string, secretAccessKey: string, region: string) {
+  return new Promise((resolve, reject) => {
+    spawn(getCLIPath(), ['init'], { cwd, stripColors: true })
+      .wait('Enter a name for the project')
+      .sendCarriageReturn()
+      .wait('Enter a name for the environment')
+      .sendCarriageReturn()
+      .wait('Choose your default editor:')
+      .sendCarriageReturn()
+      .wait("Choose the type of app that you're building")
+      .sendCarriageReturn()
+      .wait('What javascript framework are you using')
+      .sendCarriageReturn()
+      .wait('Source Directory Path:')
+      .sendCarriageReturn()
+      .wait('Distribution Directory Path:')
+      .sendCarriageReturn()
+      .wait('Build Command:')
+      .sendCarriageReturn()
+      .wait('Start Command:')
+      .sendCarriageReturn()
+      .wait('Using default provider  awscloudformation')
+      .wait('Do you want to use an AWS profile?')
+      .sendLine('n')
+      .pauseRecording()
+      .wait('accessKeyId')
+      .sendLine(accessKeyId)
+      .wait('secretAccessKey')
+      .sendLine(secretAccessKey)
+      .wait('region')
+      .sendLine(region)
+      .resumeRecording()
+      .wait('Try "amplify add api" to create a backend API and then "amplify publish" to deploy everything')
+      .run((err: Error) => {
+        if (!err) {
+          resolve();
+        } else {
+          reject(err);
+        }
+      });
+  });
+}
+
 //add default auth
 export function addAuth(projectDir: string) {
   return new Promise((resolve, reject) => {
@@ -138,6 +182,36 @@ export function updateAuthAddAdminQueries(projectDir: string, adminGroupName: st
       .send(adminGroupName)
       .sendCarriageReturn()
       .wait('"amplify publish" will build all your local backend and frontend resources')
+      .run((err: Error) => {
+        if (!err) {
+          resolve();
+        } else {
+          reject(err);
+        }
+      });
+  });
+}
+
+//add function
+export function addSimpleFunction(projectDir: string, functionName: string){
+  return new Promise((resolve, reject) => {
+    spawn(getCLIPath(), ['add', 'function'], { cwd: projectDir, stripColors: true })
+      .wait('Provide a friendly name for your resource to be used as a label for this category in the project:')
+      .sendLine(functionName)
+      .wait('Provide the AWS Lambda function name:')
+      .sendLine(functionName)
+      .wait('Choose the function runtime that you want to use:')
+      .sendLine('NodeJS')
+      .wait('Choose the function template that you want to use:')
+      .send(KEY_DOWN_ARROW) //Hellow world
+      .sendCarriageReturn()
+      .wait('Do you want to access other resources created in this project from your Lambda function?')
+      .sendLine('n')
+      .wait('Do you want to invoke this function on a recurring schedule?')
+      .sendLine('N')
+      .wait('Do you want to edit the local lambda function now?')
+      .sendLine('n')
+      .wait('"amplify publish" builds all of your local backend and front-end resources')
       .run((err: Error) => {
         if (!err) {
           resolve();

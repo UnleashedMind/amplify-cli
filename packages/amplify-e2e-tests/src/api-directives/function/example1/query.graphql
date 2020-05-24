@@ -1,1 +1,11 @@
 #extra
+ query Posts {
+    posts {
+      id
+      title
+      comments {
+        postId
+        content
+      }
+    }
+}
