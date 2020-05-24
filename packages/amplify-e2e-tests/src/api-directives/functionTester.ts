@@ -64,11 +64,11 @@ export async function runFunctionTest(projectDir: string, schemaDocDirPath: stri
 
 export async function addFunction(projectDir: string, schemaDocDirPath: string, functionFileName: string): Promise<string>{
   const functionFilePath = path.join(schemaDocDirPath, functionFileName)
-  const functionName = randomizedFunctionName(functionFileName.split['.'][0]);
+  const functionName = randomizedFunctionName(functionFileName.split('.')[0]);
   await addSimpleFunction(projectDir, functionName);
 
-  const backendApiDirPath = path.join(projectDir, 'amplify', 'backend', 'api');
-  const amplifyFunctionIndexFilePath = path.join(backendApiDirPath, 'function', functionName, 'src', 'index.js');
+  const amplifyBackendDirPath = path.join(projectDir, 'amplify', 'backend');
+  const amplifyFunctionIndexFilePath = path.join(amplifyBackendDirPath, 'function', functionName, 'src', 'index.js');
 
   fs.copySync(functionFilePath, amplifyFunctionIndexFilePath);
 
@@ -87,6 +87,7 @@ export function updateFunctionNameInSchema(projectDir: string, functionNamePlace
   const amplifySchemaFilePath = path.join(backendApiDirPath, apiResDirName, 'schema.graphql');
 
   let amplifySchemaFileContents = fs.readFileSync(amplifySchemaFilePath).toString();
-  amplifySchemaFileContents = amplifySchemaFileContents.replace(functionNamePlaceHolder, functionName);
+  const placeHolderRegex = new RegExp(functionNamePlaceHolder, 'g');
+  amplifySchemaFileContents = amplifySchemaFileContents.replace(placeHolderRegex, functionName);
   fs.writeFileSync(amplifySchemaFilePath, amplifySchemaFileContents);
 }
