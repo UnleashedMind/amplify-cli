@@ -1,11 +1,12 @@
 //special handling needed becasue we need to set up the function in a differnt region
 import path from 'path';
 import fs from 'fs-extra';
-import { deleteProject, deleteProjectDir } from 'amplify-e2e-core';
+import { getProjectMeta, deleteProject, deleteProjectDir } from 'amplify-e2e-core';
 
 import {
   addApiWithAPIKeyAuthType,
   amplifyPushWithoutCodeGen,
+  amplifyPush,
   addSimpleFunction,
   initProjectWithAccessKeyAndRegion
 } from '../../workflows';
@@ -30,10 +31,11 @@ export async function runTest(projectDir: string) {
     const functionProjectDirPath = path.join(path.dirname(projectDir), path.basename(projectDir)+'-function');
 
     try{
-        const functionName = await setupFunction(projectDir, functionRegion);
+        const functionName = await setupFunction(functionProjectDirPath, functionRegion);
 
         const schemaFilePath = path.join(__dirname, 'input.graphql');
         await addApiWithAPIKeyAuthType(projectDir, schemaFilePath);
+       
         updateFunctionNameAndRegionInSchema(projectDir, functionName, functionRegion);
         await amplifyPushWithoutCodeGen(projectDir);
     
@@ -54,23 +56,29 @@ export async function runTest(projectDir: string) {
 }
 
 async function setupFunction(functionProjectDirPath: string, functionRegion: string): Promise<string>{
-    const functionFilePath = path.join(__dirname, 'function.js');
-    const functionName = randomizedFunctionName('function');
+    fs.ensureDirSync(functionProjectDirPath);
     await initProjectWithAccessKeyAndRegion(
         functionProjectDirPath,
         process.env.AWS_ACCESS_KEY_ID,
         process.env.AWS_SECRET_ACCESS_KEY,
         functionRegion
     );
+
+    const functionFilePath = path.join(__dirname, 'function.js');
+    const functionName = randomizedFunctionName('function');
     await addSimpleFunction(functionProjectDirPath, functionName);
-    await amplifyPushWithoutCodeGen(functionProjectDirPath);
   
-    const backendApiDirPath = path.join(functionProjectDirPath, 'amplify', 'backend', 'api');
-    const amplifyFunctionIndexFilePath = path.join(backendApiDirPath, 'function', functionName, 'src', 'index.js');
+    const amplifyBackendDirPath = path.join(functionProjectDirPath, 'amplify', 'backend');
+    const amplifyFunctionIndexFilePath = path.join(amplifyBackendDirPath, 'function', functionName, 'src', 'index.js');
   
     fs.copySync(functionFilePath, amplifyFunctionIndexFilePath);
+
+    await amplifyPush(functionProjectDirPath);
+
+    const amplifyMeta = getProjectMeta(functionProjectDirPath);
   
-    return functionName;
+    //return the actual function name in the other region
+    return amplifyMeta.function[functionName].output.Name;
 }
 
 async function deleteFunctionProject(functionProjectDirPath: string){
@@ -83,8 +91,10 @@ function updateFunctionNameAndRegionInSchema(projectDir: string, functionName: s
   const apiResDirName = fs.readdirSync(backendApiDirPath)[0];
   const amplifySchemaFilePath = path.join(backendApiDirPath, apiResDirName, 'schema.graphql');
 
-  const amplifySchemaFileContents = fs.readFileSync(amplifySchemaFilePath).toString();
-  amplifySchemaFileContents.replace('<function-name>', functionName);
-  amplifySchemaFileContents.replace('<function-region>', functionRegion);
+  let amplifySchemaFileContents = fs.readFileSync(amplifySchemaFilePath).toString();
+
+  amplifySchemaFileContents = amplifySchemaFileContents.replace(/<function-name>/g, functionName);
+  amplifySchemaFileContents = amplifySchemaFileContents.replace(/<function-region>/g, functionRegion);
+
   fs.writeFileSync(amplifySchemaFilePath, amplifySchemaFileContents);
 }

@@ -161,7 +161,7 @@ export async function testMutation(appSyncClient: any, mutation: any, mutationRe
   let resultMatch = true;
   let errorMatch = true;
   console.log('///mutation', mutation);
-  console.log('mutationResult', mutationResult)
+  console.log('///mutationResult', mutationResult)
   try{
     const result = await appSyncClient.mutate({
       mutation: gql(mutation),
@@ -170,9 +170,9 @@ export async function testMutation(appSyncClient: any, mutation: any, mutationRe
     if(!checkResult(result, mutationResult)){
       resultMatch = false;
     }
-    console.log('///result', result)
+    console.log('///actual mutation result', result)
   }catch(err){
-    console.log('///err', err);
+    console.log('///actual mutation err', err);
     if(!checkError(err, mutationResult)){
       errorMatch = false;
     }
@@ -217,6 +217,8 @@ export async function testQueries(schemaDocDirPath: string, appSyncClient: any) 
 export async function testQuery(appSyncClient: any, query: any, queryResult?: any){
   let resultMatch = true;
   let errorMatch = true;
+  console.log('///query', query);
+  console.log('///queryResult', queryResult)
   try{
     const result = await appSyncClient.query({
       query: gql(query),
@@ -225,10 +227,12 @@ export async function testQuery(appSyncClient: any, query: any, queryResult?: an
     if(!checkResult(result, queryResult)){
       resultMatch = false;
     }
+    console.log('///actual query result:', result);
   }catch(err){
     if(!checkError(err, queryResult)){
       errorMatch = false;
     }
+    console.log('///actual query err:', err);
   }
   if(!resultMatch || !errorMatch){
     throw new Error('Query test failed.');

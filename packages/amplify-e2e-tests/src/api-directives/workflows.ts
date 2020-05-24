@@ -1,13 +1,18 @@
 import { nspawn as spawn, getCLIPath, KEY_UP_ARROW, KEY_DOWN_ARROW} from 'amplify-e2e-core';
 
 
-export function initProjectWithAccessKeyAndRegion(cwd: string, accessKeyId: string, secretAccessKey: string, region: string) {
+export function initProjectWithAccessKeyAndRegion(
+  cwd: string, 
+  accessKeyId: string, 
+  secretAccessKey: string, 
+  region: string
+) {
   return new Promise((resolve, reject) => {
     spawn(getCLIPath(), ['init'], { cwd, stripColors: true })
       .wait('Enter a name for the project')
       .sendCarriageReturn()
       .wait('Enter a name for the environment')
-      .sendCarriageReturn()
+      .sendCarriageReturn()//dev
       .wait('Choose your default editor:')
       .sendCarriageReturn()
       .wait("Choose the type of app that you're building")
@@ -201,7 +206,7 @@ export function addSimpleFunction(projectDir: string, functionName: string){
       .wait('Provide the AWS Lambda function name:')
       .sendLine(functionName)
       .wait('Choose the function runtime that you want to use:')
-      .sendLine('NodeJS')
+      .sendCarriageReturn()
       .wait('Choose the function template that you want to use:')
       .send(KEY_DOWN_ARROW) //Hellow world
       .sendCarriageReturn()

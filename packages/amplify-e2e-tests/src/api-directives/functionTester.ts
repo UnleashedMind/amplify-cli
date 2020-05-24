@@ -86,7 +86,7 @@ export function updateFunctionNameInSchema(projectDir: string, functionNamePlace
   const apiResDirName = fs.readdirSync(backendApiDirPath)[0];
   const amplifySchemaFilePath = path.join(backendApiDirPath, apiResDirName, 'schema.graphql');
 
-  const amplifySchemaFileContents = fs.readFileSync(amplifySchemaFilePath).toString();
-  amplifySchemaFileContents.replace(functionNamePlaceHolder, functionName);
+  let amplifySchemaFileContents = fs.readFileSync(amplifySchemaFilePath).toString();
+  amplifySchemaFileContents = amplifySchemaFileContents.replace(functionNamePlaceHolder, functionName);
   fs.writeFileSync(amplifySchemaFilePath, amplifySchemaFileContents);
 }
