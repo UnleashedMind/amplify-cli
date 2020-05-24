@@ -1,4 +1,5 @@
-query SpeakTranslatedImageText($input: SpeakTranslatedImageTextInput!) {
+#change: remove redaudant ($input: SpeakTranslatedImageTextInput!)
+query SpeakTranslatedImageText {
   speakTranslatedImageText(input: {
     identifyText: {
       key: "myimage.jpg"

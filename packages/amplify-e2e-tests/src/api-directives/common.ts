@@ -3,10 +3,12 @@ import fs from 'fs-extra';
 import _ from 'lodash';
 import sequential from 'promise-sequential';
 import gql from 'graphql-tag';
-import {readJsonFile} from 'amplify-e2e-core';
+import { readJsonFile } from 'amplify-e2e-core';
 import {
   addApiWithAPIKeyAuthType,
-  amplifyPushWithoutCodeGen
+  addApiWithCognitoUserPoolAuthType,
+  amplifyPushWithoutCodeGen,
+  updateAuthAddFirstUserGroup
 } from './workflows';
 
 import {
@@ -44,15 +46,15 @@ export async function runTest(projectDir: string, schemaDocDirPath: string) {
 
   const awsconfig = configureAmplify(projectDir);
   const apiKey = getApiKey(projectDir);
-  const appsyncClient = getConfiguredAppsyncClientAPIKeyAuth(
+  const appSyncClient = getConfiguredAppsyncClientAPIKeyAuth(
     awsconfig.aws_appsync_graphqlEndpoint,
     awsconfig.aws_appsync_region,
     apiKey
   );
 
   await testCompiledSchema(projectDir, schemaDocDirPath);
-  await testMutations(schemaDocDirPath, appsyncClient);
-  await testQueries(schemaDocDirPath, appsyncClient);
+  await testMutations(schemaDocDirPath, appSyncClient);
+  await testQueries(schemaDocDirPath, appSyncClient);
 }
 
 //The following runTest method runs the common test pattern for schemas in the @auth section of the document.
@@ -70,13 +72,13 @@ export async function runTest(projectDir: string, schemaDocDirPath: string) {
 //the actual received query responses will be checked against the responses in the document. 
 
 export async function runAutTest(projectDir: string, schemaDocDirPath: string) {
-  // const schemaFilePath = path.join(schemaDocDirPath, 'input.graphql');
-  // await addApiWithCognitoUserPoolAuthType(projectDir, schemaFilePath);
-  // await updateAuthAddFirstUserGroup(projectDir, GROUPNAME);
-  // await amplifyPushWithoutCodeGen(projectDir);
+  const schemaFilePath = path.join(schemaDocDirPath, 'input.graphql');
+  await addApiWithCognitoUserPoolAuthType(projectDir, schemaFilePath);
+  await updateAuthAddFirstUserGroup(projectDir, GROUPNAME);
+  await amplifyPushWithoutCodeGen(projectDir);
 
-  // const userPoolId = getUserPoolId(projectDir);
-  // await setupUser(userPoolId, USERNAME, PASSWORD, GROUPNAME);
+  const userPoolId = getUserPoolId(projectDir);
+  await setupUser(userPoolId, USERNAME, PASSWORD, GROUPNAME);
   
   const awsconfig = configureAmplify(projectDir);
   const user = await signInUser(USERNAME, PASSWORD);
@@ -85,10 +87,9 @@ export async function runAutTest(projectDir: string, schemaDocDirPath: string) {
     awsconfig.aws_appsync_region,
     user
   );
-
-  // await testCompiledSchema(projectDir, schemaDocDirPath);
-  // await testMutations(schemaDocDirPath, appSyncClient);
-  // await testQueries(schemaDocDirPath, appSyncClient);
+  await testCompiledSchema(projectDir, schemaDocDirPath);
+  await testMutations(schemaDocDirPath, appSyncClient);
+  await testQueries(schemaDocDirPath, appSyncClient);
   await testSubscriptions(schemaDocDirPath, appSyncClient);
 }
 
