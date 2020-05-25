@@ -3,32 +3,20 @@ import uuid from 'uuid';
 import fs from 'fs-extra';
 import _ from 'lodash';
 import {
-  addApiWithCognitoUserPoolAuthType, 
-  updateAuthAddFirstUserGroup, 
   amplifyPushWithoutCodeGen,
   addSimpleFunction,
   addApiWithAPIKeyAuthType
 } from './workflows';
 
 import {
-  setupUser,
-  getUserPoolId,
   configureAmplify,
-  signInUser,
   getApiKey,
   getConfiguredAppsyncClientAPIKeyAuth,
-  getConfiguredAppsyncClientCognitoAuth,
 } from './authHelper';
 
 import {
-    testCompiledSchema,
-    testMutations,
     testQueries
 } from './common';
-
-const GROUPNAME = 'admin';
-const USERNAME = 'user1';
-const PASSWORD = 'user1Password'
 
 //The following runTest method runs the common test pattern for schemas in the @function section of the document.
 //It does not test subscriptions. Subscription tests are handled individually in the schema doc directory.

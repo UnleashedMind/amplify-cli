@@ -40,9 +40,9 @@ const PASSWORD = 'user1Password'
 //the actual received query responses will be checked against the responses in the document. 
 
 export async function runTest(projectDir: string, schemaDocDirPath: string) {
-  // const schemaFilePath = path.join(schemaDocDirPath, 'input.graphql');
-  // await addApiWithAPIKeyAuthType(projectDir, schemaFilePath);
-  // await amplifyPushWithoutCodeGen(projectDir);
+  const schemaFilePath = path.join(schemaDocDirPath, 'input.graphql');
+  await addApiWithAPIKeyAuthType(projectDir, schemaFilePath);
+  await amplifyPushWithoutCodeGen(projectDir);
 
   const awsconfig = configureAmplify(projectDir);
   const apiKey = getApiKey(projectDir);
