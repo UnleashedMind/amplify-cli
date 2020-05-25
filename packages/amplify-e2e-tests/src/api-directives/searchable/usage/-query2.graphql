@@ -1,3 +1,4 @@
+#remove
 #error: add "s" for searchPosts
 #error: either AppSync or Elasticsearch has an error, the query does not work
 query SearchPosts {

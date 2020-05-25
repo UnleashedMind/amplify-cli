@@ -7,6 +7,7 @@ import { runFunctionTest } from './functionTester';
 //The contents of files in the schema doc testing directories might be modified,
 //and extra files might be added to test the input schema.
 //The beginning part of a file marks the type of the modification it might have
+//#remove: if the error can not be corrected, the file is excluded from the test, file name will be appended with '-'
 //#change: modified the original content such as adding the missing pieces in imcomplete schemas
 //#error: corrected error in the original content
 //#extra: the content does not exist in the Amplify CLI document, added in the directory for the completeness of the testing, such as the mutation needed to test subscriptions
