@@ -121,10 +121,7 @@ export function getUserPoolId(projectDir: string): string{
 }
 
 export function getCognitoResourceName(projectDir: string): string{
-    console.log('///projectDir', projectDir);
     const amplifyMeta = getBackendAmplifyMeta(projectDir);
-    console.log('////amplifyMeta', amplifyMeta);
-    console.log('///Object.keys(amplifyMeta.auth)', Object.keys(amplifyMeta.auth))
     const cognitoResourceName = Object.keys(amplifyMeta.auth).find((key: any) => { return amplifyMeta.auth[key].service === "Cognito" }) as any;
     return cognitoResourceName;
 }
