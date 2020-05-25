@@ -12,7 +12,7 @@ import {
   } from '../../authHelper';
 
 import {
-    testMutations
+    testQueries
 } from '../../common';
 
 import {
@@ -37,5 +37,5 @@ export async function runTest(projectDir: string) {
     apiKey
   );
 
-  await testMutations(__dirname, appSyncClient);
+  await testQueries(__dirname, appSyncClient);
 }

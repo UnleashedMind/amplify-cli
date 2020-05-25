@@ -1,4 +1,4 @@
 #extra
-mutation DoSomeWork {
+query DoSomeWork {
     doSomeWork(msg: "initial mutation message")
 }
