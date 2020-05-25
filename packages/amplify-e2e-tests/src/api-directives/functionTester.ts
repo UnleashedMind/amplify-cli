@@ -6,7 +6,8 @@ import {
   addApiWithCognitoUserPoolAuthType, 
   updateAuthAddFirstUserGroup, 
   amplifyPushWithoutCodeGen,
-  addSimpleFunction
+  addSimpleFunction,
+  addApiWithAPIKeyAuthType
 } from './workflows';
 
 import {
@@ -14,6 +15,8 @@ import {
   getUserPoolId,
   configureAmplify,
   signInUser,
+  getApiKey,
+  getConfiguredAppsyncClientAPIKeyAuth,
   getConfiguredAppsyncClientCognitoAuth,
 } from './authHelper';
 
@@ -42,25 +45,23 @@ const PASSWORD = 'user1Password'
 //the actual received query responses will be checked against the responses in the document. 
 
 export async function runFunctionTest(projectDir: string, schemaDocDirPath: string) {
-    const schemaFilePath = path.join(schemaDocDirPath, 'input.graphql');
-    const functionName = await addFunction(projectDir, schemaDocDirPath, 'function.js');
-    await addApiWithCognitoUserPoolAuthType(projectDir, schemaFilePath);
-    updateFunctionNameInSchema(projectDir, '<function-name>', functionName);
-    await updateAuthAddFirstUserGroup(projectDir, GROUPNAME);
-    await amplifyPushWithoutCodeGen(projectDir);
-  
-    const userPoolId = getUserPoolId(projectDir);
-    await setupUser(userPoolId, USERNAME, PASSWORD, GROUPNAME);
-    const awsconfig = configureAmplify(projectDir);
-    const user = await signInUser(USERNAME, PASSWORD);
-    const appsyncClient = getConfiguredAppsyncClientCognitoAuth(
-      awsconfig.aws_appsync_graphqlEndpoint,
-      awsconfig.aws_appsync_region,
-      user
-    );
+  const schemaFilePath = path.join(schemaDocDirPath, 'input.graphql');
+  const functionName = await addFunction(projectDir, schemaDocDirPath, 'function.js');
+  await addApiWithAPIKeyAuthType(projectDir, schemaFilePath);
+  updateFunctionNameInSchema(projectDir, '<function-name>', functionName);
+  await amplifyPushWithoutCodeGen(projectDir);
 
-    await testQueries(schemaDocDirPath, appsyncClient);
+  const awsconfig = configureAmplify(projectDir);
+  const apiKey = getApiKey(projectDir);
+  const appSyncClient = getConfiguredAppsyncClientAPIKeyAuth(
+    awsconfig.aws_appsync_graphqlEndpoint,
+    awsconfig.aws_appsync_region,
+    apiKey
+  );
+
+  await testQueries(schemaDocDirPath, appSyncClient);
 }
+
 
 export async function addFunction(projectDir: string, schemaDocDirPath: string, functionFileName: string): Promise<string>{
   const functionFilePath = path.join(schemaDocDirPath, functionFileName)

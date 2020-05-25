@@ -1,5 +1,5 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import { getProjectMeta } from 'amplify-e2e-core';
+import { getProjectMeta, getBackendAmplifyMeta } from 'amplify-e2e-core';
 import Amplify, { Auth } from 'aws-amplify';
 import { AuthenticationDetails } from 'amazon-cognito-identity-js';
 import fs from 'fs-extra';
@@ -118,6 +118,15 @@ export function getUserPoolId(projectDir: string): string{
     const amplifyMeta = getProjectMeta(projectDir);
     const cognitoResource = Object.values(amplifyMeta.auth).find((res: any) => { return res.service === "Cognito" }) as any;
     return cognitoResource.output.UserPoolId;
+}
+
+export function getCognitoResourceName(projectDir: string): string{
+    console.log('///projectDir', projectDir);
+    const amplifyMeta = getBackendAmplifyMeta(projectDir);
+    console.log('////amplifyMeta', amplifyMeta);
+    console.log('///Object.keys(amplifyMeta.auth)', Object.keys(amplifyMeta.auth))
+    const cognitoResourceName = Object.keys(amplifyMeta.auth).find((key: any) => { return amplifyMeta.auth[key].service === "Cognito" }) as any;
+    return cognitoResourceName;
 }
 
 export function getApiKey(projectDir: string): string{
