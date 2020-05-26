@@ -1,3 +1,4 @@
+#error: need to add "create" in the editors' operations
 type Draft @model
   @auth(rules: [
 
@@ -5,11 +6,11 @@ type Draft @model
     { allow: owner },
 
     # Authorize the update mutation and both queries. Use `queries: null` to disable auth for queries.
-    { allow: owner, ownerField: "editors", operations: [update, read] }
+    { allow: owner, ownerField: "editors", operations: [create, update, read] }
   ]) {
-  id: ID!
-  title: String!
-  content: String
-  owner: String
-  editors: [String]
+    id: ID!
+    title: String!
+    content: String
+    owner: String
+    editors: [String]
 }

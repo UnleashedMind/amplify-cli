@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs-extra';
-import { runTest } from './common';
-import { runAutTest } from './authTester';
+import { runTest, runAutTest } from './common';
+// import { runAutTest } from './authTester';
 import { runFunctionTest } from './functionTester';
 
 //The contents of files in the schema doc testing directories might be modified,

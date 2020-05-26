@@ -5,10 +5,12 @@ import sequential from 'promise-sequential';
 describe('api directives @model @key @connection @versioned', () => {
   let projectDir: string;
 
+  const authowner5ProjectDir = '/private/tmp/amplify-e2e-tests/apidirective3_610fc1bf_5cc74b7e'
+  const authSubscriptions1ProjectDir = '/private/tmp/amplify-e2e-tests/apidirective3_610fc1bf_dae815e5'
   beforeEach(async () => {
-    // projectDir = await createNewProjectDir('apidirective3');
-    // await initJSProjectWithProfile(projectDir, {});
-    projectDir = '/private/tmp/amplify-e2e-tests/apidirective3_3537b7c1_90715ada'
+    projectDir = await createNewProjectDir('apidirective3');
+    await initJSProjectWithProfile(projectDir, {});
+    // projectDir = authSubscriptions1ProjectDir;
   });
 
   afterEach(async () => {
@@ -27,11 +29,33 @@ describe('api directives @model @key @connection @versioned', () => {
 
 
 //   data access patterns
-  it('data-access-patterns patterns', async () => {
-    const testresult = await testSchema(projectDir, 'data-access-patterns', 'patterns');
+//   it('data-access-patterns patterns', async () => {
+//     const testresult = await testSchema(projectDir, 'data-access-patterns', 'patterns');
+//     expect(testresult).toBeTruthy();
+//   });
+
+
+//   it('auth owner5', async () => {
+//     const testresult = await testSchema(projectDir, 'auth', 'owner5');
+//     expect(testresult).toBeTruthy();
+//   });
+
+  
+//   it('auth authSubscriptions1', async () => {
+//     const testresult = await testSchema(projectDir, 'auth', 'authSubscriptions1');
+//     expect(testresult).toBeTruthy();
+//   });
+
+  it('auth authSubscriptions2', async () => {
+    const testresult = await testSchema(projectDir, 'auth', 'authSubscriptions2');
     expect(testresult).toBeTruthy();
   });
 
+  it('auth authSubscriptions3', async () => {
+    const testresult = await testSchema(projectDir, 'auth', 'authSubscriptions3');
+    expect(testresult).toBeTruthy();
+  });
+  
 })
 
 

@@ -175,10 +175,10 @@ export async function testMutation(appSyncClient: any, mutation: any, mutationIn
       fetchPolicy: 'no-cache',
       variables: mutationInput
     });
+    console.log('///actual mutation result', util.inspect(result, true, 10))
     if(!checkResult(result, mutationResult)){
       resultMatch = false;
     }
-    console.log('///actual mutation result', util.inspect(result, true, 10))
   }catch(err){
     console.log('///actual mutation err', util.inspect(err, true, 10));
     if(!checkError(err, mutationResult)){
@@ -239,15 +239,15 @@ export async function testQuery(appSyncClient: any, query: any, queryInput?: any
       fetchPolicy: 'no-cache',
       variables: queryInput
     });
+    console.log('///actual query result:', util.inspect(result, true, 10));
     if(!checkResult(result, queryResult)){
       resultMatch = false;
     }
-    console.log('///actual query result:', util.inspect(result, true, 10));
   }catch(err){
+    console.log('///actual query err:', util.inspect(err, true, 10));
     if(!checkError(err, queryResult)){
       errorMatch = false;
     }
-    console.log('///actual query err:', util.inspect(err, true, 10));
   }
   if(!resultMatch || !errorMatch){
     throw new Error('Query test failed.');
@@ -268,6 +268,7 @@ export async function testSubscriptions(schemaDocDirPath: string, appsyncClient:
     });
   }
 
+  console.log('////subscriptionFileNames', subscriptionFileNames)
   const subscriptionTasks = [];
   subscriptionFileNames.forEach(subscriptionFileName => {
     const subscriptionResultFileName = 'result-' + subscriptionFileName.replace('.graphql', '.json');
@@ -284,6 +285,9 @@ export async function testSubscriptions(schemaDocDirPath: string, appsyncClient:
       const regex = new RegExp('^mutation[0-9]*-'+subscriptionFileName); 
       return regex.test(fileName);
     });
+
+    console.log('1/////mutationFileNames', mutationFileNames)
+
     if(mutationFileNames.length>1){
       mutationFileNames = mutationFileNames.sort((fn1, fn2) => {
         const regex = new RegExp('mutation' + '|-' + subscriptionFileName, 'g'); 
@@ -292,6 +296,8 @@ export async function testSubscriptions(schemaDocDirPath: string, appsyncClient:
         return n1 - n2;
       });
     }
+    
+    console.log('2/////mutationFileNames', mutationFileNames)
 
     const mutations = [];
     mutationFileNames.forEach((mutationFileName)=>{
@@ -300,6 +306,7 @@ export async function testSubscriptions(schemaDocDirPath: string, appsyncClient:
       mutations.push(mutation);
     })
 
+    console.log('///mutations', mutations)
     subscriptionTasks.push(async () => {
       await testSubscription(appsyncClient, subscription, mutations, subscriptionResult);
     });
@@ -335,6 +342,7 @@ export async function testSubscription(appSyncClient: any, subscription: string,
         fetchPolicy: 'no-cache',
         variables: mutationInput
       });
+      await new Promise(res => setTimeout(() => res(), 4000));//to ensure correct order in received data
     });
   }
   
@@ -361,7 +369,12 @@ function checkResult(received: any, expected: any): boolean{
     expected,
     depth: 0
   }];
-  return runCompare(queue);
+  try{
+    return runCompare(queue);
+  }catch(e){
+    console.log('////checkResult method error', e);
+    return false;
+  }
 }
 
 function checkError(received: any, expected: any): boolean{
@@ -386,7 +399,11 @@ function runCompare(queue: {received: any, expected: any, depth: number}[]): boo
       break;
     }
     if(typeof itemToCompare.expected === 'object'){
-      if(typeof itemToCompare.received === 'object'){
+      if(itemToCompare.expected === null){
+        result = itemToCompare.received === null;
+      }else if(itemToCompare.received === null){
+        result = false; 
+      }else if(typeof itemToCompare.received === 'object'){
         Object.keys(itemToCompare.expected).forEach((key)=>{
           queue.push({
             received: itemToCompare.received[key],
