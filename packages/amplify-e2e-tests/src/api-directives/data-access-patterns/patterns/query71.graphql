@@ -1,4 +1,4 @@
-#We can also query and have the results returned by start date by using the `employeesNewHireByStartDate` query:
+##7. alternative: We can also query and have the results returned by start date by using the `employeesNewHireByStartDate` query:
 
 query employeesNewHireByDate {
   employeesNewHireByStartDate(newHire: "true") {

@@ -1,4 +1,4 @@
-#We can also get all inventory from an individual warehouse by using the `itemsByWarehouseID` query created by the `byWarehouseID` key:
+## 15. alternative: We can also get all inventory from an individual warehouse by using the `itemsByWarehouseID` query created by the `byWarehouseID` key:
 
 query byWarehouseId($warehouseID: ID!) {
   itemsByWarehouseID(warehouseID: $warehouseID) {

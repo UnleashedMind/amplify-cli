@@ -138,11 +138,17 @@ export async function testMutations(schemaDocDirPath: string, appsyncClient: any
 
   const mutationTasks = [];
   mutationFileNames.forEach(mutationFileName => {
+    const mutationInputFileName = 'input-' + mutationFileName.replace('.graphql', '.json');
     const mutationResultFileName = 'result-' + mutationFileName.replace('.graphql', '.json');
     const mutationFilePath = path.join(schemaDocDirPath, mutationFileName);
+    const mutationInputFilePath = path.join(schemaDocDirPath, mutationInputFileName);
     const mutationResultFilePath = path.join(schemaDocDirPath, mutationResultFileName);
     const mutation = fs.readFileSync(mutationFilePath).toString();
+    let mutationInput: any; 
     let mutationResult: any; 
+    if(fs.existsSync(mutationInputFilePath)){
+      mutationInput = readJsonFile(mutationInputFilePath);
+    }
     if(fs.existsSync(mutationResultFilePath)){
       mutationResult = readJsonFile(mutationResultFilePath);
     }
@@ -150,14 +156,14 @@ export async function testMutations(schemaDocDirPath: string, appsyncClient: any
     results.push(mutationResult);
 
     mutationTasks.push(async () => {
-      await testMutation(appsyncClient, mutation, mutationResult);
+      await testMutation(appsyncClient, mutation, mutationInput, mutationResult);
     });
   });
 
-  await sequential(mutationTasks);
+  await runInSequential(mutationTasks);
 }
 
-export async function testMutation(appSyncClient: any, mutation: any, mutationResult?: any){
+export async function testMutation(appSyncClient: any, mutation: any, mutationInput?: any, mutationResult?: any){
   let resultMatch = true;
   let errorMatch = true;
   console.log('///mutation', mutation);
@@ -166,6 +172,7 @@ export async function testMutation(appSyncClient: any, mutation: any, mutationRe
     const result = await appSyncClient.mutate({
       mutation: gql(mutation),
       fetchPolicy: 'no-cache',
+      variables: mutationInput
     });
     if(!checkResult(result, mutationResult)){
       resultMatch = false;
@@ -198,23 +205,29 @@ export async function testQueries(schemaDocDirPath: string, appSyncClient: any) 
 
   const queryTasks = [];
   queryFileNames.forEach(queryFileName => {
+    const querInputFileName = 'input-' + queryFileName.replace('.graphql', '.json');
     const queryResultFileName = 'result-' + queryFileName.replace('.graphql', '.json');
     const queryFilePath = path.join(schemaDocDirPath, queryFileName);
+    const queryInputFilePath = path.join(schemaDocDirPath, querInputFileName);
     const queryResultFilePath = path.join(schemaDocDirPath, queryResultFileName);
     const query = fs.readFileSync(queryFilePath).toString();
+    let queryInput: any;
     let queryResult: any; 
+    if(fs.existsSync(queryInputFilePath)){
+      queryInput = readJsonFile(queryInputFilePath);
+    }
     if(fs.existsSync(queryResultFilePath)){
       queryResult = readJsonFile(queryResultFilePath);
     }
     queryTasks.push(async () => {
-      await testQuery(appSyncClient, query, queryResult);
+      await testQuery(appSyncClient, query, queryInput, queryResult);
     });
   });
 
-  await sequential(queryTasks);
+  await runInSequential(queryTasks);
 }
 
-export async function testQuery(appSyncClient: any, query: any, queryResult?: any){
+export async function testQuery(appSyncClient: any, query: any, queryInput?: any, queryResult?: any){
   let resultMatch = true;
   let errorMatch = true;
   console.log('///query', query);
@@ -223,6 +236,7 @@ export async function testQuery(appSyncClient: any, query: any, queryResult?: an
     const result = await appSyncClient.query({
       query: gql(query),
       fetchPolicy: 'no-cache',
+      variables: queryInput
     });
     if(!checkResult(result, queryResult)){
       resultMatch = false;
@@ -294,12 +308,13 @@ export async function testSubscriptions(schemaDocDirPath: string, appsyncClient:
     });
   });
 
-  await sequential(subscriptionTasks);
+  await runInSequential(subscriptionTasks);
 }
   
-export async function testSubscription(appSyncClient: any, subscription: string, mutations: any[], subscriptionResult: any){
+export async function testSubscription(appSyncClient: any, subscription: string, mutations: any[], subscriptionResult: any, subscriptionInput?: any, mutationInputs?: any[]){
   const observer = appSyncClient.subscribe({
     query: gql(subscription),
+    variables: subscriptionInput
   });
 
   const received = [];
@@ -310,15 +325,19 @@ export async function testSubscription(appSyncClient: any, subscription: string,
   await new Promise(res => setTimeout(() => res(), 4000));
 
   const mutationTasks = [];
-  mutations.forEach((mutation)=>{
+  for(let i=0; i<mutations.length; i++){
+    const mutation = mutations[i];
+    const mutationInput = mutationInputs? mutationInputs[i] : undefined;
     mutationTasks.push(async () => {
       await appSyncClient.mutate({
         mutation: gql(mutation),
         fetchPolicy: 'no-cache',
+        variables: mutationInput
       });
     });
-  })
-  await sequential(mutationTasks);
+  }
+  
+  await runInSequential(mutationTasks);
 
   await new Promise(res => setTimeout(() => res(), 4000));
 
@@ -415,4 +434,14 @@ function compareDataObject(receivedDataObject: any, expectedDataObject: any){
     // console.log('//isEqual', _.isEqual(expectedDataObject[key], receivedDataObject[key]));
     return _.isEqual(expectedDataObject[key], receivedDataObject[key]);
   })
+}
+
+export async function runInSequential(tasks: ((v: any) => Promise<any>)[]): Promise<any> {
+    let result; 
+
+    for(const task of tasks){
+        result = await task(result);
+    }
+
+    return result; 
 }
