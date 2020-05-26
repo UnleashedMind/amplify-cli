@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs-extra';
 import _ from 'lodash';
+import util from 'util';
 import sequential from 'promise-sequential';
 import gql from 'graphql-tag';
 import { readJsonFile } from 'amplify-e2e-core';
@@ -167,7 +168,7 @@ export async function testMutation(appSyncClient: any, mutation: any, mutationIn
   let resultMatch = true;
   let errorMatch = true;
   console.log('///mutation', mutation);
-  console.log('///mutationResult', mutationResult)
+  console.log('///expected mutationResult', util.inspect(mutationResult, true, 10))
   try{
     const result = await appSyncClient.mutate({
       mutation: gql(mutation),
@@ -177,9 +178,9 @@ export async function testMutation(appSyncClient: any, mutation: any, mutationIn
     if(!checkResult(result, mutationResult)){
       resultMatch = false;
     }
-    console.log('///actual mutation result', result)
+    console.log('///actual mutation result', util.inspect(result, true, 10))
   }catch(err){
-    console.log('///actual mutation err', err);
+    console.log('///actual mutation err', util.inspect(err, true, 10));
     if(!checkError(err, mutationResult)){
       errorMatch = false;
     }
@@ -231,7 +232,7 @@ export async function testQuery(appSyncClient: any, query: any, queryInput?: any
   let resultMatch = true;
   let errorMatch = true;
   console.log('///query', query);
-  console.log('///queryResult', queryResult)
+  console.log('///expected queryResult', util.inspect(queryResult, true, 10))
   try{
     const result = await appSyncClient.query({
       query: gql(query),
@@ -241,12 +242,12 @@ export async function testQuery(appSyncClient: any, query: any, queryInput?: any
     if(!checkResult(result, queryResult)){
       resultMatch = false;
     }
-    console.log('///actual query result:', result);
+    console.log('///actual query result:', util.inspect(result, true, 10));
   }catch(err){
     if(!checkError(err, queryResult)){
       errorMatch = false;
     }
-    console.log('///actual query err:', err);
+    console.log('///actual query err:', util.inspect(err, true, 10));
   }
   if(!resultMatch || !errorMatch){
     throw new Error('Query test failed.');
@@ -279,8 +280,6 @@ export async function testSubscriptions(schemaDocDirPath: string, appsyncClient:
       subscriptionResult = readJsonFile(subscriptionResultFilePath);
     }
 
-    console.log('////subscription\r\n', subscription);
-
     let mutationFileNames = fileNames.filter(fileName => {
       const regex = new RegExp('^mutation[0-9]*-'+subscriptionFileName); 
       return regex.test(fileName);
@@ -293,8 +292,6 @@ export async function testSubscriptions(schemaDocDirPath: string, appsyncClient:
         return n1 - n2;
       });
     }
-
-    console.log('////mutationFileNames\r\n', mutationFileNames);
 
     const mutations = [];
     mutationFileNames.forEach((mutationFileName)=>{
@@ -312,6 +309,10 @@ export async function testSubscriptions(schemaDocDirPath: string, appsyncClient:
 }
   
 export async function testSubscription(appSyncClient: any, subscription: string, mutations: any[], subscriptionResult: any, subscriptionInput?: any, mutationInputs?: any[]){
+  
+  console.log('///subscription', subscription);
+  console.log('///expected subscriptionResult', util.inspect(subscriptionResult, true, 10))
+
   const observer = appSyncClient.subscribe({
     query: gql(subscription),
     variables: subscriptionInput
@@ -343,97 +344,65 @@ export async function testSubscription(appSyncClient: any, subscription: string,
 
   sub.unsubscribe();
 
-  if(!checkSubscriptionResult(received, subscriptionResult)){
+  console.log('///actual received subscription data', util.inspect(received, true, 10))
+
+  if(!checkResult(received, subscriptionResult)){
     throw new Error('Subscription test failed.');
   }
 }
 
 /////
-function checkResult(actual: any, expected: any): boolean{
+function checkResult(received: any, expected: any): boolean{
   if(!expected){//the test does not request result check, as long as the mutation/query goes through, it's good
     return true;
   }
-  if(!expected.data){//means the test does not expect to receive data, error is expected, but instead data is received
-    return false;
-  }
-  return true;
-  // return Object.keys(expected.data).every((key)=>{
-  //   if(!actual.data){//no data returned, while data is expected
-  //     return false;
-  //   }
-  //   return _.isEqual(expected.data[key], actual.data[key]);
-  // })
+  const queue = [{
+    received,
+    expected,
+    depth: 0
+  }];
+  return runCompare(queue);
 }
 
-function checkError(actualError: any, expected: any): boolean{
+function checkError(received: any, expected: any): boolean{
   if(!expected){//the test does not request result check, assume mutation/query should go through, but received error
     return false;
   }
-  if(!expected.errors){//means the test does not expect to err, but erred
-    return false;
-  }
-  return true;
-  // return expected.errors.every((error)=>{
-  //   if(error.errorType){ // if errorType is specified, check that the eror type matches
-  //     if(!actualError.graphQLErrors){//unexpected error
-  //       return false;
-  //     }
-  //     return actualError.graphQLErrors.some((actual: any) => {
-  //       return error.errorType === actual.errorType;
-  //     });
-  //   }
-  // });
+  const queue = [{
+    received,
+    expected,
+    depth: 0
+  }];
+  return runCompare(queue);
 }
 
-
-function checkSubscriptionResult(received: any, expected: any): boolean{
+const MAX_DEPTH = 10;
+function runCompare(queue: {received: any, expected: any, depth: number}[]): boolean{
   let result = true;
 
-  console.log('//checkSubscriptionResult')
-  console.log('////received: ', received);
-  console.log('////expected: ', expected);
-  if(received.length !== expected.length){
-    result = false;
-  }else{
-    for(let i=0; i<expected.length; i++){
-      if(!compareData(received[i], expected[i])){
+  while(queue.length>0 && result){
+    const itemToCompare = queue.shift();
+    if(itemToCompare.depth > MAX_DEPTH){
+      break;
+    }
+    if(typeof itemToCompare.expected === 'object'){
+      if(typeof itemToCompare.received === 'object'){
+        Object.keys(itemToCompare.expected).forEach((key)=>{
+          queue.push({
+            received: itemToCompare.received[key],
+            expected: itemToCompare.expected[key],
+            depth: itemToCompare.depth + 1
+          })
+        })
+      }else{
         result = false;
-        break;
       }
+    }else{
+      result = itemToCompare.received === itemToCompare.expected;
     }
   }
 
-  if(!result){
-    console.log('Subscription test failure information:');
-    console.log(`Expected to receive ${expected.length} events:`);
-    console.log(expected);
-    console.log(`Received ${received.length} events:`);
-    console.log(received);
-  }
-
   return result;
-}
-
-function compareData(receivedData: any, expectedData: any){
-  // console.log('///compareData')
-  // console.log('///receivedData', receivedData);
-  // console.log('///expectedData', expectedData);
-  return Object.keys(expectedData).every((key)=>{
-    return compareDataObject(receivedData[key], expectedData[key]);
-  })
-}
-
-function compareDataObject(receivedDataObject: any, expectedDataObject: any){
-  // console.log('///compareDataObject')
-  // console.log('///receivedDataObject', receivedDataObject);
-  // console.log('///expectedDataObject', expectedDataObject);
-  return Object.keys(expectedDataObject).every((key)=>{
-    // console.log('///key', key);
-    // console.log('//expectedDataObject[key]', expectedDataObject[key]);
-    // console.log('///receivedDataObject[key]', receivedDataObject[key])
-    // console.log('//isEqual', _.isEqual(expectedDataObject[key], receivedDataObject[key]));
-    return _.isEqual(expectedDataObject[key], receivedDataObject[key]);
-  })
 }
 
 export async function runInSequential(tasks: ((v: any) => Promise<any>)[]): Promise<any> {

@@ -5,7 +5,6 @@
       "orders": {
         "items": [
           {
-            "id": "4d5c3d22-4896-4095-8de0-a94048f4f77b",
             "status": "pending",
             "amount": 300,
             "date": "2018-07-12"

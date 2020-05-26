@@ -16,12 +16,17 @@ describe('api directives @model @key @connection @versioned', () => {
     // deleteProjectDir(projectDir);
   });
 
-  //function
+//   function
 //   it('function usage', async () => {
 //     await checksequential();
 //   })
 
-  //data access patterns
+// it('checkTest', async () => {
+//     await checkTest();
+// })
+
+
+//   data access patterns
   it('data-access-patterns patterns', async () => {
     const testresult = await testSchema(projectDir, 'data-access-patterns', 'patterns');
     expect(testresult).toBeTruthy();
@@ -29,6 +34,40 @@ describe('api directives @model @key @connection @versioned', () => {
 
 })
 
+
+async function checkTest(){
+    const s = 'a string';
+    const o = {
+        a: 'asdfas',
+        b: 2,
+        c: [
+            'asdfasfd',
+            'asfasdfas'
+        ],
+        d: true
+    };
+    const a = [
+        'asdfasfd',
+        'asfasdfas',
+        'asasdfas',
+        'asdfasfdasdf'
+    ]
+
+    console.log('type of s: ', typeof s);
+    console.log('type of o: ', typeof o);
+    console.log('type of a: ', typeof a);
+    console.log('type of null: ', typeof null);
+    console.log('type of undefined: ', typeof undefined);
+
+    console.log('Object.keys(a)', Object.keys(a))
+
+    Object.keys(a).forEach((k)=>{
+        console.log(`a[${k}] = ${a[k]}`);
+    })
+
+    console.log("a['0']", a['0']);
+    console.log("a[0]", a[0]);
+}
 
 async function checksequential(){
     const tasks = [];
