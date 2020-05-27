@@ -9,3 +9,5 @@ type Profile @model @auth(rules: [{allow: owner, provider: oidc, identityClaim: 
   id: ID!
   displayNAme: String!
 }
+
+##authUsingOidc

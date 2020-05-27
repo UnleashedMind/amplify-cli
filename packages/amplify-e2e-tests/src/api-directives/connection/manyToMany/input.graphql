@@ -22,3 +22,5 @@ type User @model {
   username: String!
   posts: [PostEditor] @connection(keyName: "byEditor", fields: ["id"])
 }
+
+##connection/manyToMany

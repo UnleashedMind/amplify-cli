@@ -1,3 +1,4 @@
+#change: changed "Admin" to "admin"
 type Employee @model {
   id: ID!
   email: String
@@ -8,6 +9,8 @@ type Employee @model {
   salary: String
     @auth(rules: [
       { allow: owner, ownerField: "username", operations: [read] },
-      { allow: groups, groups: ["Admin"], operations: [create, update, read] }
+      { allow: groups, groups: ["admin"], operations: [create, update, read] }
     ])
 }
+
+##fieldLevelAuth3

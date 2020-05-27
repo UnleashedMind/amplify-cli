@@ -3,3 +3,5 @@ type Post @model {
   title: String!
   tags: [String!]!
 }
+
+##model/usage1

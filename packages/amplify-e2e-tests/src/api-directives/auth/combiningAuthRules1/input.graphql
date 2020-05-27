@@ -9,3 +9,5 @@ type Post @model
   title: String
   owner: String
 }
+
+##combingAuthRules1

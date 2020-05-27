@@ -4,3 +4,5 @@ type Post @model @auth(rules: [{allow: groups, groupsField: "groups"}]) {
   title: String
   groups: [String]
 }
+
+##dynamiGroup1

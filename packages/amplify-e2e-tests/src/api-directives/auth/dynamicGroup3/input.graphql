@@ -1,3 +1,4 @@
+#change: changed "Admin" to "admin"
 type Draft @model
   @auth(rules: [
 
@@ -8,7 +9,7 @@ type Draft @model
     { allow: owner, ownerField: "editors", operations: [update] },
 
     # Admin users can access any operation.
-    { allow: groups, groups: ["Admin"] }
+    { allow: groups, groups: ["admin"] }
 
     # Each record may specify which groups may read them.
     { allow: groups, groupsField: "groupsCanAccess", operations: [read] }
@@ -20,3 +21,5 @@ type Draft @model
   editors: [String]!
   groupsCanAccess: [String]!
 }
+
+##dynamicGroup3

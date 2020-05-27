@@ -3,3 +3,5 @@ type Post @model @versioned {
   title: String!
   version: Int! # <- If not provided, it is added for you.
 }
+
+##versioned/usage

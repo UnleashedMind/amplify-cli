@@ -1,0 +1,13 @@
+{
+    "data": {
+      "createPost": {
+        "id": "1",
+        "title": "title1",
+        "metadata": {
+          "category": "comedy"
+        },
+        "createdAt": "<check-defined>",
+        "updatedAt": "<check-defined>"
+      }
+    }
+}

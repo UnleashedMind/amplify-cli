@@ -1,7 +1,14 @@
+#change: change "ForbiddenGroup" to "amdin"
+#error: InvalidDirectiveError:                                                                                                  
+#Per-field auth on the required field updatedAt is not supported with subscriptions.                                     
+#Either make the field optional, set auth on the object and not the field, or disable subscriptions for the object (setting level to off or public) 
+
 type Todo 
-  @model
+  @model(subscriptions: null)
 {
   id: ID! 
-  updatedAt: AWSDateTime! @auth(rules: [{ allow: groups, groups: ["ForbiddenGroup"] }])
+  updatedAt: AWSDateTime! @auth(rules: [{ allow: groups, groups: ["admin"] }])
   content: String! @auth(rules: [{ allow: owner, operations: [update] }])
 }
+
+##fieldLevelAuth6

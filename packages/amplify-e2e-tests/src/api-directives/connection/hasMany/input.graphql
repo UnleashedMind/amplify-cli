@@ -10,3 +10,5 @@ type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
   content: String!
   post: Post @connection(fields: ["postID"])
 }
+
+##connection/hasMany

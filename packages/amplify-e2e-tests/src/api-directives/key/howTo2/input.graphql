@@ -3,3 +3,5 @@ type Order @model @key(fields: ["customerEmail", "createdAt"]) {
   createdAt: String!
   orderId: ID!
 }
+
+#key/howTo2

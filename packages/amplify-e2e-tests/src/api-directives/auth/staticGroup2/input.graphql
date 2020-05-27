@@ -1,3 +1,4 @@
+#change: changed "Admin" to "admin"
 type Draft @model
   @auth(rules: [
 
@@ -8,7 +9,7 @@ type Draft @model
     { allow: owner, ownerField: "editors", operations: [update] },
 
     # Admin users can access any operation.
-    { allow: groups, groups: ["Admin"] }
+    { allow: groups, groups: ["admin"] }
   ]) {
   id: ID!
   title: String!
@@ -16,3 +17,5 @@ type Draft @model
   owner: String
   editors: [String]!
 }
+
+#staticGroup2

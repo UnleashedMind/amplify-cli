@@ -1,0 +1,11 @@
+query GetPost{
+    getPost(id: "1") {
+      id
+      title
+      metadata {
+        category
+      }
+      createdAt
+      updatedAt
+    }
+}

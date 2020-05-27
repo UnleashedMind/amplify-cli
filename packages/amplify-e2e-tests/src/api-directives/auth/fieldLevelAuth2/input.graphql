@@ -10,7 +10,9 @@ type User @model {
 type Post @model(queries: null) 
 {
   id: ID!
-  owner: String
+  owner: User @connection(name: "UserPosts")
   postname: String
   content: String
 }
+
+##fieldLevelAuth2

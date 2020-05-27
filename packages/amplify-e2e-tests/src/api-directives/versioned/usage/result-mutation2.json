@@ -1,0 +1,9 @@
+{
+    "data": {
+      "updatePost": {
+        "id": "1",
+        "title": "Conflict detection in the cloud is great!",
+        "version": 2
+      }
+    }
+}

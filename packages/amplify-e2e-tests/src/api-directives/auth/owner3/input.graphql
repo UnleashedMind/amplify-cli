@@ -6,3 +6,5 @@ type Todo @model
   updatedAt: AWSDateTime! 
   content: String!
 }
+
+##owner3

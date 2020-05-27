@@ -5,3 +5,5 @@ type Post @model @auth (rules: [{ allow: private }]) {
   secret: String
     @auth (rules: [{ allow: private, provider: iam, operations: [create, update] }])
 }
+
+##combiningAuthRules2

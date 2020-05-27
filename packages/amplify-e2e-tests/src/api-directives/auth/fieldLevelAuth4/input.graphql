@@ -1,7 +1,9 @@
 type Todo
   @model
 {
-  id: ID! 
-  updatedAt: AWSDateTime! 
+  id: ID!
+  updatedAt: AWSDateTime!
   content: String! @auth(rules: [{ allow: owner, operations: [update] }])
 }
+
+##fieldLevelAuth4

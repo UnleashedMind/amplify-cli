@@ -10,3 +10,5 @@ enum Category {
   comedy
   news
 }
+
+##model/genreates

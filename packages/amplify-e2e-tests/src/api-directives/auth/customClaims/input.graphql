@@ -10,3 +10,5 @@ type Post @model
   postname: String
   content: String
 }
+
+##customClaims

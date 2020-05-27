@@ -9,3 +9,5 @@ type Team @model {
   id: ID!
   name: String!
 }
+
+##connection/hasOne2

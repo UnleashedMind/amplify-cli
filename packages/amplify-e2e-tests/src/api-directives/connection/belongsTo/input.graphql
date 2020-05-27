@@ -9,3 +9,5 @@ type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
   postID: ID!
   content: String!
 }
+
+##connection/belongsTo
