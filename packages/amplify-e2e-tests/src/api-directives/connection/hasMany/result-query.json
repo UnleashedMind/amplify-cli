@@ -1,0 +1,16 @@
+{
+    "data": {
+      "getPost": {
+        "id": "a-post-id",
+        "title": "Post Title",
+        "comments": {
+          "items": [
+            {
+              "id": "a-comment-id",
+              "content": "A comment"
+            }
+          ]
+        }
+      }
+    }
+}

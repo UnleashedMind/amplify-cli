@@ -8,7 +8,6 @@ type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
   id: ID!
   postID: ID!
   content: String!
-  post: Post @connection(fields: ["postID"])
 }
 
 ##connection/hasMany

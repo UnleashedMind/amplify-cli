@@ -1,0 +1,45 @@
+{
+    "data": {
+      "getPost": {
+        "id": "P1",
+        "title": "Post 1",
+        "editors": {
+          "items": [
+            {
+              "editor": {
+                "username": "user1",
+                "posts": {
+                  "items": [
+                    {
+                      "post": {
+                        "title": "Post 1"
+                      }
+                    },
+                    {
+                      "post": {
+                        "title": "Post 2"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "editor": {
+                "username": "user2",
+                "posts": {
+                  "items": [
+                    {
+                      "post": {
+                        "title": "Post 1"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+}

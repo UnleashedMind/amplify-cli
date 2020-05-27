@@ -1,5 +1,5 @@
 mutation CreateProject {
-  createProject(input: { name: "New Project", teamID: "a-team-id" }) {
+  createProject(input: { id: "1", name: "New Project", teamID: "a-team-id" }) {
     id
     name
     team {

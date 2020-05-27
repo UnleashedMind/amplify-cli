@@ -1,0 +1,8 @@
+{
+    "data": {
+      "createComment": {
+        "id": "a-comment-id",
+        "content": "A comment"
+      }
+    }
+}

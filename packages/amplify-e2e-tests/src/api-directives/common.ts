@@ -22,7 +22,6 @@ import {
   getConfiguredAppsyncClientCognitoAuth,
 } from './authHelper';
 
-
 const GROUPNAME = 'admin';
 const USERNAME = 'user1';
 const PASSWORD = 'user1Password'
@@ -53,7 +52,6 @@ export async function runTest(projectDir: string, schemaDocDirPath: string) {
     apiKey
   );
 
-  await testCompiledSchema(projectDir, schemaDocDirPath);
   await testMutations(schemaDocDirPath, appSyncClient);
   await testQueries(schemaDocDirPath, appSyncClient);
 }
@@ -88,38 +86,9 @@ export async function runAutTest(projectDir: string, schemaDocDirPath: string) {
     awsconfig.aws_appsync_region,
     user
   );
-  await testCompiledSchema(projectDir, schemaDocDirPath);
   await testMutations(schemaDocDirPath, appSyncClient);
   await testQueries(schemaDocDirPath, appSyncClient);
   await testSubscriptions(schemaDocDirPath, appSyncClient);
-}
-
-
-
-export async function testCompiledSchema(projectDir: string, schemaDocDirPath: string) {
-  const docCompiledSchemaFilePath = path.join(schemaDocDirPath, 'generated.graphql');
-  if (fs.existsSync(docCompiledSchemaFilePath)) {
-    const backendApiDirPath = path.join(projectDir, 'amplify', 'backend', 'api');
-    const apiResDirName = fs.readdirSync(backendApiDirPath)[0];
-    const actualCompiledSchemaFilePath = path.join(backendApiDirPath, apiResDirName, 'build', 'schema.graphql');
-
-    const schemaInDoc = fs
-      .readFileSync(docCompiledSchemaFilePath)
-      .toString()
-      .trim();
-    const actualCompileSchema = fs
-      .readFileSync(actualCompiledSchemaFilePath)
-      .toString()
-      .trim();
-
-    testGqlCompiled(schemaInDoc, actualCompileSchema);
-  }
-}
-
-export async function testGqlCompiled(actualCompileSchema: string, schemaInDoc: string){
-  if (actualCompileSchema !== schemaInDoc) {
-    throw new Error('Mismatching compiled schema.');
-  }
 }
 
 export async function testMutations(schemaDocDirPath: string, appsyncClient: any) {

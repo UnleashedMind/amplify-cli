@@ -15,7 +15,6 @@ import {
 } from './authHelper';
 
 import {
-    testCompiledSchema,
     testMutations,
     testQueries
 } from './common';
@@ -53,8 +52,7 @@ export async function runAutTest(projectDir: string, schemaDocDirPath: string) {
       awsconfig.aws_appsync_region,
       user
     );
-  
-    await testCompiledSchema(projectDir, schemaDocDirPath);
+    
     await testMutations(schemaDocDirPath, appsyncClient);
     await testQueries(schemaDocDirPath, appsyncClient);
 }
