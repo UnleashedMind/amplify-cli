@@ -6,7 +6,7 @@
       id
       title
       tags
-      createdAt
-      updatedAt
+      createdOn
+      updatedOn
     }
 }
