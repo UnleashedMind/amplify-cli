@@ -1,0 +1,11 @@
+mutation CreateOrder(
+    $input: CreateOrderInput!
+    $condition: ModelOrderConditionInput
+  ) {
+    createOrder(input: $input, condition: $condition) {
+      customerEmail
+      createdAt
+      orderId
+      updatedAt
+    }
+}

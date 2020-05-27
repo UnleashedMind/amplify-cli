@@ -1,0 +1,14 @@
+ mutation CreateItem{
+    createItem(input: {
+    	orderId: "order1",
+        status: UNKNOWN,
+        createdAt: "2019-01-04T01:05:49.129Z",
+        name: "item4"
+  }) {
+      orderId
+      status
+      createdAt
+      name
+      updatedAt
+    }
+}
