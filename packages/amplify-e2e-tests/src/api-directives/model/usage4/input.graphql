@@ -1,0 +1,9 @@
+type Post @model {
+  id: ID!
+  title: String!
+  tags: [String!]!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+##model/usage4

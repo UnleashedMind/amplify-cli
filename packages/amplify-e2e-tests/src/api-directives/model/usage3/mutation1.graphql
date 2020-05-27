@@ -5,9 +5,7 @@ mutation CreatePost(
     createPost(input: $input, condition: $condition) {
       id
       title
-      metadata {
-        category
-      }
+      tags
       createdAt
       updatedAt
     }

@@ -1,7 +1,7 @@
-type Post @model {
+type Post @model(timestamps:{createdAt: "createdOn", updatedAt: "updatedOn"}) {
   id: ID!
   title: String!
   tags: [String!]!
-  createdAt: AWSDateTime!
-  updatedAt: AWSDateTime!
 }
+
+##model/usage3

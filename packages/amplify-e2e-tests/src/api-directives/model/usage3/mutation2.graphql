@@ -1,13 +1,11 @@
-mutation UpdatePost(
+  mutation UpdatePost(
     $input: UpdatePostInput!
     $condition: ModelPostConditionInput
   ) {
     updatePost(input: $input, condition: $condition) {
       id
       title
-      metadata {
-        category
-      }
+      tags
       createdAt
       updatedAt
     }

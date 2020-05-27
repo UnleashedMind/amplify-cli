@@ -1,0 +1,13 @@
+{
+    "data": {
+      "getPost": {
+        "id": "1",
+        "title": "title1-updated",
+        "tags": [
+          "tag1-updated"
+        ],
+        "createdAt": "2020-05-27T01:05:49.129Z",
+        "updatedAt": "2020-05-29T01:05:49.129Z"
+      }
+    }
+}

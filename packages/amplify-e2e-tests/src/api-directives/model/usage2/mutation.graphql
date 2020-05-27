@@ -1,0 +1,13 @@
+mutation CreatePost {
+    createPost(input: {
+      id: "1",
+      title: "title1",
+      tags: ["tag1"]
+    }) {
+      id
+      title
+      tags
+      createdAt
+      updatedAt
+    }
+}
