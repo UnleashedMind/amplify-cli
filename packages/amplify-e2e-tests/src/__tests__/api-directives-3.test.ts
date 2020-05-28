@@ -1,7 +1,7 @@
 import { initJSProjectWithProfile, deleteProject, createNewProjectDir, deleteProjectDir } from 'amplify-e2e-core';
 import { testSchema } from '../api-directives';
 
-describe('api directives @model @key @connection @versioned', () => {
+describe('api directives @function @searchable @prediction and data access patterns', () => {
   let projectDir: string;
 
   beforeEach(async () => {
