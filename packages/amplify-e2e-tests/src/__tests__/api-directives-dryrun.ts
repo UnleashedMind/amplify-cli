@@ -64,20 +64,20 @@ describe('api directives tryrun', () => {
   //   expect(testresult).toBeTruthy();
   // });
 
-  // it('auth dynamicGroup1', async () => {
-  //   const testresult = await testSchema(projectDir, 'auth', 'dynamicGroup1');
-  //   expect(testresult).toBeTruthy();
-  // });
+  it('auth dynamicGroup1', async () => {
+    const testresult = await testSchema(projectDir, 'auth', 'dynamicGroup1');
+    expect(testresult).toBeTruthy();
+  });
 
   // it('auth dynamicGroup2', async () => {
   //   const testresult = await testSchema(projectDir, 'auth', 'dynamicGroup2');
   //   expect(testresult).toBeTruthy();
   // });
 
-  it('auth dynamicGroup3', async () => {
-    const testresult = await testSchema(projectDir, 'auth', 'dynamicGroup3');
-    expect(testresult).toBeTruthy();
-  });
+  // it('auth dynamicGroup3', async () => {
+  //   const testresult = await testSchema(projectDir, 'auth', 'dynamicGroup3');
+  //   expect(testresult).toBeTruthy();
+  // });
 
   // it('auth public1', async () => {
   //   const testresult = await testSchema(projectDir, 'auth', 'public1');

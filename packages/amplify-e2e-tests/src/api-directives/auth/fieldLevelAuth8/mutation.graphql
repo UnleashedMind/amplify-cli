@@ -8,6 +8,7 @@ mutation {
     address: "123 First Ave"
     ssn: "392-95-2716"
   }){
+    id
     name
     address
     ssn
