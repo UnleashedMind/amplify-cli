@@ -1,0 +1,10 @@
+{
+    "data": {
+      "createDraft": {
+        "id": "1",
+        "groupsCanAccess": [
+          "BizDev"
+        ]
+      }
+    }
+}

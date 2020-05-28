@@ -1,0 +1,11 @@
+{
+    "data": {
+      "createPost": {
+        "id": "1",
+        "title": "title1",
+        "createdAt": "<check-defined>",
+        "updatedAt": "<check-defined>",
+        "owner": "user1"
+      }
+    }
+  }

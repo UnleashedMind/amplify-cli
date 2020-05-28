@@ -1,0 +1,13 @@
+#extra
+query ListDrafts {
+    listDrafts(filter: null, limit: null, nextToken: null) {
+      items {
+        id
+        title
+        content
+        owner
+        editors
+      }
+      nextToken
+    }
+}

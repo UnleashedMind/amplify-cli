@@ -1,0 +1,15 @@
+#change: removed id from the response so result can be verified
+#3
+mutation CreateDraft {
+  createDraft(
+    input: {
+      title: "A new draft",
+      editors: [],
+      owner: null
+    }
+  ) {
+    title
+    owner
+    editors
+  }
+}

@@ -71,10 +71,10 @@ export async function runTest(projectDir: string, schemaDocDirPath: string) {
 //the actual received query responses will be checked against the responses in the document. 
 
 export async function runAutTest(projectDir: string, schemaDocDirPath: string) {
-  const schemaFilePath = path.join(schemaDocDirPath, 'input.graphql');
-  await addApiWithCognitoUserPoolAuthType(projectDir, schemaFilePath);
-  await updateAuthAddFirstUserGroup(projectDir, GROUPNAME);
-  await amplifyPushWithoutCodeGen(projectDir);
+  // const schemaFilePath = path.join(schemaDocDirPath, 'input.graphql');
+  // await addApiWithCognitoUserPoolAuthType(projectDir, schemaFilePath);
+  // await updateAuthAddFirstUserGroup(projectDir, GROUPNAME);
+  // await amplifyPushWithoutCodeGen(projectDir);
 
   const userPoolId = getUserPoolId(projectDir);
   await setupUser(userPoolId, USERNAME, PASSWORD, GROUPNAME);

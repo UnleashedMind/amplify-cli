@@ -1,5 +1,7 @@
+#change: add id: "1" so result can be verified
 mutation CreateDraft {
   createDraft(input: {
+    id: "1",
     title: "A new draft",
     editors: [],
     groupsCanAccess: ["BizDev"]

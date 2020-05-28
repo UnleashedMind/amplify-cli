@@ -1,0 +1,10 @@
+#error: add create in the operations
+
+type Todo @model
+  @auth(rules: [{ allow: owner, operations: [create, read] }]) {
+  id: ID!
+  updatedAt: AWSDateTime! 
+  content: String!
+}
+
+##owner3

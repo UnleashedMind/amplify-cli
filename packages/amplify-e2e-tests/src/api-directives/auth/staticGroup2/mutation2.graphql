@@ -1,0 +1,14 @@
+ mutation UpdateDraft(
+    $input: UpdateDraftInput!
+    $condition: ModelDraftConditionInput
+  ) {
+    updateDraft(input: $input, condition: $condition) {
+      id
+      title
+      content
+      owner
+      editors
+      createdAt
+      updatedAt
+    }
+  }

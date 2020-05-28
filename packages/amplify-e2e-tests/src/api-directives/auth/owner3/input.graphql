@@ -1,10 +1,7 @@
-#error: add create in the operations
-
-type Todo @model
-  @auth(rules: [{ allow: owner, operations: [create, read] }]) {
+# owner identity specified explicitly on every object
+type Post @model @auth(rules: [{ allow: owner, operations: [create] }]) {
   id: ID!
-  updatedAt: AWSDateTime! 
-  content: String!
+  title: String!
 }
 
-##owner3
+##auth/owner3

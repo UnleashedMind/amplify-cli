@@ -1,0 +1,11 @@
+{
+    "data": {
+      "createSalary": {
+        "id": "1",
+        "wage": 10000,
+        "currency": "usd",
+        "createdAt": "<check-defined>",
+        "updatedAt": "<check-defined>"
+      }
+    }
+}
