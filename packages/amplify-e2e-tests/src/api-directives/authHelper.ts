@@ -86,12 +86,24 @@ export function getConfiguredAppsyncClientAPIKeyAuth(url: string, region: string
         url,
         region,
         disableOffline: true,
-        offlineConfig: {
-          keyPrefix: 'userPools',
-        },
         auth: {
           type: AUTH_TYPE.API_KEY,
           apiKey
+        },
+    });
+}
+
+export function getConfiguredAppsyncClientIAMAuth(url: string, region: string): any{
+    return new AWSAppSyncClient({
+        url,
+        region,
+        disableOffline: true,
+        auth: {
+          type: AUTH_TYPE.AWS_IAM,
+          credentials: {
+            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+          }
         },
     });
 }
