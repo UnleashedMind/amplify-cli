@@ -39,6 +39,21 @@ describe('api directives @auth', () => {
     expect(testresult).toBeTruthy();
   });
 
+  it('auth owner6', async () => {
+    const testresult = await testSchema(projectDir, 'auth', 'owner6');
+    expect(testresult).toBeTruthy();
+  });
+
+  it('auth owner7', async () => {
+    const testresult = await testSchema(projectDir, 'auth', 'owner7');
+    expect(testresult).toBeTruthy();
+  });
+
+  it('auth ownerMultiAuthRules', async () => {
+    const testresult = await testSchema(projectDir, 'auth', 'ownerMultiAuthRules');
+    expect(testresult).toBeTruthy();
+  });
+
   it('auth staticGroup1', async () => {
     const testresult = await testSchema(projectDir, 'auth', 'staticGroup1');
     expect(testresult).toBeTruthy();
@@ -91,6 +106,11 @@ describe('api directives @auth', () => {
 
   it('auth combiningAuthRules2', async () => {
     const testresult = await testSchema(projectDir, 'auth', 'combiningAuthRules2');
+    expect(testresult).toBeTruthy();
+  });
+
+  it('auth combiningAuthRules3', async () => {
+    const testresult = await testSchema(projectDir, 'auth', 'combiningAuthRules3');
     expect(testresult).toBeTruthy();
   });
 
@@ -153,7 +173,6 @@ describe('api directives @auth', () => {
     const testresult = await testSchema(projectDir, 'auth', 'fieldLevelAuth8');
     expect(testresult).toBeTruthy();
   });
-
 
   it('auth generatesOwner', async () => {
     const testresult = await testSchema(projectDir, 'auth', 'generatesOwner');

@@ -109,7 +109,7 @@ export async function runMultiAutTest(projectDir: string, schemaDocDirPath: stri
     awsconfig.aws_appsync_region,
     user
   );
-  
+
   await testMutations(schemaDocDirPath, appSyncClient);
   await testQueries(schemaDocDirPath, appSyncClient);
   await testSubscriptions(schemaDocDirPath, appSyncClient);
@@ -382,7 +382,7 @@ function checkError(received: any, expected: any): boolean{
   return runCompare(queue);
 }
 
-const MAX_DEPTH = 10;
+const MAX_DEPTH = 50;
 function runCompare(queue: {received: any, expected: any, depth: number}[]): boolean{
   let result = true;
 
@@ -407,6 +407,8 @@ function runCompare(queue: {received: any, expected: any, depth: number}[]): boo
       }else{
         result = false;
       }
+    }else if(itemToCompare.expected === "<check-defined>"){
+      result = itemToCompare.received !== null && itemToCompare.received !== undefined;
     }else{
       result = itemToCompare.received === itemToCompare.expected;
     }
