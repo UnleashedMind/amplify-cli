@@ -1,4 +1,7 @@
-type Post @model
+#error: two @model on type Post
+#change: removed on @model
+
+type Post
 @model
 @auth(rules: [
 	{allow: owner, identityClaim: "user_id"},

@@ -1,4 +1,4 @@
- mutation CreateUser {
+mutation CreateUser {
     createUser(input: {
       id: "1",
       username: "user1"
@@ -6,4 +6,4 @@
       id
       username
     }
-  }
+}

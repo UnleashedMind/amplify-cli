@@ -94,8 +94,13 @@ describe('api directives @auth', () => {
     expect(testresult).toBeTruthy();
   });
 
-  it('auth authUsingOide', async () => {
-    const testresult = await testSchema(projectDir, 'auth', 'authUsingOide');
+  it('auth private2', async () => {
+    const testresult = await testSchema(projectDir, 'auth', 'private2');
+    expect(testresult).toBeTruthy();
+  });
+
+  it('auth authUsingOidc', async () => {
+    const testresult = await testSchema(projectDir, 'auth', 'authUsingOidc');
     expect(testresult).toBeTruthy();
   });
 

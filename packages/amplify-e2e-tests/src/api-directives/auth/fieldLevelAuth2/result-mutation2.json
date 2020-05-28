@@ -1,0 +1,13 @@
+{
+    "data": {
+      "createPost": {
+        "id": "1",
+        "owner": {
+          "id": "1",
+          "username": "user1"
+        },
+        "postname": "post1",
+        "content": "post1 content"
+      }
+    }
+}

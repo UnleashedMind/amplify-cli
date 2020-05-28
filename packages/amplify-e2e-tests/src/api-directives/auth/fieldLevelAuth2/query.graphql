@@ -2,6 +2,11 @@
     getUser(id: "1") {
       id
       username
-      posts
+      posts {
+        items {
+          id
+          postname
+        }
+      }
     }
 }

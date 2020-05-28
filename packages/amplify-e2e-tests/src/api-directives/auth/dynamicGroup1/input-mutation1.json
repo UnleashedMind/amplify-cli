@@ -2,6 +2,6 @@
   "input": {
     "id": "1",
     "title": "title1",
-    "group": ["admin"]
+    "groups": ["admin"]
   }
 }
