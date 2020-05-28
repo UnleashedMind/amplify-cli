@@ -8,9 +8,9 @@ describe('api-check', () => {
   const authowner5ProjectDir = '/private/tmp/amplify-e2e-tests/apidirective3_610fc1bf_5cc74b7e'
   const authSubscriptions1ProjectDir = '/private/tmp/amplify-e2e-tests/apidirective3_610fc1bf_dae815e5'
   beforeEach(async () => {
-    // projectDir = await createNewProjectDir('authowner5');
-    // await initJSProjectWithProfile(projectDir, {});
-    projectDir = '/private/tmp/amplify-e2e-tests/authowner5'
+    projectDir = await createNewProjectDir('fieldLevelAuth8');
+    await initJSProjectWithProfile(projectDir, {});
+    // projectDir = '/private/tmp/amplify-e2e-tests/authowner5'
   });
 
   afterEach(async () => {
@@ -25,10 +25,10 @@ describe('api-check', () => {
 //     expect(testresult).toBeTruthy();
 //   });
 
-  it('auth owner5', async () => {
-    const testresult = await testSchema(projectDir, 'auth', 'owner5');
-    expect(testresult).toBeTruthy();
-  });
+  // it('auth owner5', async () => {
+  //   const testresult = await testSchema(projectDir, 'auth', 'owner5');
+  //   expect(testresult).toBeTruthy();
+  // });
 
 //   it('auth owner3', async () => {
 //     const testresult = await testSchema(projectDir, 'auth', 'owner3');
@@ -155,10 +155,10 @@ describe('api-check', () => {
   //   expect(testresult).toBeTruthy();
   // });
   
-  // it('auth fieldLevelAuth8', async () => {
-  //   const testresult = await testSchema(projectDir, 'auth', 'fieldLevelAuth8');
-  //   expect(testresult).toBeTruthy();
-  // });
+  it('auth fieldLevelAuth8', async () => {
+    const testresult = await testSchema(projectDir, 'auth', 'fieldLevelAuth8');
+    expect(testresult).toBeTruthy();
+  });
 
 //   it('auth generatesOwner', async () => {
 //     const testresult = await testSchema(projectDir, 'auth', 'generatesOwner');

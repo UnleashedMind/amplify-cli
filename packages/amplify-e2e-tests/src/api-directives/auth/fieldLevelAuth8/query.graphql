@@ -1,0 +1,9 @@
+ query GetEmployee {
+    getEmployee(id: "1") {
+      id
+      name
+      address
+      ssn
+      owner
+    }
+}

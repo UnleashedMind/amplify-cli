@@ -1,0 +1,9 @@
+{
+    "data": {
+      "getUser": {
+        "id": "1",
+        "username": "user1",
+        "ssn": "888-88-8888"
+      }
+    }
+}

@@ -1,0 +1,9 @@
+type Post @model @auth (rules: [{ allow: private }]) {
+  id: ID!
+  title: String
+  owner: String
+  secret: String
+    @auth (rules: [{ allow: private, provider: iam, operations: [create, update] }])
+}
+
+##combiningAuthRules3

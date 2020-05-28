@@ -1,8 +1,0 @@
-#change: changed "Admin" to "admin"
-type Post @model @auth(rules: [{allow: groups, groups: ["admin"]}]) {
-  id: ID!
-  title: String!
-  groups: String
-}
-
-##generatesStaticGroup

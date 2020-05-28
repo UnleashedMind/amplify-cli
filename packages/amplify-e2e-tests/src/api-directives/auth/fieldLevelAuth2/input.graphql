@@ -1,0 +1,20 @@
+#change: added type Post definition which is omitted in the doc
+#error: connection field auth does not work as described, when query user, posts are always null
+#change: quoted out connection field auth to make query work
+type User @model {
+  id: ID!
+  username: String
+  posts: [Post]
+    @connection(name: "UserPosts")
+    #@auth(rules: [{ allow: owner, ownerField: "username" }])
+}
+
+type Post @model(queries: null) 
+{
+  id: ID!
+  owner: User @connection(name: "UserPosts")
+  postname: String
+  content: String
+}
+
+##fieldLevelAuth2

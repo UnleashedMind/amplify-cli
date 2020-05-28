@@ -1,0 +1,9 @@
+{
+    "data": {
+      "getEmployee": {
+        "id": "1",
+        "username": "user1",
+        "salary": "10000"
+      }
+    }
+}

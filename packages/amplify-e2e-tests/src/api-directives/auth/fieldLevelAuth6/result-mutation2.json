@@ -1,0 +1,9 @@
+{
+    "data": {
+      "updateTodo": {
+        "id": "1",
+        "owner": "user1",
+        "content": "todo1 content updated"
+      }
+    }
+  }

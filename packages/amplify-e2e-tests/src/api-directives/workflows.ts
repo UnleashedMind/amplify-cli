@@ -299,6 +299,54 @@ export function addApiWithAPIKeyAuthType(projectDir: string, schemaFilePath: str
   });
 }
 
+
+export function addApiWithAPIKeyCognitoUserPoolIAMAuthTypes(projectDir: string, schemaFilePath: string) {
+  return new Promise((resolve, reject) => {
+    spawn(getCLIPath(), ['add', 'api'], { cwd: projectDir, stripColors: true })
+      .wait('Please select from one of the below mentioned services:')
+      .sendCarriageReturn()
+      .wait('Provide API name:')
+      .sendCarriageReturn()
+      .wait('Choose the default authorization type for the API')
+      .sendCarriageReturn()
+      .wait('Enter a description for the API key')
+      .sendCarriageReturn()
+      .wait('After how many days from now the API key should expire.')
+      .sendCarriageReturn()
+      .wait('Do you want to configure advanced settings for the GraphQL API')
+      .send(KEY_DOWN_ARROW)//Yes
+      .sendCarriageReturn()
+      .wait('Configure additional auth types')
+      .send('y')
+      .sendCarriageReturn()
+      .wait('Choose the additional authorization types you want to configure for the API')
+      .send(' ')//Cognito User Pool
+      .send(KEY_DOWN_ARROW)
+      .send(' ')//IAM
+      .sendCarriageReturn()
+      .wait('Do you want to use the default authentication and security configuration')
+      .sendCarriageReturn()
+      .wait('How do you want users to be able to sign in')
+      .sendCarriageReturn()
+      .wait('Do you want to configure advanced settings?')
+      .sendCarriageReturn()//No, auth configure is done
+      .wait('Configure conflict detection?')
+      .sendCarriageReturn()//No
+      .wait('Do you have an annotated GraphQL schema?')
+      .sendLine('y')
+      .wait('Provide your schema file path:')
+      .sendLine(schemaFilePath)
+      .wait('"amplify publish" will build all your local backend and frontend resources')
+      .run((err: Error) => {
+        if (!err) {
+          resolve();
+        } else {
+          reject(err);
+        }
+      });
+  });
+}
+
 //checked
 export function addApiWithCognitoUserPoolAuthType(projectDir: string, schemaFilePath: string) {
   return new Promise((resolve, reject) => {

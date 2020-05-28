@@ -1,0 +1,11 @@
+mutation UpdateTodo {
+    updateTodo(input: {
+      id: "1",
+      owner: "user1",
+      content: "todo1 content updated"
+    }) {
+      id
+      owner
+      content
+    }
+}
