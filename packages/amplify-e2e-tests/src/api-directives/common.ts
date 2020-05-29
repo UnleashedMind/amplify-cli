@@ -2,7 +2,6 @@ import path from 'path';
 import fs from 'fs-extra';
 import _ from 'lodash';
 import util from 'util';
-import sequential from 'promise-sequential';
 import gql from 'graphql-tag';
 import { readJsonFile } from 'amplify-e2e-core';
 import {
@@ -27,19 +26,6 @@ const GROUPNAME = 'admin';
 const USERNAME = 'user1';
 const PASSWORD = 'user1Password';
 
-//The following runTest method runs the common test pattern schemas in the document.
-//It sets up the GraphQL API with "API key" as the default authorization type.
-//It does not test schemas in the @auth section.
-//It does not test subscriptions.
-//It carries out the following steps in sequence:
-//Add the GraphQL API with "API key" as the default authorization type.
-//Run `amplify push` to create the GraphQL API resouces.
-//Configure Amplify of the Amplify JS library, its API module will be used for mutations and queries
-//Send the mutations, and if the corresponding mutation responses are present in the directory,
-//the actual received mutation responses will be checked against the responses in the document.
-//Send the queries, and if the corresponding query responses are present in the directory,
-//the actual received query responses will be checked against the responses in the document.
-
 export async function runTest(projectDir: string, schemaDocDirPath: string) {
   const schemaFilePath = path.join(schemaDocDirPath, 'input.graphql');
   await addApiWithAPIKeyAuthType(projectDir, schemaFilePath);
@@ -52,20 +38,6 @@ export async function runTest(projectDir: string, schemaDocDirPath: string) {
   await testMutations(schemaDocDirPath, appSyncClient);
   await testQueries(schemaDocDirPath, appSyncClient);
 }
-
-//The following runTest method runs the common test pattern for schemas in the @auth section of the document.
-//It does not test subscriptions. Subscription tests are handled individually in the schema doc directory.
-//It carries out the following steps in sequence:
-//Add the GraphQL API with "Amazon Cognito User Pool" as the default authorization type.
-//Update the auth to create the "admin" Cognito User Pool user group
-//Run `amplify push` to create the GraphQL API and the auth resources.
-//Create "user1" in the User Pool and Add "user1" to the "admin" group.
-//Configure Amplify of the Amplify JS library, its Auth module will be used to sign in user, and its API module will be used for mutations and queries
-//Sign in "user1" with Ampify js library's Auth module
-//Send the mutations, and if the corresponding mutation responses are present in the directory,
-//the actual received mutation responses will be checked against the responses in the document.
-//Send the queries, and if the corresponding query responses are present in the directory,
-//the actual received query responses will be checked against the responses in the document.
 
 export async function runAutTest(projectDir: string, schemaDocDirPath: string) {
   const schemaFilePath = path.join(schemaDocDirPath, 'input.graphql');
