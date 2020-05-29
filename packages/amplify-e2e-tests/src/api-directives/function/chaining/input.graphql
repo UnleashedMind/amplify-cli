@@ -1,0 +1,12 @@
+#error: when type Mutation is the only type in the schema, the following error is received:
+#Resource Name: hcst2d2aj5bzfit67twczmvgkqGraphQLSchema (AWS::AppSync::GraphQLSchema)
+#Event Type: create
+#Reason: Schema Creation Status is FAILED with details: Found 1 problem(s) with the schema:
+#There is no top level schema object defined.
+#Changed Mutation to Query
+#change: replace the dummy "worker-function" function name with  "<function1-name>" placeholder, the test will replace it with the actual function name
+#change: replace the dummy "audit-function" function name with  "<function2-name>" placeholder, the test will replace it with the actual function name
+
+type Query {
+  doSomeWork(msg: String): String @function(name: "<function1-name>-${env}") @function(name: "<function2-name>-${env}")
+}

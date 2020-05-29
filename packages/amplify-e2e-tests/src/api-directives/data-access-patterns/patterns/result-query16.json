@@ -1,0 +1,13 @@
+{
+  "data": {
+    "listInventorys": {
+      "items": [
+        {
+          "productID": "yeezyboost",
+          "warehouseID": "1",
+          "inventoryAmount": 300
+        }
+      ]
+    }
+  }
+}

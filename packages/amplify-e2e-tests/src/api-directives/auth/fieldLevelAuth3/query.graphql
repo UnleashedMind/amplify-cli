@@ -1,0 +1,7 @@
+query GetEmployee {
+  getEmployee(id: "1") {
+    id
+    username
+    salary
+  }
+}

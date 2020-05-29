@@ -1,0 +1,12 @@
+{
+  "data": {
+    "repsByPeriodAndTotal": {
+      "items": [
+        {
+          "id": "dabit",
+          "orderTotal": 400000
+        }
+      ]
+    }
+  }
+}

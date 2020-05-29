@@ -1,0 +1,11 @@
+mutation CreateDraft($input: CreateDraftInput!, $condition: ModelDraftConditionInput) {
+  createDraft(input: $input, condition: $condition) {
+    id
+    title
+    content
+    owner
+    editors
+    createdAt
+    updatedAt
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "data": {
+    "getCustomer": {
+      "ordersByDate": {
+        "items": [
+          {
+            "amount": 300,
+            "productID": "yeezyboost"
+          }
+        ]
+      }
+    }
+  }
+}

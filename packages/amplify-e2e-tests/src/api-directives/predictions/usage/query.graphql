@@ -1,0 +1,10 @@
+#change: remove redaudant ($input: SpeakTranslatedImageTextInput!)
+query SpeakTranslatedImageText {
+  speakTranslatedImageText(
+    input: {
+      identifyText: { key: "myimage.jpg" }
+      translateText: { sourceLanguage: "en", targetLanguage: "es" }
+      convertTextToSpeech: { voiceID: "Conchita" }
+    }
+  )
+}

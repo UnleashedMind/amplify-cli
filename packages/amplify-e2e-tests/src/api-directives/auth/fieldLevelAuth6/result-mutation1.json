@@ -1,0 +1,9 @@
+{
+  "data": {
+    "createTodo": {
+      "id": "1",
+      "owner": "user1",
+      "content": "todo1 content"
+    }
+  }
+}

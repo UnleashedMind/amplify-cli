@@ -1,0 +1,8 @@
+{
+  "data": {
+    "createDraft": {
+      "id": "2",
+      "groupsCanAccess": ["Marketing"]
+    }
+  }
+}

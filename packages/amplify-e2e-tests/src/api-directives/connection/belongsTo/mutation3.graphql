@@ -1,0 +1,6 @@
+mutation CreateCommentOnPost2 {
+  createComment(input: { id: "a-comment-id-2", content: "A comment #2", postID: "a-post-id" }) {
+    id
+    content
+  }
+}

@@ -1,0 +1,17 @@
+## 12. Get orders by account representative and date:
+
+#As can be seen in the AccountRepresentative model this connection uses the `byRepresentativebyDate` field on the `Order` model to create the connection needed. The query needed would look like this:
+
+query getOrdersForAccountRepresentative($representativeId: ID!) {
+  getAccountRepresentative(id: $representativeId) {
+    id
+    orders(date: { between: ["2010-01-22", "2020-10-11"] }) {
+      items {
+        id
+        status
+        amount
+        date
+      }
+    }
+  }
+}

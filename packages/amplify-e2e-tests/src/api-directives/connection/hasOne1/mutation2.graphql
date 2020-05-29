@@ -1,0 +1,14 @@
+mutation CreateProject {
+  createProject(input: { id: "1", name: "project1", projectTeamId: "1" }) {
+    id
+    name
+    team {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}

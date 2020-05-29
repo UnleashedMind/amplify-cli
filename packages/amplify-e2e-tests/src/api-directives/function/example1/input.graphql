@@ -1,0 +1,13 @@
+#change: replaced "GraphQLResolverFunction" with the "<function-name>" placeholder, the test will replace it with the actual function name
+type Query {
+  posts: [Post] @function(name: "<function-name>-${env}")
+}
+type Post {
+  id: ID!
+  title: String!
+  comments: [Comment] @function(name: "<function-name>-${env}")
+}
+type Comment {
+  postId: ID!
+  content: String
+}

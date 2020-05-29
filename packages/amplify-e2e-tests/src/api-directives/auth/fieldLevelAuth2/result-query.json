@@ -1,0 +1,16 @@
+{
+  "data": {
+    "getUser": {
+      "id": "1",
+      "username": "user1",
+      "posts": {
+        "items": [
+          {
+            "id": "1",
+            "postname": "post1"
+          }
+        ]
+      }
+    }
+  }
+}

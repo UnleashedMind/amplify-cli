@@ -1,0 +1,15 @@
+{
+  "data": {
+    "getAccountRepresentative": {
+      "customers": {
+        "items": [
+          {
+            "id": "jennifer_thomas",
+            "name": "Jennifer Thomas",
+            "phoneNumber": "+16015555555"
+          }
+        ]
+      }
+    }
+  }
+}

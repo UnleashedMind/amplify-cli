@@ -1,0 +1,17 @@
+## 8. Find all employees working in a given warehouse:
+#This needs a one to many relationship from warehouses to employees. As can be seen from the @connection in the `Warehouse` model, this connection uses the `byWarehouse` key on the `Employee` model. The relevant query would look like this:
+
+query getWarehouse($warehouseID: ID!) {
+  getWarehouse(id: $warehouseID) {
+    id
+    employees {
+      items {
+        id
+        name
+        startDate
+        phoneNumber
+        jobTitle
+      }
+    }
+  }
+}

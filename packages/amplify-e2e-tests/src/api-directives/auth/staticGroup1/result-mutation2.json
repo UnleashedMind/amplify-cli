@@ -1,0 +1,11 @@
+{
+  "data": {
+    "updateSalary": {
+      "id": "1",
+      "wage": 12000,
+      "currency": "usd",
+      "createdAt": "<check-defined>",
+      "updatedAt": "<check-defined>"
+    }
+  }
+}

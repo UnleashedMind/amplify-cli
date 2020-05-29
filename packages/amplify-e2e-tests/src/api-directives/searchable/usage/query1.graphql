@@ -1,0 +1,9 @@
+#error: add "s" for searchPosts
+query SearchPosts {
+  searchPosts(filter: { title: { match: "Stream" } }) {
+    items {
+      id
+      title
+    }
+  }
+}

@@ -1,0 +1,4 @@
+#extra
+query Echo {
+  echo(msg: "query message echoed from different region.")
+}

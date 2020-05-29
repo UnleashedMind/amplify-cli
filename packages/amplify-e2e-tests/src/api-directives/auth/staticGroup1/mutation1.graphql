@@ -1,0 +1,9 @@
+mutation CreateSalary($input: CreateSalaryInput!, $condition: ModelSalaryConditionInput) {
+  createSalary(input: $input, condition: $condition) {
+    id
+    wage
+    currency
+    createdAt
+    updatedAt
+  }
+}

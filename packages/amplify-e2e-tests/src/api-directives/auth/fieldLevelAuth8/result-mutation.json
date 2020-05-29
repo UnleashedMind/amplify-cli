@@ -1,0 +1,10 @@
+{
+  "data": {
+    "createEmployee": {
+      "id": "1",
+      "name": "Nadia",
+      "address": "123 First Ave",
+      "ssn": null
+    }
+  }
+}

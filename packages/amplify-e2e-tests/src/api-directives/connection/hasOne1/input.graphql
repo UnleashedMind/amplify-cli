@@ -1,0 +1,12 @@
+type Project @model {
+  id: ID!
+  name: String
+  team: Team @connection
+}
+
+type Team @model {
+  id: ID!
+  name: String!
+}
+
+##connection/hasOne1

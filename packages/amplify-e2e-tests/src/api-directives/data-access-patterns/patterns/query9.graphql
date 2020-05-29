@@ -1,0 +1,16 @@
+## 9. Get all items on order for a given product:
+#This access-pattern would use a one-to-many relation from products to orders. With this query we can get all orders of a given product:
+
+query getProductOrders($productID: ID!) {
+  getProduct(id: $productID) {
+    id
+    orders {
+      items {
+        id
+        status
+        amount
+        date
+      }
+    }
+  }
+}
