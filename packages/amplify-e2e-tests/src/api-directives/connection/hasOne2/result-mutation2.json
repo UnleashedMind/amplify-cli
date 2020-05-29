@@ -1,0 +1,12 @@
+{
+  "data": {
+    "createProject": {
+      "id": "1",
+      "name": "New Project",
+      "team": {
+        "id": "a-team-id",
+        "name": "a-team"
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+## 14. Get all employees with a given job title:
+#Using the `byTitle` `@key` makes this access pattern quite easy.
+
+query employeesByJobTitle {
+  employeesByJobTitle(jobTitle: "Manager") {
+    items {
+      id
+      name
+      phoneNumber
+      jobTitle
+    }
+  }
+}

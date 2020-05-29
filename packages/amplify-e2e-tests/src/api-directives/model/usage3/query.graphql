@@ -1,0 +1,9 @@
+query GetPost {
+  getPost(id: "1") {
+    id
+    title
+    tags
+    createdOn
+    updatedOn
+  }
+}

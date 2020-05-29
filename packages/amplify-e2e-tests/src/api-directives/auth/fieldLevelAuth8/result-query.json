@@ -1,0 +1,11 @@
+{
+  "data": {
+    "getEmployee": {
+      "id": "1",
+      "name": "Nadia",
+      "address": "123 First Ave",
+      "ssn": "392-95-2716",
+      "owner": "user1"
+    }
+  }
+}

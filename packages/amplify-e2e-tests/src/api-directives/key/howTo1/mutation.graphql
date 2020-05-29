@@ -1,0 +1,8 @@
+mutation CreateCustomer($input: CreateCustomerInput!, $condition: ModelCustomerConditionInput) {
+  createCustomer(input: $input, condition: $condition) {
+    email
+    username
+    createdAt
+    updatedAt
+  }
+}

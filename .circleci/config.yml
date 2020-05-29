@@ -769,6 +769,27 @@ jobs:
           when: always
       - store_artifacts:
           path: ../uitest_android_results
+  api-directives-1-amplify_e2e_tests:
+    working_directory: ~/repo
+    docker: *ref_0
+    resource_class: large
+    steps: *ref_1
+    environment:
+      TEST_SUITE: src/__tests__/api-directives-1.test.ts
+  api-directives-2-amplify_e2e_tests:
+    working_directory: ~/repo
+    docker: *ref_0
+    resource_class: large
+    steps: *ref_1
+    environment:
+      TEST_SUITE: src/__tests__/api-directives-2.test.ts
+  api-directives-3-amplify_e2e_tests:
+    working_directory: ~/repo
+    docker: *ref_0
+    resource_class: large
+    steps: *ref_1
+    environment:
+      TEST_SUITE: src/__tests__/api-directives-3.test.ts
   plugin-amplify_e2e_tests:
     working_directory: ~/repo
     docker: *ref_0
@@ -961,6 +982,9 @@ workflows:
             - graphql_e2e_tests
             - integration_test
             - amplify_console_integration_tests
+            - api-directives-1-amplify_e2e_tests
+            - api-directives-2-amplify_e2e_tests
+            - api-directives-3-amplify_e2e_tests
             - plugin-amplify_e2e_tests
             - datastore-modegen-amplify_e2e_tests
             - interactions-amplify_e2e_tests
@@ -982,7 +1006,7 @@ workflows:
                 - release
                 - master
                 - beta
-      - plugin-amplify_e2e_tests:
+      - api-directives-1-amplify_e2e_tests:
           filters: &ref_2
             branches:
               only:
@@ -990,18 +1014,33 @@ workflows:
                 - split-test
           requires:
             - publish_to_local_registry
+      - api-directives-2-amplify_e2e_tests:
+          filters: *ref_2
+          requires:
+            - publish_to_local_registry
+      - api-directives-3-amplify_e2e_tests:
+          filters: *ref_2
+          requires:
+            - publish_to_local_registry
+      - plugin-amplify_e2e_tests:
+          filters: *ref_2
+          requires:
+            - publish_to_local_registry
       - datastore-modegen-amplify_e2e_tests:
           filters: *ref_2
           requires:
             - publish_to_local_registry
+            - api-directives-1-amplify_e2e_tests
       - interactions-amplify_e2e_tests:
           filters: *ref_2
           requires:
             - publish_to_local_registry
+            - api-directives-2-amplify_e2e_tests
       - hosting-amplify_e2e_tests:
           filters: *ref_2
           requires:
             - publish_to_local_registry
+            - api-directives-3-amplify_e2e_tests
       - init-amplify_e2e_tests:
           filters: *ref_2
           requires:

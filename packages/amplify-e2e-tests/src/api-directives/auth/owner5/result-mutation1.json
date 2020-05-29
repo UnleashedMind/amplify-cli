@@ -1,0 +1,11 @@
+{
+  "data": {
+    "createTodo": {
+      "id": "1",
+      "updatedAt": "2020-05-20T01:05:49.129Z",
+      "content": "todo1",
+      "createdAt": "<check-defined>",
+      "owner": "user1"
+    }
+  }
+}

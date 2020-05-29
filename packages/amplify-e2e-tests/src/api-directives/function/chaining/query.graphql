@@ -1,0 +1,4 @@
+#extra
+query DoSomeWork {
+  doSomeWork(msg: "initial mutation message")
+}

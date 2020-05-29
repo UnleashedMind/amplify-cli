@@ -1,0 +1,6 @@
+query GetCustomerById {
+  getCustomer(email: "me@email.com") {
+    email
+    username
+  }
+}

@@ -1,0 +1,10 @@
+query ListInTransitItemsForOrder {
+  listItems(orderId: "order1", statusCreatedAt: { beginsWith: { status: IN_TRANSIT, createdAt: "2019" } }) {
+    items {
+      orderId
+      status
+      createdAt
+      name
+    }
+  }
+}

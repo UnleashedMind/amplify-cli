@@ -1,0 +1,9 @@
+{
+  "data": {
+    "createEmployee": {
+      "id": "1",
+      "username": "user1",
+      "salary": null
+    }
+  }
+}

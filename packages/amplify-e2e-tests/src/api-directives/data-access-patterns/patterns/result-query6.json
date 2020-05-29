@@ -1,0 +1,14 @@
+{
+  "data": {
+    "getCustomer": {
+      "ordersByStatusDate": {
+        "items": [
+          {
+            "amount": 300,
+            "date": "2018-07-12"
+          }
+        ]
+      }
+    }
+  }
+}

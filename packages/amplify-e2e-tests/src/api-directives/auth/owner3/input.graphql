@@ -1,0 +1,7 @@
+# owner identity specified explicitly on every object
+type Post @model @auth(rules: [{ allow: owner, operations: [create] }]) {
+  id: ID!
+  title: String!
+}
+
+##auth/owner3

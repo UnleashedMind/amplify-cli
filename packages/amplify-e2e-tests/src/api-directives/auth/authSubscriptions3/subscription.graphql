@@ -1,0 +1,7 @@
+#extra
+subscription OnCreatePost {
+  onCreatePost {
+    postname
+    content
+  }
+}

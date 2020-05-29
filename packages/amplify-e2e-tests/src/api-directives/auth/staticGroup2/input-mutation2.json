@@ -1,0 +1,9 @@
+{
+  "input": {
+    "id": "1",
+    "title": "title1-updated",
+    "content": "content1-updated",
+    "owner": "user1",
+    "editors": ["user1"]
+  }
+}

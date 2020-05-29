@@ -1,0 +1,11 @@
+{
+  "data": {
+    "createPost": {
+      "id": "1",
+      "title": "title1",
+      "tags": ["tag1"],
+      "createdOn": "<check-defined>",
+      "updatedOn": "<check-defined>"
+    }
+  }
+}

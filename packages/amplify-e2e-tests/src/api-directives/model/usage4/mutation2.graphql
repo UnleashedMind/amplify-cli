@@ -1,0 +1,9 @@
+mutation UpdatePost($input: UpdatePostInput!, $condition: ModelPostConditionInput) {
+  updatePost(input: $input, condition: $condition) {
+    id
+    title
+    tags
+    createdAt
+    updatedAt
+  }
+}
