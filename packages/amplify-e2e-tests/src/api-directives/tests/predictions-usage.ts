@@ -4,9 +4,9 @@ import path from 'path';
 import fs from 'fs-extra';
 import gql from 'graphql-tag';
 import { Storage } from 'aws-amplify';
-import { addAuth, addS3Storage, addApiWithAPIKeyAuthType, amplifyPushWithoutCodeGen } from '../../workflows';
+import { addAuth, addS3Storage, addApiWithAPIKeyAuthType, amplifyPushWithoutCodeGen } from '../workflows';
 
-import { getApiKey, configureAmplify, getConfiguredAppsyncClientAPIKeyAuth } from '../../authHelper';
+import { getApiKey, configureAmplify, getConfiguredAppsyncClientAPIKeyAuth } from '../authHelper';
 
 export async function runTest(projectDir: string) {
   const imageFilePath = path.join(__dirname, 'myimage.jpg');
@@ -41,11 +41,12 @@ export async function runTest(projectDir: string) {
   expect(pollyURL).toMatch(/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/);
 }
 
+
 /*
 This test will fail:
 There seems to be an AppSync bug, the error received:
 
-      ////error ApolloError: GraphQL error: Unable to parse the JSON document: 'Unexpected character ('m' (code 109)): was expecting comma to separate Object entries
+    ../error ApolloError: GraphQL error: Unable to parse the JSON document: 'Unexpected character ('m' (code 109)): was expecting comma to separate Object entries
        at [Source: (String)"{
         "version": "2018-05-29",
         "method": "POST",
@@ -128,3 +129,27 @@ There seems to be an AppSync bug, the error received:
         extraInfo: undefined
       }
 */
+
+//schema
+export const schema = `
+type Query {
+  speakTranslatedImageText: String @predictions(actions: [identifyText, translateText, convertTextToSpeech])
+}
+`
+
+//queries
+export const query = `
+#change: remove redaudant ($input: SpeakTranslatedImageTextInput!)
+query SpeakTranslatedImageText {
+  speakTranslatedImageText(
+    input: {
+      identifyText: { key: "myimage.jpg" }
+      translateText: { sourceLanguage: "en", targetLanguage: "es" }
+      convertTextToSpeech: { voiceID: "Conchita" }
+    }
+  )
+}
+`
+
+
+

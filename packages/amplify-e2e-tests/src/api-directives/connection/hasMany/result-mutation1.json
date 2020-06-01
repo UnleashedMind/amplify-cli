@@ -1,0 +1,9 @@
+{
+    "data": {
+      "createPost": {
+        "id": "a-post-id",
+        "title": "Post Title"
+      }
+    }
+}
+  

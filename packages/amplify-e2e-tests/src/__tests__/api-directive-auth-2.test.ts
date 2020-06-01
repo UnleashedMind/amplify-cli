@@ -33,8 +33,8 @@ describe('api directives @auth batch 2', () => {
     expect(testresult).toBeTruthy();
   });
 
-  it('auth authUsingOidc', async () => {
-    const testresult = await testSchema(projectDir, 'auth', 'authUsingOidc');
+  it('auth usingOidc', async () => {
+    const testresult = await testSchema(projectDir, 'auth', 'usingOidc');
     expect(testresult).toBeTruthy();
   });
 
@@ -58,18 +58,18 @@ describe('api directives @auth batch 2', () => {
     expect(testresult).toBeTruthy();
   });
 
-  it('auth authSubscriptions1', async () => {
-    const testresult = await testSchema(projectDir, 'auth', 'authSubscriptions1');
+  it('auth subscriptions1', async () => {
+    const testresult = await testSchema(projectDir, 'auth', 'subscriptions1');
     expect(testresult).toBeTruthy();
   });
 
-  it('auth authSubscriptions2', async () => {
-    const testresult = await testSchema(projectDir, 'auth', 'authSubscriptions2');
+  it('auth subscriptions2', async () => {
+    const testresult = await testSchema(projectDir, 'auth', 'subscriptions2');
     expect(testresult).toBeTruthy();
   });
 
-  it('auth authSubscriptions3', async () => {
-    const testresult = await testSchema(projectDir, 'auth', 'authSubscriptions3');
+  it('auth subscriptions3', async () => {
+    const testresult = await testSchema(projectDir, 'auth', 'subscriptions3');
     expect(testresult).toBeTruthy();
   });
 });

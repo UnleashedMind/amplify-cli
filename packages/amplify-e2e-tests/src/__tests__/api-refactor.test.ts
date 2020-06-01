@@ -9,10 +9,12 @@ import os from 'os';
 const newLine = os.EOL;
 
 const apidirectivespath = '/Users/zhoweimi/workspace/amplify/amplify-cli/packages/amplify-e2e-tests/src/api-directives';
+const testsDirPath = path.join(apidirectivespath, 'tests');
 
 describe('api directives refactor', () => {
-  let projectDir: string;
-
+  beforeAll(async ()=>{
+    fs.ensureDir(testsDirPath);
+  })
   beforeEach(async () => {
   });
 
@@ -20,16 +22,36 @@ describe('api directives refactor', () => {
   });
 
   it('test refactor', async () => {
-    refactor('auth', 'authSubscriptions1');
+    refactorDirective('auth');
+    refactorDirective('connection');
+    refactorDirective('data-access');
+    refactorDirective('function');
+    refactorDirective('key');
+    refactorDirective('model');
+    refactorDirective('predictions');
+    refactorDirective('searchable');
+    refactorDirective('versioned');
   });
 });
 
+function refactorDirective(directive: string){
+  const directivePath = path.join(apidirectivespath, directive); 
+  const sections = fs.readdirSync(directivePath);
+
+  sections.forEach((section)=>{
+    const sectionPath = path.join(directivePath, section);
+    if(fs.statSync(sectionPath).isDirectory()){
+      refactor(directive, section);
+    }
+  })
+}
 
 function refactor(directive: string, section: string){
+    console.log(`///refactor: ${directive} - ${section}`);
     const directivePath = path.join(apidirectivespath, directive);
     const sectionPath = path.join(directivePath, section);
 
-    const generatedFilePath = path.join(directivePath, section+'.ts');
+    const generatedFilePath = path.join(testsDirPath, directive + '-' + section+'.ts');
 
     let generatedFileContent = '';
 
@@ -143,6 +165,7 @@ export function getMutations(schemaDocDirPath: string): string {
   }
 
   mutationFileNames.forEach(mutationFileName => {
+    // console.log('///mutationFileName: ', mutationFileName)
     const mutationInputFileName = 'input-' + mutationFileName.replace('.graphql', '.json');
     const mutationResultFileName = 'result-' + mutationFileName.replace('.graphql', '.json');
     const mutationFilePath = path.join(schemaDocDirPath, mutationFileName);
@@ -209,7 +232,7 @@ export function getQueries(schemaDocDirPath: string): string {
       queryResult = readJsonFile(queryResultFilePath);
     }
 
-    const queryName = querInputFileName.replace('.graphql', '');
+    const queryName = queryFileName.replace('.graphql', '');
 
     result += `export const ${queryName} = \`` + newLine;
     result += `${query}`;

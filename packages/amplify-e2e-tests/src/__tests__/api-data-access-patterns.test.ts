@@ -14,8 +14,8 @@ describe('api data access patterns', () => {
     deleteProjectDir(projectDir);
   });
 
-  it('data-access-patterns patterns', async () => {
-    const testresult = await testSchema(projectDir, 'data-access-patterns', 'patterns');
+  it('data-access patterns', async () => {
+    const testresult = await testSchema(projectDir, 'data-access', 'patterns');
     expect(testresult).toBeTruthy();
   });
 });
