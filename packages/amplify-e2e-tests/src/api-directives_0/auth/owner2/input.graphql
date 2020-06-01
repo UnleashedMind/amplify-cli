@@ -1,0 +1,8 @@
+# The long form way
+type Post @model @auth(rules: [{ allow: owner, ownerField: "owner", operations: [create, update, delete, read] }]) {
+  id: ID!
+  title: String!
+  owner: String
+}
+
+##owner2

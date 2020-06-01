@@ -1,0 +1,10 @@
+#error: missing the owner field,
+#change: added the missign owner field
+type Todo @model {
+  id: ID!
+  owner: String!
+  updatedAt: AWSDateTime!
+  content: String! @auth(rules: [{ allow: owner, operations: [update] }])
+}
+
+##fieldLevelAuth4

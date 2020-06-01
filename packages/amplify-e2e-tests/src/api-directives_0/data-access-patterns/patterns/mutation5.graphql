@@ -1,0 +1,7 @@
+# fifth
+mutation createProduct {
+  createProduct(input: { id: "yeezyboost", name: "Yeezy Boost" }) {
+    id
+    name
+  }
+}

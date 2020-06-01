@@ -1,0 +1,11 @@
+mutation {
+  createPost(input: { id: "1", postname: "post1", content: "post1 content", postOwnerId: "1" }) {
+    id
+    owner {
+      id
+      username
+    }
+    postname
+    content
+  }
+}

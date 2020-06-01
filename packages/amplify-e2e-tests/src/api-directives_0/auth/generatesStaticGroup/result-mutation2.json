@@ -1,0 +1,11 @@
+{
+  "data": {
+    "updatePost": {
+      "id": "1",
+      "title": "title1-updated",
+      "groups": "admin",
+      "createdAt": "<check-defined>",
+      "updatedAt": "<check-defined>"
+    }
+  }
+}

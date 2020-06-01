@@ -1,0 +1,7 @@
+type Post @model(timestamps: { createdAt: "createdOn", updatedAt: "updatedOn" }) {
+  id: ID!
+  title: String!
+  tags: [String!]!
+}
+
+##model/usage3

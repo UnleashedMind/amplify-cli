@@ -1,0 +1,17 @@
+#error: when run the query, got this error:
+query GetCommentWithPostAndComments {
+  getComment(id: "a-comment-id-1") {
+    id
+    content
+    post {
+      id
+      title
+      comments {
+        items {
+          id
+          content
+        }
+      }
+    }
+  }
+}

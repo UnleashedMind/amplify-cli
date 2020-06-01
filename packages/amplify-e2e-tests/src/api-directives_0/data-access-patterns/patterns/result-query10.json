@@ -1,0 +1,15 @@
+{
+  "data": {
+    "getProduct": {
+      "id": "yeezyboost",
+      "inventories": {
+        "items": [
+          {
+            "warehouseID": "1",
+            "inventoryAmount": 300
+          }
+        ]
+      }
+    }
+  }
+}

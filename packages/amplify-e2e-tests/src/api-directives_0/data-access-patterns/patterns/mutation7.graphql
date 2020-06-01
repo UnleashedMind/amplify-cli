@@ -1,0 +1,21 @@
+# seventh
+mutation createOrder {
+  createOrder(
+    input: {
+      amount: 300
+      date: "2018-07-12"
+      status: "pending"
+      accountRepresentativeID: "dabit"
+      customerID: "jennifer_thomas"
+      productID: "yeezyboost"
+    }
+  ) {
+    id
+    customerID
+    accountRepresentativeID
+    amount
+    date
+    customerID
+    productID
+  }
+}

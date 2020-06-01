@@ -1,0 +1,20 @@
+query GetPostWithEditorsWithPosts {
+  getPost(id: "P1") {
+    id
+    title
+    editors {
+      items {
+        editor {
+          username
+          posts {
+            items {
+              post {
+                title
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

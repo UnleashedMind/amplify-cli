@@ -1,0 +1,7 @@
+mutation CreateTodo {
+  createTodo(input: { id: "1", owner: "user1", content: "todo1 content" }) {
+    id
+    owner
+    content
+  }
+}

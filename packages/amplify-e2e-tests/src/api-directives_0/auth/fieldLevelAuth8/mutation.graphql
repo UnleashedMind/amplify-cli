@@ -1,0 +1,11 @@
+#error: title and content are not in the Employee type
+#change: changed them to name and address
+#change: add id in the input so test can query by the id
+mutation {
+  createEmployee(input: { id: "1", name: "Nadia", address: "123 First Ave", ssn: "392-95-2716" }) {
+    id
+    name
+    address
+    ssn
+  }
+}

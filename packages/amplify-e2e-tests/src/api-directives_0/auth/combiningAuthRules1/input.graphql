@@ -1,0 +1,18 @@
+type Post
+  @model
+  @auth(
+    rules: [
+      # allow all authenticated users ability to create posts
+      # allow owners ability to update and delete their posts
+      # allow all authenticated users to read posts
+      { allow: owner, operations: [create, update, delete] }
+      # allow all guest users (not authenticated) to read posts
+      { allow: public, operations: [read] }
+    ]
+  ) {
+  id: ID!
+  title: String
+  owner: String
+}
+
+##combingAuthRules1

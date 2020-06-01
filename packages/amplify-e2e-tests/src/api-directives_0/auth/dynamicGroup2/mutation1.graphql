@@ -1,0 +1,9 @@
+mutation CreatePost($input: CreatePostInput!, $condition: ModelPostConditionInput) {
+  createPost(input: $input, condition: $condition) {
+    id
+    title
+    group
+    createdAt
+    updatedAt
+  }
+}

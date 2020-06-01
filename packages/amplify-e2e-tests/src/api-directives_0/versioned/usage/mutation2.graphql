@@ -1,0 +1,7 @@
+mutation Update($postId: ID!) {
+  updatePost(input: { id: $postId, title: "Conflict detection in the cloud is great!", expectedVersion: 1 }) {
+    id
+    title
+    version # will be 2
+  }
+}

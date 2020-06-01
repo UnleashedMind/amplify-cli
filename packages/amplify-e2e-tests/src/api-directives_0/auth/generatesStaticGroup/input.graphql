@@ -1,0 +1,9 @@
+#change: changed "Admin" to "admin"
+#error: though harmless, groups is probably unintentionally put here, and it's misleading, for static group auth, it does not need such field.
+type Post @model @auth(rules: [{ allow: groups, groups: ["admin"] }]) {
+  id: ID!
+  title: String!
+  groups: String
+}
+
+##generatesStaticGroup

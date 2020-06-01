@@ -1,0 +1,12 @@
+query getPost {
+  getPost(id: "a-post-id") {
+    id
+    title
+    comments {
+      items {
+        id
+        content
+      }
+    }
+  }
+}
