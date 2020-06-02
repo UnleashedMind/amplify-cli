@@ -112,16 +112,21 @@ export async function testMutations(testModule: any, appSyncClient: any) {
 export async function testMutation(appSyncClient: any, mutation: any, mutationInput?: any, mutationResult?: any) {
   let resultMatch = true;
   let errorMatch = true;
+  console.log('////test mutation', mutation)
+  console.log('////mutationInput', mutationInput)
+  console.log('////mutationResult', mutationResult)
   try {
     const result = await appSyncClient.mutate({
       mutation: gql(mutation),
       fetchPolicy: 'no-cache',
       variables: mutationInput,
     });
+    console.log('////actual mutation result', result)
     if (!checkResult(result, mutationResult)) {
       resultMatch = false;
     }
   } catch (err) {
+    console.log('////actual mutation err', err)
     if (!checkError(err, mutationResult)) {
       errorMatch = false;
     }
@@ -134,7 +139,7 @@ export async function testMutation(appSyncClient: any, mutation: any, mutationIn
 }
 
 export async function testQueries(testModule: any, appSyncClient: any) {
-  let queryNames = Object.keys(testModule).filter(key => /^mutation[0-9]*$/.test(key));
+  let queryNames = Object.keys(testModule).filter(key => /^query[0-9]*$/.test(key));
 
   if (queryNames.length > 1) {
     queryNames = queryNames.sort((name1, name2) => {
@@ -161,16 +166,21 @@ export async function testQueries(testModule: any, appSyncClient: any) {
 export async function testQuery(appSyncClient: any, query: any, queryInput?: any, queryResult?: any) {
   let resultMatch = true;
   let errorMatch = true;
+  console.log('////test query', query)
+  console.log('////queryInput', queryInput)
+  console.log('////queryResult', queryResult)
   try {
     const result = await appSyncClient.query({
       query: gql(query),
       fetchPolicy: 'no-cache',
       variables: queryInput,
     });
+    console.log('///actual query result', result)
     if (!checkResult(result, queryResult)) {
       resultMatch = false;
     }
   } catch (err) {
+    console.log('///actual query err', err)
     if (!checkError(err, queryResult)) {
       errorMatch = false;
     }
@@ -215,6 +225,11 @@ export async function testSubscription(
   subscriptionInput?: any,
   mutationInputs?: any[],
 ) {
+
+  console.log('////test subscription', subscription)
+  console.log('////mutations', mutations)
+  console.log('////subscriptionResult', subscriptionResult)
+
   const observer = appSyncClient.subscribe({
     query: gql(subscription),
     variables: subscriptionInput,
@@ -244,6 +259,9 @@ export async function testSubscription(
   await runInSequential(mutationTasks);
 
   await new Promise(res => setTimeout(() => res(), 4000));
+
+
+  console.log('////actual subscription received', received)
 
   sub.unsubscribe();
   if (!checkResult(received, subscriptionResult)) {

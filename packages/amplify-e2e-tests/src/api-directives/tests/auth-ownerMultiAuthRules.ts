@@ -22,19 +22,25 @@ type Draft
 `
 //mutations
 export const mutation1 = `
-#change: removed id from the response so result can be verified
 #1
 mutation CreateDraft {
   createDraft(input: { title: "A new draft" }) {
+    id
     title
     owner
     editors
   }
 }
 `
+//#change: for the id field, changed "..." to "<check-defined>"
+//so the test bench will check it is defined instead of checking for a particular id
+//the same change is applied to the following mutation results
+//#change: change the owner from "someone@my-domain.com" to "user1" as it is the user setup by the test bench
+//the same change is applied to the following mutaiton results
 export const expected_result_mutation1 = {
     "data": {
         "createDraft": {
+            "id": "<check-defined>",
             "title": "A new draft",
             "owner": "user1",
             "editors": [
@@ -45,19 +51,26 @@ export const expected_result_mutation1 = {
 }
 
 export const mutation2 = `
-#change: removed id from the response so result can be verified
 #2
 mutation CreateDraft {
-  createDraft(input: { title: "A new draft", editors: [] }) {
+  createDraft(
+    input: {
+      title: "A new draft",
+      editors: []
+    }
+  ) {
+    id
     title
     owner
     editors
   }
 }
 `
+
 export const expected_result_mutation2 = {
     "data": {
         "createDraft": {
+            "id": "<check-defined>",
             "title": "A new draft",
             "owner": "user1",
             "editors": []
@@ -65,11 +78,15 @@ export const expected_result_mutation2 = {
     }
 }
 
-export const mutation3 = `
-#change: removed id from the response so result can be verified
-#3
+export const mutation3 =`
 mutation CreateDraft {
-  createDraft(input: { title: "A new draft", editors: [], owner: null }) {
+  createDraft(
+    input: {
+      title: "A new draft",
+      editors: ["editor1@my-domain.com", "editor2@my-domain.com"]
+    }
+  ) {
+    id
     title
     owner
     editors
@@ -77,18 +94,27 @@ mutation CreateDraft {
 }
 `
 export const expected_result_mutation3 = {
-    "graphQLErrors": [
-        {
-            "errorType": "Unauthorized"
+    "data": {
+        "createDraft": {
+            "id": "<check-defined>",
+            "title": "A new draft",
+            "owner": "user1",
+            "editors": ["editor1@my-domain.com", "editor2@my-domain.com"]
         }
-    ]
+    }
 }
 
 export const mutation4 = `
-#change: removed id from the response so result can be verified
-#4
+#3
 mutation CreateDraft {
-  createDraft(input: { title: "A new draft", editors: ["user1"], owner: null }) {
+  createDraft(
+    input: {
+      title: "A new draft",
+      editors: [],
+      owner: null
+    }
+  ) {
+    id
     title
     owner
     editors
@@ -96,8 +122,34 @@ mutation CreateDraft {
 }
 `
 export const expected_result_mutation4 = {
+    "graphQLErrors": [
+        {
+            "errorType": "Unauthorized"
+        }
+    ]
+}
+
+export const mutation5 = `
+#4
+mutation CreateDraft {
+  createDraft(
+    input: {
+      title: "A new draft",
+      editors: ["user1"],
+      owner: null
+    }
+  ) {
+    id
+    title
+    owner
+    editors
+  }
+}
+`
+export const expected_result_mutation5 = {
     "data": {
         "createDraft": {
+            "id": "<check-defined>",
             "title": "A new draft",
             "owner": null,
             "editors": [
@@ -106,24 +158,3 @@ export const expected_result_mutation4 = {
         }
     }
 }
-
-
-//queries
-export const query = `
-#extra
-query ListDrafts {
-  listDrafts(filter: null, limit: null, nextToken: null) {
-    items {
-      id
-      title
-      content
-      owner
-      editors
-    }
-    nextToken
-  }
-}
-`
-
-
-

@@ -7,7 +7,9 @@ describe('api data access patterns', () => {
   beforeEach(async () => {
     // projectDir = await createNewProjectDir('data-access-pattern');
     // await initJSProjectWithProfile(projectDir, {});
-    projectDir = '////mock project dir';
+    console.log('////projectDir', projectDir)
+    projectDir = '/tmp/amplify-e2e-tests/data-access-pattern_12c51d8e_912f3d48'
+    // projectDir = '////mock project dir';
   });
 
   afterEach(async () => {
@@ -15,8 +17,8 @@ describe('api data access patterns', () => {
     // deleteProjectDir(projectDir);
   });
 
-  it('model usage1', async () => {
-    const testresult = await testSchema(projectDir, 'model', 'usage1');
+  it('auth ownerMultiAuthRules', async () => {
+    const testresult = await testSchema(projectDir, 'auth', 'ownerMultiAuthRules');
     expect(testresult).toBeTruthy();
   });
 });
