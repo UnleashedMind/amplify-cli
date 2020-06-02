@@ -5,11 +5,11 @@ describe('api data access patterns', () => {
   let projectDir: string;
 
   beforeEach(async () => {
-    // projectDir = await createNewProjectDir('data-access-pattern');
-    // await initJSProjectWithProfile(projectDir, {});
+    projectDir = await createNewProjectDir('function-example2');
+    await initJSProjectWithProfile(projectDir, {});
+    // projectDir = '/tmp/amplify-e2e-tests/data-access-pattern_12c51d8e_912f3d48'
+    // // projectDir = '////mock project dir';
     console.log('////projectDir', projectDir)
-    projectDir = '/tmp/amplify-e2e-tests/data-access-pattern_12c51d8e_912f3d48'
-    // projectDir = '////mock project dir';
   });
 
   afterEach(async () => {
@@ -17,8 +17,8 @@ describe('api data access patterns', () => {
     // deleteProjectDir(projectDir);
   });
 
-  it('auth ownerMultiAuthRules', async () => {
-    const testresult = await testSchema(projectDir, 'auth', 'ownerMultiAuthRules');
+  it('function example2', async () => {
+    const testresult = await testSchema(projectDir, 'function', 'example2');
     expect(testresult).toBeTruthy();
   });
 });

@@ -8,8 +8,8 @@ import { updateSchemaInTestProject, testQueries } from '../common';
 import { addFunction, updateFunctionNameInSchema } from '../functionTester';
 
 export async function runTest(projectDir: string, testModule: any) {
-  const function1Name = await addFunction(projectDir, __dirname, 'function1.js');
-  const function2Name = await addFunction(projectDir, __dirname, 'function2.js');
+  const function1Name = await addFunction(projectDir, testModule, 'func1');
+  const function2Name = await addFunction(projectDir, testModule, 'func2');
   await addApiWithAPIKeyAuthType(projectDir);
   updateSchemaInTestProject(projectDir, testModule.schema);
   updateFunctionNameInSchema(projectDir, '<function1-name>', function1Name);
@@ -20,7 +20,7 @@ export async function runTest(projectDir: string, testModule: any) {
   const apiKey = getApiKey(projectDir);
   const appSyncClient = getConfiguredAppsyncClientAPIKeyAuth(awsconfig.aws_appsync_graphqlEndpoint, awsconfig.aws_appsync_region, apiKey);
 
-  await testQueries(__dirname, appSyncClient);
+  await testQueries(testModule, appSyncClient);
 }
 
 //schema

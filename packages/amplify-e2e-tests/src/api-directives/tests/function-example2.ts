@@ -30,7 +30,7 @@ const PASSWORD = 'user1Password';
 
 export async function runTest(projectDir: string, testModule: any) {
   await addAuth(projectDir);
-  const functionName = await addFunction(projectDir, __dirname, 'function.js');
+  const functionName = await addFunction(projectDir, testModule, 'func');
   await addApiWithCognitoUserPoolAuthTypeWhenAuthExists(projectDir);
   updateSchemaInTestProject(projectDir, testModule.schema);
 
@@ -43,20 +43,19 @@ export async function runTest(projectDir: string, testModule: any) {
   await setupUser(userPoolId, USERNAME, PASSWORD, GROUPNAME);
   const awsconfig = configureAmplify(projectDir);
   const user = await signInUser(USERNAME, PASSWORD);
-  const appsyncClient = getConfiguredAppsyncClientCognitoAuth(awsconfig.aws_appsync_graphqlEndpoint, awsconfig.aws_appsync_region, user);
+  const appSyncClient = getConfiguredAppsyncClientCognitoAuth(awsconfig.aws_appsync_graphqlEndpoint, awsconfig.aws_appsync_region, user);
 
-  await testQueries(__dirname, appsyncClient);
+  await testQueries(testModule, appSyncClient);
 }
 
-export async function addFunction(projectDir: string, schemaDocDirPath: string, functionFileName: string): Promise<string> {
-  const functionFilePath = path.join(schemaDocDirPath, functionFileName);
-  const functionName = randomizedFunctionName(functionFileName.split('.')[0]);
+export async function addFunction(projectDir: string, testModule: any, funcName: string): Promise<string> {
+  const functionName = randomizedFunctionName(funcName);
   await addSimpleFunctionWithAuthAccess(projectDir, functionName);
 
   const amplifyBackendDirPath = path.join(projectDir, 'amplify', 'backend');
   const amplifyFunctionIndexFilePath = path.join(amplifyBackendDirPath, 'function', functionName, 'src', 'index.js');
 
-  fs.copySync(functionFilePath, amplifyFunctionIndexFilePath);
+  fs.writeFileSync(amplifyFunctionIndexFilePath, testModule[funcName]);
 
   const cognitoResourceNameUpperCase = getCognitoResourceName(projectDir).toUpperCase();
   const userPoolIDEnvVarName = `AUTH_${cognitoResourceNameUpperCase}_USERPOOLID`;

@@ -34,7 +34,7 @@ export async function runTest(projectDir: string, testModule: any) {
     const apiKey = getApiKey(projectDir);
     const appSyncClient = getConfiguredAppsyncClientAPIKeyAuth(awsconfig.aws_appsync_graphqlEndpoint, awsconfig.aws_appsync_region, apiKey);
 
-    await testQueries(__dirname, appSyncClient);
+    await testQueries(testModule, appSyncClient);
   } catch (e) {
     throw e;
   } finally {
@@ -51,14 +51,13 @@ async function setupFunction(functionProjectDirPath: string, functionRegion: str
     functionRegion,
   );
 
-  const functionFilePath = path.join(__dirname, 'function.js');
   const functionName = randomizedFunctionName('function');
   await addSimpleFunction(functionProjectDirPath, functionName);
 
   const amplifyBackendDirPath = path.join(functionProjectDirPath, 'amplify', 'backend');
   const amplifyFunctionIndexFilePath = path.join(amplifyBackendDirPath, 'function', functionName, 'src', 'index.js');
 
-  fs.copySync(functionFilePath, amplifyFunctionIndexFilePath);
+  fs.writeFileSync(amplifyFunctionIndexFilePath, func);
 
   await amplifyPush(functionProjectDirPath);
 

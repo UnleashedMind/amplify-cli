@@ -9,7 +9,6 @@ import { configureAmplify, getApiKey, getConfiguredAppsyncClientAPIKeyAuth } fro
 import { updateSchemaInTestProject, testQueries } from './common';
 
 //The following runTest method runs the common test pattern for schemas in the @function section of the document.
-//It does not test subscriptions. Subscription tests are handled individually in the schema doc directory.
 //It carries out the following steps in sequence:
 //Add the GraphQL API with "Amazon Cognito User Pool" as the default authorization type.
 //Update the auth to create the "admin" Cognito User Pool user group
