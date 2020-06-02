@@ -20,7 +20,7 @@ import {
   getConfiguredAppsyncClientCognitoAuth,
 } from '../authHelper';
 
-import { testQueries } from '../common';
+import { updateSchemaInTestProject, testQueries } from '../common';
 
 import { randomizedFunctionName } from '../functionTester';
 
@@ -28,11 +28,12 @@ const GROUPNAME = 'admin';
 const USERNAME = 'user1';
 const PASSWORD = 'user1Password';
 
-export async function runTest(projectDir: string) {
-  const schemaFilePath = path.join(__dirname, 'input.graphql');
+export async function runTest(projectDir: string, testModule: any) {
   await addAuth(projectDir);
   const functionName = await addFunction(projectDir, __dirname, 'function.js');
-  await addApiWithCognitoUserPoolAuthTypeWhenAuthExists(projectDir, schemaFilePath);
+  await addApiWithCognitoUserPoolAuthTypeWhenAuthExists(projectDir);
+  updateSchemaInTestProject(projectDir, testModule.schema);
+
   updateFunctionNameInSchema(projectDir, '<function-name>', functionName);
 
   await updateAuthAddFirstUserGroup(projectDir, GROUPNAME);
@@ -68,6 +69,72 @@ export async function addFunction(projectDir: string, schemaDocDirPath: string, 
   return functionName;
 }
 
+//functions
+export const func = `
+/* Amplify Params - DO NOT EDIT
+You can access the following resource attributes as environment variables from your Lambda function
+var environment = process.env.ENV
+var region = process.env.REGION
+var authMyResourceNameUserPoolId = process.env.AUTH_MYRESOURCENAME_USERPOOLID
+
+Amplify Params - DO NOT EDIT */
+
+const { CognitoIdentityServiceProvider } = require('aws-sdk');
+const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider();
+
+/**
+ * Get user pool information from environment variables.
+ */
+const COGNITO_USERPOOL_ID = process.env.AUTH_MYRESOURCENAME_USERPOOLID;
+if (!COGNITO_USERPOOL_ID) {
+  throw new Error("Function requires environment variable: 'COGNITO_USERPOOL_ID'");
+}
+const COGNITO_USERNAME_CLAIM_KEY = 'cognito:username';
+
+/**
+ * Using this as the entry point, you can use a single function to handle many resolvers.
+ */
+const resolvers = {
+  Query: {
+    echo: ctx => {
+      return ctx.arguments.msg;
+    },
+    me: async ctx => {
+      var params = {
+        UserPoolId: COGNITO_USERPOOL_ID /* required */,
+        Username: ctx.identity.claims[COGNITO_USERNAME_CLAIM_KEY] /* required */,
+      };
+      try {
+        // Read more: https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CognitoIdentityServiceProvider.html#adminGetUser-property
+        return await cognitoIdentityServiceProvider.adminGetUser(params).promise();
+      } catch (e) {
+        throw new Error('NOT FOUND');
+      }
+    },
+  },
+};
+
+// event
+// {
+//   "typeName": "Query", /* Filled dynamically based on @function usage location */
+//   "fieldName": "me", /* Filled dynamically based on @function usage location */
+//   "arguments": { /* GraphQL field arguments via $ctx.arguments */ },
+//   "identity": { /* AppSync identity object via $ctx.identity */ },
+//   "source": { /* The object returned by the parent resolver. E.G. if resolving field 'Post.comments', the source is the Post object. */ },
+//   "request": { /* AppSync request object. Contains things like headers. */ },
+//   "prev": { /* If using the built-in pipeline resolver support, this contains the object returned by the previous function. */ },
+// }
+exports.handler = async event => {
+  const typeHandler = resolvers[event.typeName];
+  if (typeHandler) {
+    const resolver = typeHandler[event.fieldName];
+    if (resolver) {
+      return await resolver(event);
+    }
+  }
+  throw new Error('Resolver not found.');
+};
+`
 //schema
 const env = "${env}";
 export const schema = `

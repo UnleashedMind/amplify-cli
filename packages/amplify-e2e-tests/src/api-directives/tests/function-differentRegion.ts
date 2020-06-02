@@ -13,19 +13,19 @@ import {
 
 import { getApiKey, configureAmplify, getConfiguredAppsyncClientAPIKeyAuth } from '../authHelper';
 
-import { testQueries } from '../common';
+import { updateSchemaInTestProject, testQueries } from '../common';
 
 import { randomizedFunctionName } from '../functionTester';
 
-export async function runTest(projectDir: string) {
+export async function runTest(projectDir: string, testModule: any) {
   const functionRegion = process.env.CLI_REGION === 'us-west-2' ? 'us-east-1' : 'us-west-2';
   const functionProjectDirPath = path.join(path.dirname(projectDir), path.basename(projectDir) + '-function');
 
   try {
     const functionName = await setupFunction(functionProjectDirPath, functionRegion);
 
-    const schemaFilePath = path.join(__dirname, 'input.graphql');
-    await addApiWithAPIKeyAuthType(projectDir, schemaFilePath);
+    await addApiWithAPIKeyAuthType(projectDir);
+    updateSchemaInTestProject(projectDir, testModule.schema);
 
     updateFunctionNameAndRegionInSchema(projectDir, functionName, functionRegion);
     await amplifyPushWithoutCodeGen(projectDir);
@@ -93,6 +93,15 @@ export const schema = `
 type Query {
   echo(msg: String): String @function(name: "<function-name>", region: "<function-region>")
 }
+`
+
+//functions
+export const func = `
+//#extra
+//create the lambda function in region other than the amplify project region
+exports.handler = async event => {
+  return event.arguments.msg;
+};
 `
 
 //queries

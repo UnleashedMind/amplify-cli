@@ -26,22 +26,23 @@ const GROUPNAME = 'admin';
 const USERNAME = 'user1';
 const PASSWORD = 'user1Password';
 
-export async function runTest(projectDir: string, schemaDocDirPath: string) {
-  const schemaFilePath = path.join(schemaDocDirPath, 'input.graphql');
-  await addApiWithAPIKeyAuthType(projectDir, schemaFilePath);
+export async function runTest(projectDir: string, testModule: any) {
+  await addApiWithAPIKeyAuthType(projectDir);
+  updateSchemaInTestProject(projectDir, testModule.schema);
   await amplifyPushWithoutCodeGen(projectDir);
 
   const awsconfig = configureAmplify(projectDir);
   const apiKey = getApiKey(projectDir);
   const appSyncClient = getConfiguredAppsyncClientAPIKeyAuth(awsconfig.aws_appsync_graphqlEndpoint, awsconfig.aws_appsync_region, apiKey);
 
-  await testMutations(schemaDocDirPath, appSyncClient);
-  await testQueries(schemaDocDirPath, appSyncClient);
+  await testMutations(testModule, appSyncClient);
+  await testQueries(testModule, appSyncClient);
 }
 
-export async function runAutTest(projectDir: string, schemaDocDirPath: string) {
-  const schemaFilePath = path.join(schemaDocDirPath, 'input.graphql');
-  await addApiWithCognitoUserPoolAuthType(projectDir, schemaFilePath);
+export async function runAutTest(projectDir: string, testModule: any) {
+  await addApiWithCognitoUserPoolAuthType(projectDir);
+  updateSchemaInTestProject(projectDir, testModule.schema);
+
   await updateAuthAddFirstUserGroup(projectDir, GROUPNAME);
   await amplifyPushWithoutCodeGen(projectDir);
 
@@ -51,14 +52,16 @@ export async function runAutTest(projectDir: string, schemaDocDirPath: string) {
   const awsconfig = configureAmplify(projectDir);
   const user = await signInUser(USERNAME, PASSWORD);
   const appSyncClient = getConfiguredAppsyncClientCognitoAuth(awsconfig.aws_appsync_graphqlEndpoint, awsconfig.aws_appsync_region, user);
-  await testMutations(schemaDocDirPath, appSyncClient);
-  await testQueries(schemaDocDirPath, appSyncClient);
-  await testSubscriptions(schemaDocDirPath, appSyncClient);
+  
+  await testMutations(testModule, appSyncClient);
+  await testQueries(testModule, appSyncClient);
+  await testSubscriptions(testModule, appSyncClient);
 }
 
-export async function runMultiAutTest(projectDir: string, schemaDocDirPath: string) {
-  const schemaFilePath = path.join(schemaDocDirPath, 'input.graphql');
-  await addApiWithAPIKeyCognitoUserPoolIAMAuthTypes(projectDir, schemaFilePath);
+export async function runMultiAutTest(projectDir: string, testModule: any) {
+  await addApiWithAPIKeyCognitoUserPoolIAMAuthTypes(projectDir);
+  updateSchemaInTestProject(projectDir, testModule.schema);
+
   await updateAuthAddFirstUserGroup(projectDir, GROUPNAME);
   await amplifyPushWithoutCodeGen(projectDir);
 
@@ -69,47 +72,37 @@ export async function runMultiAutTest(projectDir: string, schemaDocDirPath: stri
   const user = await signInUser(USERNAME, PASSWORD);
   const appSyncClient = getConfiguredAppsyncClientCognitoAuth(awsconfig.aws_appsync_graphqlEndpoint, awsconfig.aws_appsync_region, user);
 
-  await testMutations(schemaDocDirPath, appSyncClient);
-  await testQueries(schemaDocDirPath, appSyncClient);
-  await testSubscriptions(schemaDocDirPath, appSyncClient);
+  await testMutations(testModule, appSyncClient);
+  await testQueries(testModule, appSyncClient);
+  await testSubscriptions(testModule, appSyncClient);
 }
 
-export async function testMutations(schemaDocDirPath: string, appsyncClient: any) {
-  const fileNames = fs.readdirSync(schemaDocDirPath);
-  let mutationFileNames = fileNames.filter(fileName => /^mutation[0-9]*\.graphql$/.test(fileName));
+export function updateSchemaInTestProject(projectDir: string, schema: any){
+  const backendApiDirPath = path.join(projectDir, 'amplify', 'backend', 'api');
+  const apiResDirName = fs.readdirSync(backendApiDirPath)[0];
+  const backendSchemaFilePath = path.join(backendApiDirPath, apiResDirName, 'schema.graphql');
+  fs.writeFileSync(backendSchemaFilePath, schema);
+}
 
-  if (mutationFileNames.length > 1) {
-    mutationFileNames = mutationFileNames.sort((fn1, fn2) => {
-      const n1 = parseInt(fn1.replace(/mutation|\.graphq/g, ''));
-      const n2 = parseInt(fn2.replace(/mutation|\.graphq/g, ''));
+export async function testMutations(testModule: any, appSyncClient: any) {
+  let mutationNames = Object.keys(testModule).filter(key => /^mutation[0-9]*$/.test(key));
+
+  if (mutationNames.length > 1) {
+    mutationNames = mutationNames.sort((name1, name2) => {
+      const n1 = parseInt(name1.replace(/mutation/, ''));
+      const n2 = parseInt(name2.replace(/mutation/, ''));
       return n1 - n2;
     });
   }
 
-  const mutations = [];
-  const results = [];
-
   const mutationTasks = [];
-  mutationFileNames.forEach(mutationFileName => {
-    const mutationInputFileName = 'input-' + mutationFileName.replace('.graphql', '.json');
-    const mutationResultFileName = 'result-' + mutationFileName.replace('.graphql', '.json');
-    const mutationFilePath = path.join(schemaDocDirPath, mutationFileName);
-    const mutationInputFilePath = path.join(schemaDocDirPath, mutationInputFileName);
-    const mutationResultFilePath = path.join(schemaDocDirPath, mutationResultFileName);
-    const mutation = fs.readFileSync(mutationFilePath).toString();
-    let mutationInput: any;
-    let mutationResult: any;
-    if (fs.existsSync(mutationInputFilePath)) {
-      mutationInput = readJsonFile(mutationInputFilePath);
-    }
-    if (fs.existsSync(mutationResultFilePath)) {
-      mutationResult = readJsonFile(mutationResultFilePath);
-    }
-    mutations.push(mutation);
-    results.push(mutationResult);
+  mutationNames.forEach(mutationName => {
+    const mutation = testModule[mutationName];
+    const mutationInput = testModule['input_' + mutationName];
+    const mutationResult = testModule['expected_result_' + mutationName];
 
     mutationTasks.push(async () => {
-      await testMutation(appsyncClient, mutation, mutationInput, mutationResult);
+      await testMutation(appSyncClient, mutation, mutationInput, mutationResult);
     });
   });
 
@@ -140,34 +133,23 @@ export async function testMutation(appSyncClient: any, mutation: any, mutationIn
   }
 }
 
-export async function testQueries(schemaDocDirPath: string, appSyncClient: any) {
-  const fileNames = fs.readdirSync(schemaDocDirPath);
-  let queryFileNames = fileNames.filter(fileName => /^query[0-9]*\.graphql$/.test(fileName));
+export async function testQueries(testModule: any, appSyncClient: any) {
+  let queryNames = Object.keys(testModule).filter(key => /^mutation[0-9]*$/.test(key));
 
-  if (queryFileNames.length > 1) {
-    queryFileNames = queryFileNames.sort((fn1, fn2) => {
-      const n1 = parseInt(fn1.replace(/query|\.graphq/g, ''));
-      const n2 = parseInt(fn2.replace(/query|\.graphq/g, ''));
+  if (queryNames.length > 1) {
+    queryNames = queryNames.sort((name1, name2) => {
+      const n1 = parseInt(name1.replace(/query/, ''));
+      const n2 = parseInt(name2.replace(/query/, ''));
       return n1 - n2;
     });
   }
 
   const queryTasks = [];
-  queryFileNames.forEach(queryFileName => {
-    const querInputFileName = 'input-' + queryFileName.replace('.graphql', '.json');
-    const queryResultFileName = 'result-' + queryFileName.replace('.graphql', '.json');
-    const queryFilePath = path.join(schemaDocDirPath, queryFileName);
-    const queryInputFilePath = path.join(schemaDocDirPath, querInputFileName);
-    const queryResultFilePath = path.join(schemaDocDirPath, queryResultFileName);
-    const query = fs.readFileSync(queryFilePath).toString();
-    let queryInput: any;
-    let queryResult: any;
-    if (fs.existsSync(queryInputFilePath)) {
-      queryInput = readJsonFile(queryInputFilePath);
-    }
-    if (fs.existsSync(queryResultFilePath)) {
-      queryResult = readJsonFile(queryResultFilePath);
-    }
+  queryNames.forEach(queryName => {
+    const query = testModule[queryName];
+    const queryInput = testModule['input_' + queryName];
+    const queryResult = testModule['expected_result_' + queryName];
+
     queryTasks.push(async () => {
       await testQuery(appSyncClient, query, queryInput, queryResult);
     });
@@ -198,53 +180,27 @@ export async function testQuery(appSyncClient: any, query: any, queryInput?: any
   }
 }
 
-export async function testSubscriptions(schemaDocDirPath: string, appsyncClient: any) {
-  const fileNames = fs.readdirSync(schemaDocDirPath);
-  let subscriptionFileNames = fileNames.filter(fileName => /^subscription[0-9]*\.graphql$/.test(fileName));
+export async function testSubscriptions(testModule: any, appsyncClient: any) {
+  let subscriptionNames = Object.keys(testModule).filter(key => /^subscription[0-9]*$/.test(key));
 
-  if (subscriptionFileNames.length > 1) {
-    subscriptionFileNames = subscriptionFileNames.sort((fn1, fn2) => {
-      const n1 = parseInt(fn1.replace(/subscription|\.graphq/g, ''));
-      const n2 = parseInt(fn2.replace(/subscription|\.graphq/g, ''));
+  if (subscriptionNames.length > 1) {
+    subscriptionNames = subscriptionNames.sort((name1, name2) => {
+      const n1 = parseInt(name1.replace(/subscription/, ''));
+      const n2 = parseInt(name2.replace(/subscription/, ''));
       return n1 - n2;
     });
   }
 
   const subscriptionTasks = [];
-  subscriptionFileNames.forEach(subscriptionFileName => {
-    const subscriptionResultFileName = 'result-' + subscriptionFileName.replace('.graphql', '.json');
-    const subscriptionFilePath = path.join(schemaDocDirPath, subscriptionFileName);
-    const subscriptionResultFilePath = path.join(schemaDocDirPath, subscriptionResultFileName);
-
-    const subscription = fs.readFileSync(subscriptionFilePath).toString();
-    let subscriptionResult: any;
-    if (fs.existsSync(subscriptionResultFilePath)) {
-      subscriptionResult = readJsonFile(subscriptionResultFilePath);
-    }
-
-    let mutationFileNames = fileNames.filter(fileName => {
-      const regex = new RegExp('^mutation[0-9]*-' + subscriptionFileName);
-      return regex.test(fileName);
-    });
-
-    if (mutationFileNames.length > 1) {
-      mutationFileNames = mutationFileNames.sort((fn1, fn2) => {
-        const regex = new RegExp('mutation' + '|-' + subscriptionFileName, 'g');
-        const n1 = parseInt(fn1.replace(regex, ''));
-        const n2 = parseInt(fn2.replace(regex, ''));
-        return n1 - n2;
-      });
-    }
-
-    const mutations = [];
-    mutationFileNames.forEach(mutationFileName => {
-      const mutationFilePath = path.join(schemaDocDirPath, mutationFileName);
-      const mutation = fs.readFileSync(mutationFilePath).toString();
-      mutations.push(mutation);
-    });
+  subscriptionNames.forEach(subscriptionName => {
+    const subscription = testModule[subscriptionName];
+    const subscriptionInput = testModule['input_' + subscriptionName];
+    const subscriptionResult = testModule['expected_result_' + subscriptionName];
+    const mutations = testModule['mutations_' + subscriptionName];
+    const mutationsInput = testModule['input_mutations_' + subscriptionName];
 
     subscriptionTasks.push(async () => {
-      await testSubscription(appsyncClient, subscription, mutations, subscriptionResult);
+      await testSubscription(appsyncClient, subscription, mutations, subscriptionResult, subscriptionInput, mutationsInput);
     });
   });
 

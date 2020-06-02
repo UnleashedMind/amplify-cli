@@ -1,9 +1,0 @@
-{
-  "input": {
-    "id": "1",
-    "title": "title1",
-    "tags": ["tag1"],
-    "createdAt": "2020-05-27T01:05:49.129Z",
-    "updatedAt": "2020-05-28T01:05:49.129Z"
-  }
-}

@@ -1,7 +1,0 @@
-mutation Delete($postId: ID!) {
-  deletePost(input: { id: $postId, expectedVersion: 2 }) {
-    id
-    title
-    version
-  }
-}

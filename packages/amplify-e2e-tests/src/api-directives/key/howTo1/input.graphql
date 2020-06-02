@@ -1,6 +1,0 @@
-type Customer @model @key(fields: ["email"]) {
-  email: String!
-  username: String
-}
-
-##key/howTo1

@@ -1,6 +1,0 @@
-mutation CreatePost {
-  createPost(input: { id: "a-post-id", title: "Post Title" }) {
-    id
-    title
-  }
-}

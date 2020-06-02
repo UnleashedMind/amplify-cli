@@ -6,7 +6,7 @@ import { amplifyPushWithoutCodeGen, addSimpleFunction, addApiWithAPIKeyAuthType 
 
 import { configureAmplify, getApiKey, getConfiguredAppsyncClientAPIKeyAuth } from './authHelper';
 
-import { testQueries } from './common';
+import { updateSchemaInTestProject, testQueries } from './common';
 
 //The following runTest method runs the common test pattern for schemas in the @function section of the document.
 //It does not test subscriptions. Subscription tests are handled individually in the schema doc directory.
@@ -22,10 +22,10 @@ import { testQueries } from './common';
 //Send the queries, and if the corresponding query responses are present in the directory,
 //the actual received query responses will be checked against the responses in the document.
 
-export async function runFunctionTest(projectDir: string, schemaDocDirPath: string) {
-  const schemaFilePath = path.join(schemaDocDirPath, 'input.graphql');
-  const functionName = await addFunction(projectDir, schemaDocDirPath, 'function.js');
-  await addApiWithAPIKeyAuthType(projectDir, schemaFilePath);
+export async function runFunctionTest(projectDir: string, testModule: any) {
+  const functionName = await addFunction(projectDir, testModule, 'func');
+  await addApiWithAPIKeyAuthType(projectDir);
+  updateSchemaInTestProject(projectDir, testModule.schema);
   updateFunctionNameInSchema(projectDir, '<function-name>', functionName);
   await amplifyPushWithoutCodeGen(projectDir);
 
@@ -33,18 +33,17 @@ export async function runFunctionTest(projectDir: string, schemaDocDirPath: stri
   const apiKey = getApiKey(projectDir);
   const appSyncClient = getConfiguredAppsyncClientAPIKeyAuth(awsconfig.aws_appsync_graphqlEndpoint, awsconfig.aws_appsync_region, apiKey);
 
-  await testQueries(schemaDocDirPath, appSyncClient);
+  await testQueries(testModule, appSyncClient);
 }
 
-export async function addFunction(projectDir: string, schemaDocDirPath: string, functionFileName: string): Promise<string> {
-  const functionFilePath = path.join(schemaDocDirPath, functionFileName);
-  const functionName = randomizedFunctionName(functionFileName.split('.')[0]);
+export async function addFunction(projectDir: string, testModule: any, funcName: string): Promise<string> {
+  const functionName = randomizedFunctionName(funcName);
   await addSimpleFunction(projectDir, functionName);
 
   const amplifyBackendDirPath = path.join(projectDir, 'amplify', 'backend');
   const amplifyFunctionIndexFilePath = path.join(amplifyBackendDirPath, 'function', functionName, 'src', 'index.js');
 
-  fs.copySync(functionFilePath, amplifyFunctionIndexFilePath);
+  fs.writeFileSync(amplifyFunctionIndexFilePath, testModule[funcName]);
 
   return functionName;
 }

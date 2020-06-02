@@ -1,8 +1,0 @@
-# third
-mutation createAccountRepresentative {
-  createAccountRepresentative(input: { id: "dabit", orderTotal: 400000, salesPeriod: "January 2019" }) {
-    id
-    orderTotal
-    salesPeriod
-  }
-}

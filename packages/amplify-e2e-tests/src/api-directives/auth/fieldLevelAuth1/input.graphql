@@ -1,7 +1,0 @@
-type User @model {
-  id: ID!
-  username: String
-  ssn: String @auth(rules: [{ allow: owner, ownerField: "username" }])
-}
-
-##fieldLevelAuth1

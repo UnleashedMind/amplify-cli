@@ -3,15 +3,15 @@ import { addApiWithAPIKeyAuthType, amplifyPushWithoutCodeGen } from '../workflow
 
 import { getApiKey, configureAmplify, getConfiguredAppsyncClientAPIKeyAuth } from '../authHelper';
 
-import { testQueries } from '../common';
+import { updateSchemaInTestProject, testQueries } from '../common';
 
 import { addFunction, updateFunctionNameInSchema } from '../functionTester';
 
-export async function runTest(projectDir: string) {
-  const schemaFilePath = path.join(__dirname, 'input.graphql');
+export async function runTest(projectDir: string, testModule: any) {
   const function1Name = await addFunction(projectDir, __dirname, 'function1.js');
   const function2Name = await addFunction(projectDir, __dirname, 'function2.js');
-  await addApiWithAPIKeyAuthType(projectDir, schemaFilePath);
+  await addApiWithAPIKeyAuthType(projectDir);
+  updateSchemaInTestProject(projectDir, testModule.schema);
   updateFunctionNameInSchema(projectDir, '<function1-name>', function1Name);
   updateFunctionNameInSchema(projectDir, '<function2-name>', function2Name);
   await amplifyPushWithoutCodeGen(projectDir);
@@ -22,7 +22,6 @@ export async function runTest(projectDir: string) {
 
   await testQueries(__dirname, appSyncClient);
 }
-
 
 //schema
 const env = "${env}";
@@ -39,6 +38,20 @@ export const schema = `
 type Query {
   doSomeWork(msg: String): String @function(name: "<function1-name>-${env}") @function(name: "<function2-name>-${env}")
 }
+`
+
+//functions
+export const func1 = `
+//#extra
+exports.handler = async event => {
+  return event.arguments.msg + '|processed by worker-function';
+};
+`
+export const func2 = `
+//#extra
+exports.handler = async event => {
+  return event.prev.result + '|processed by audit function';
+};
 `
 
 //queries

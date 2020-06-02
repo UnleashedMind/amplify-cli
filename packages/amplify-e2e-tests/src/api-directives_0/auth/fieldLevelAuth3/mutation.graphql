@@ -1,7 +1,0 @@
-mutation CreateEmployee($input: CreateEmployeeInput!, $condition: ModelEmployeeConditionInput) {
-  createEmployee(input: $input, condition: $condition) {
-    id
-    username
-    salary
-  }
-}

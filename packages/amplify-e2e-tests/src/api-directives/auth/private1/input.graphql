@@ -1,7 +1,0 @@
-# The simplest case
-type Post @model @auth(rules: [{ allow: private }]) {
-  id: ID!
-  title: String!
-}
-
-#private1

@@ -3,9 +3,9 @@ import fs from 'fs-extra';
 import { runTest, runAutTest } from './common';
 import { runFunctionTest } from './functionTester';
 
-//The contents of files in the schema doc testing directories might be modified,
-//and extra files might be added to test the input schema.
-//The beginning part of a file marks the type of the modification it might have
+//The contents in the test files might be modified from its original version int he Amplify CLI doc
+//and mutations or queries, which do not exist in the document, might be added to test the input schema.
+//Marks the type of the modification:
 //#remove: if the error can not be corrected, the file is excluded from the test, file name will be appended with '-'
 //#change: modified the original content such as adding the missing pieces in imcomplete schemas
 //#error: corrected error in the original content
@@ -18,37 +18,36 @@ import { runFunctionTest } from './functionTester';
 
 export async function testSchema(projectDir: string, directive: string, section: string): Promise<boolean> {
   try {
-    const schemaDocDirPath = path.join(__dirname, directive, section);
-    if (!fs.existsSync(schemaDocDirPath)) {
-      throw new Error(`Missing testing schema documents directory ${directive}/${section}`);
+    const testFilePath = path.join(__dirname, `/tests/${directive}-${section}.ts`);
+    if (!fs.existsSync(testFilePath)) {
+      throw new Error(`Missing test file ${directive}-${section}.ts`);
     }
 
-    //If certain test does not fall in the common testing pattern or the @auth common testing pattern,
-    //e.g. test for subscription, the index file inside schemaDocDirPath
-    //can define its own runTest method, which will override the common testing pattern
-    let schemaDocTestingModule;
+    console.log('///directive', directive);
+    console.log('///section', section);
+    
+    let testModule;
     try {
-      schemaDocTestingModule = await import(schemaDocDirPath);
+      testModule = await import(testFilePath);
     } catch {
-      //do nothing
+      throw new Error(`Unable to load test file ${directive}-${section}.ts`);
     }
 
-    if (schemaDocTestingModule && schemaDocTestingModule.runTest) {
-      await schemaDocTestingModule.runTest(projectDir);
+    if (testModule.runTest) {
+      await testModule.runTest(projectDir, testModule);
     } else {
       switch (directive) {
         case 'auth':
-          await runAutTest(projectDir, schemaDocDirPath);
+          await runAutTest(projectDir, testModule);
           break;
         case 'function':
-          await runFunctionTest(projectDir, schemaDocDirPath);
+          await runFunctionTest(projectDir, testModule);
           break;
         default:
-          await runTest(projectDir, schemaDocDirPath);
+          await runTest(projectDir, testModule);
           break;
       }
     }
-
     return true;
   } catch (err) {
     console.log(err);

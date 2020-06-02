@@ -1,9 +1,0 @@
-# fourth
-mutation createCustomer {
-  createCustomer(input: { id: "jennifer_thomas", accountRepresentativeID: "dabit", name: "Jennifer Thomas", phoneNumber: "+16015555555" }) {
-    id
-    name
-    accountRepresentativeID
-    phoneNumber
-  }
-}

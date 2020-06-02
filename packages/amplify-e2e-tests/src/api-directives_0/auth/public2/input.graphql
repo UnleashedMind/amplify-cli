@@ -1,7 +1,0 @@
-# public authorization with provider override
-type Post @model @auth(rules: [{ allow: public, provider: iam }]) {
-  id: ID!
-  title: String!
-}
-
-##public2

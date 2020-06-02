@@ -1,8 +1,0 @@
-#change: changed "Admin" to "admin"
-type Salary @model @auth(rules: [{ allow: groups, groups: ["admin"] }]) {
-  id: ID!
-  wage: Int
-  currency: String
-}
-
-##staticGroup1

@@ -1,9 +1,0 @@
-mutation CreateTodo($input: CreateTodoInput!, $condition: ModelTodoConditionInput) {
-  createTodo(input: $input, condition: $condition) {
-    id
-    updatedAt
-    content
-    createdAt
-    owner
-  }
-}

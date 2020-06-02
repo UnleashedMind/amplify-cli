@@ -1,9 +1,0 @@
-#change: removed id from the response so result can be verified
-#1
-mutation CreateDraft {
-  createDraft(input: { title: "A new draft" }) {
-    title
-    owner
-    editors
-  }
-}

@@ -1,9 +1,0 @@
-#error: syntax error
-#change: changed "Bob" to "user1"
-
-subscription OnCreatePost {
-  onCreatePost(owner: "user1") {
-    postname
-    content
-  }
-}

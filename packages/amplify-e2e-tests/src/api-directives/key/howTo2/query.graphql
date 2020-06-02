@@ -1,9 +1,0 @@
-query ListOrdersForCustomerIn2019 {
-  listOrders(customerEmail: "me@email.com", createdAt: { beginsWith: "2019" }) {
-    items {
-      orderId
-      customerEmail
-      createdAt
-    }
-  }
-}

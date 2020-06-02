@@ -1,9 +1,0 @@
-mutation UpdateSalary($input: UpdateSalaryInput!, $condition: ModelSalaryConditionInput) {
-  updateSalary(input: $input, condition: $condition) {
-    id
-    wage
-    currency
-    createdAt
-    updatedAt
-  }
-}

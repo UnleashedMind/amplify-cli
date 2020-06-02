@@ -262,7 +262,7 @@ export function addSimpleFunctionWithAuthAccess(projectDir: string, functionName
 }
 
 //add default api
-export function addApiWithAPIKeyAuthType(projectDir: string, schemaFilePath: string) {
+export function addApiWithAPIKeyAuthType(projectDir: string) {
   return new Promise((resolve, reject) => {
     spawn(getCLIPath(), ['add', 'api'], { cwd: projectDir, stripColors: true })
       .wait('Please select from one of the below mentioned services:')
@@ -278,9 +278,13 @@ export function addApiWithAPIKeyAuthType(projectDir: string, schemaFilePath: str
       .wait('Do you want to configure advanced settings for the GraphQL API')
       .sendCarriageReturn()
       .wait('Do you have an annotated GraphQL schema?')
+      .sendLine('n')
+      .wait('Do you want a guided schema creation')
       .sendLine('y')
-      .wait('Provide your schema file path:')
-      .sendLine(schemaFilePath)
+      .wait('What best describes your project')
+      .sendCarriageReturn()
+      .wait('Do you want to edit the schema now?')
+      .sendLine('n')
       .wait('"amplify publish" will build all your local backend and frontend resources')
       .run((err: Error) => {
         if (!err) {
@@ -292,7 +296,7 @@ export function addApiWithAPIKeyAuthType(projectDir: string, schemaFilePath: str
   });
 }
 
-export function addApiWithAPIKeyCognitoUserPoolIAMAuthTypes(projectDir: string, schemaFilePath: string) {
+export function addApiWithAPIKeyCognitoUserPoolIAMAuthTypes(projectDir: string) {
   return new Promise((resolve, reject) => {
     spawn(getCLIPath(), ['add', 'api'], { cwd: projectDir, stripColors: true })
       .wait('Please select from one of the below mentioned services:')
@@ -325,9 +329,13 @@ export function addApiWithAPIKeyCognitoUserPoolIAMAuthTypes(projectDir: string, 
       .wait('Configure conflict detection?')
       .sendCarriageReturn() //No
       .wait('Do you have an annotated GraphQL schema?')
+      .sendLine('n')
+      .wait('Do you want a guided schema creation')
       .sendLine('y')
-      .wait('Provide your schema file path:')
-      .sendLine(schemaFilePath)
+      .wait('What best describes your project')
+      .sendCarriageReturn()
+      .wait('Do you want to edit the schema now?')
+      .sendLine('n')
       .wait('"amplify publish" will build all your local backend and frontend resources')
       .run((err: Error) => {
         if (!err) {
@@ -340,7 +348,7 @@ export function addApiWithAPIKeyCognitoUserPoolIAMAuthTypes(projectDir: string, 
 }
 
 //checked
-export function addApiWithCognitoUserPoolAuthType(projectDir: string, schemaFilePath: string) {
+export function addApiWithCognitoUserPoolAuthType(projectDir: string) {
   return new Promise((resolve, reject) => {
     spawn(getCLIPath(), ['add', 'api'], { cwd: projectDir, stripColors: true })
       .wait('Please select from one of the below mentioned services:')
@@ -359,9 +367,13 @@ export function addApiWithCognitoUserPoolAuthType(projectDir: string, schemaFile
       .wait('Do you want to configure advanced settings for the GraphQL AP')
       .sendCarriageReturn()
       .wait('Do you have an annotated GraphQL schema?')
+      .sendLine('n')
+      .wait('Do you want a guided schema creation')
       .sendLine('y')
-      .wait('Provide your schema file path:')
-      .sendLine(schemaFilePath)
+      .wait('What best describes your project')
+      .sendCarriageReturn()
+      .wait('Do you want to edit the schema now?')
+      .sendLine('n')
       .wait('"amplify publish" will build all your local backend and frontend resources')
       .run((err: Error) => {
         if (!err) {
@@ -374,7 +386,7 @@ export function addApiWithCognitoUserPoolAuthType(projectDir: string, schemaFile
 }
 
 //checked
-export function addApiWithCognitoUserPoolAuthTypeWhenAuthExists(projectDir: string, schemaFilePath: string) {
+export function addApiWithCognitoUserPoolAuthTypeWhenAuthExists(projectDir: string) {
   return new Promise((resolve, reject) => {
     spawn(getCLIPath(), ['add', 'api'], { cwd: projectDir, stripColors: true })
       .wait('Please select from one of the below mentioned services:')
@@ -387,9 +399,13 @@ export function addApiWithCognitoUserPoolAuthTypeWhenAuthExists(projectDir: stri
       .wait('Do you want to configure advanced settings for the GraphQL AP')
       .sendCarriageReturn()
       .wait('Do you have an annotated GraphQL schema?')
+      .sendLine('n')
+      .wait('Do you want a guided schema creation')
       .sendLine('y')
-      .wait('Provide your schema file path:')
-      .sendLine(schemaFilePath)
+      .wait('What best describes your project')
+      .sendCarriageReturn()
+      .wait('Do you want to edit the schema now?')
+      .sendLine('n')
       .wait('"amplify publish" will build all your local backend and frontend resources')
       .run((err: Error) => {
         if (!err) {
@@ -402,7 +418,7 @@ export function addApiWithCognitoUserPoolAuthTypeWhenAuthExists(projectDir: stri
 }
 
 //need edit:
-export function addApiWithIAMAuthType(projectDir: string, schemaFilePath: string) {
+export function addApiWithIAMAuthType(projectDir: string) {
   return new Promise((resolve, reject) => {
     spawn(getCLIPath(), ['add', 'api'], { cwd: projectDir, stripColors: true })
       .wait('Please select from one of the below mentioned services:')
@@ -416,9 +432,13 @@ export function addApiWithIAMAuthType(projectDir: string, schemaFilePath: string
       .wait(/.*Do you want to configure advanced settings for the GraphQL API.*/)
       .sendCarriageReturn()
       .wait('Do you have an annotated GraphQL schema?')
+      .sendLine('n')
+      .wait('Do you want a guided schema creation')
       .sendLine('y')
-      .wait('Provide your schema file path:')
-      .sendLine(schemaFilePath)
+      .wait('What best describes your project')
+      .sendCarriageReturn()
+      .wait('Do you want to edit the schema now?')
+      .sendLine('n')
       .wait('"amplify publish" will build all your local backend and frontend resources')
       .run((err: Error) => {
         if (!err) {
@@ -437,8 +457,7 @@ export function addApiWithOIDCAuthType(
   oidcProviderDomain: string,
   oidcClientId: string,
   ttlaIssueInMillisecond: string,
-  ttlaAuthInMillisecond: string,
-  schemaFilePath: string,
+  ttlaAuthInMillisecond: string
 ) {
   return new Promise((resolve, reject) => {
     spawn(getCLIPath(), ['add', 'api'], { cwd: projectDir, stripColors: true })
@@ -446,7 +465,7 @@ export function addApiWithOIDCAuthType(
       .sendCarriageReturn()
       .wait('Provide API name:')
       .sendCarriageReturn()
-      .wait(/.*Choose the default authorization type for the API.*/)
+      .wait('Choose the default authorization type for the API')
       .send(KEY_DOWN_ARROW)
       .send(KEY_DOWN_ARROW)
       .send(KEY_DOWN_ARROW)
@@ -466,12 +485,16 @@ export function addApiWithOIDCAuthType(
       .wait('Enter the number of milliseconds a token is valid after being authenticated')
       .send(ttlaAuthInMillisecond)
       .sendCarriageReturn()
-      .wait(/.*Do you want to configure advanced settings for the GraphQL API.*/)
+      .wait('Do you want to configure advanced settings for the GraphQL API')
       .sendCarriageReturn()
       .wait('Do you have an annotated GraphQL schema?')
+      .sendLine('n')
+      .wait('Do you want a guided schema creation')
       .sendLine('y')
-      .wait('Provide your schema file path:')
-      .sendLine(schemaFilePath)
+      .wait('What best describes your project')
+      .sendCarriageReturn()
+      .wait('Do you want to edit the schema now?')
+      .sendLine('n')
       .wait('"amplify publish" will build all your local backend and frontend resources')
       .run((err: Error) => {
         if (!err) {

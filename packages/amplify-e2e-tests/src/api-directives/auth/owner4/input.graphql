@@ -1,5 +1,0 @@
-# owner identity not stored on objects
-type Post @model @auth(rules: [{ allow: owner, operations: [read] }]) {
-  id: ID!
-  title: String!
-}

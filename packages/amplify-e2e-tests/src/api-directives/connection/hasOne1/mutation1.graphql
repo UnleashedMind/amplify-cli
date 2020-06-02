@@ -1,8 +1,0 @@
-mutation {
-  createTeam(input: { id: "1", name: "team1" }) {
-    id
-    name
-    createdAt
-    updatedAt
-  }
-}

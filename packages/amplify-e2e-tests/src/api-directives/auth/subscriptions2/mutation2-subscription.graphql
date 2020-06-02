@@ -1,9 +1,0 @@
-#extra
-mutation CreatePost {
-  createPost(input: { postname: "post2", content: "post2 content" }) {
-    id
-    owner
-    postname
-    content
-  }
-}

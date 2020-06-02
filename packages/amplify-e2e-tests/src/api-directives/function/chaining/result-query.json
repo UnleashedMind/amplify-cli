@@ -1,5 +1,0 @@
-{
-  "data": {
-    "doSomeWork": "initial mutation message|processed by worker-function|processed by audit function"
-  }
-}

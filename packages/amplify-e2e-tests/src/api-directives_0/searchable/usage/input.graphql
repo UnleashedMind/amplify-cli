@@ -1,7 +1,0 @@
-type Post @model @searchable {
-  id: ID!
-  title: String!
-  createdAt: String!
-  updatedAt: String!
-  upvotes: Int
-}

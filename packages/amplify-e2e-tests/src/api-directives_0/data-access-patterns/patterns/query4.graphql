@@ -1,8 +1,0 @@
-## 4. Find a customer’s phone number:
-#A similar query to those given above but on the Customer model would give you a customer’s phone number.
-
-query getCustomer($customerID: ID!) {
-  getCustomer(id: $customerID) {
-    phoneNumber
-  }
-}

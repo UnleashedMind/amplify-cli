@@ -1,7 +1,0 @@
-type Todo @model @auth(rules: [{ allow: owner, operations: [create, delete, update] }]) {
-  id: ID!
-  updatedAt: AWSDateTime!
-  content: String!
-}
-
-##auth/owner6

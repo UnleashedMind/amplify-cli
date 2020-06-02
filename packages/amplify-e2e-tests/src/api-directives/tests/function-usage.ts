@@ -6,7 +6,13 @@ type Query {
   echo(msg: String): String @function(name: "<function-name>-${env}")
 }
 `
-
+//functions
+export const func = `
+//#error: context.done is deprecated, use async and return
+exports.handler = async event => {
+  return event.arguments.msg;
+};
+`
 //queries
 export const query = `
 #extra

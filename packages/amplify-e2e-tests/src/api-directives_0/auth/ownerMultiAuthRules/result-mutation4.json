@@ -1,9 +1,0 @@
-{
-  "data": {
-    "createDraft": {
-      "title": "A new draft",
-      "owner": null,
-      "editors": ["user1"]
-    }
-  }
-}

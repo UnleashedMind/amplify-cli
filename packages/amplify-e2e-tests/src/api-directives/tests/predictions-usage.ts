@@ -7,15 +7,17 @@ import { Storage } from 'aws-amplify';
 import { addAuth, addS3Storage, addApiWithAPIKeyAuthType, amplifyPushWithoutCodeGen } from '../workflows';
 
 import { getApiKey, configureAmplify, getConfiguredAppsyncClientAPIKeyAuth } from '../authHelper';
+import { updateSchemaInTestProject } from '../common';
 
-export async function runTest(projectDir: string) {
-  const imageFilePath = path.join(__dirname, 'myimage.jpg');
-  const schemaFilePath = path.join(__dirname, 'input.graphql');
+export async function runTest(projectDir: string, testModule: any) {
+  const imageFilePath = path.join(__dirname, 'predictions-usage-image.jpg');
   const queryFilePath = path.join(__dirname, 'query.graphql');
 
   await addAuth(projectDir);
   await addS3Storage(projectDir);
-  await addApiWithAPIKeyAuthType(projectDir, schemaFilePath);
+  await addApiWithAPIKeyAuthType(projectDir);
+  updateSchemaInTestProject(projectDir, testModule.schema);
+  
   await amplifyPushWithoutCodeGen(projectDir);
 
   const awsconfig = configureAmplify(projectDir);
