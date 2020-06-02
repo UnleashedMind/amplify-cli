@@ -1,9 +1,7 @@
 import path from 'path';
 import fs from 'fs-extra';
 import _ from 'lodash';
-import util from 'util';
 import gql from 'graphql-tag';
-import { readJsonFile } from 'amplify-e2e-core';
 import {
   addApiWithAPIKeyAuthType,
   addApiWithCognitoUserPoolAuthType,
@@ -259,8 +257,7 @@ export async function testSubscription(
   await runInSequential(mutationTasks);
 
   await new Promise(res => setTimeout(() => res(), 4000));
-
-
+  
   console.log('////actual subscription received', received)
 
   sub.unsubscribe();

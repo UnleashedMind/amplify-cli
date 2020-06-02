@@ -1,7 +1,6 @@
 import path from 'path';
 import uuid from 'uuid';
 import fs from 'fs-extra';
-import _ from 'lodash';
 import { amplifyPushWithoutCodeGen, addSimpleFunction, addApiWithAPIKeyAuthType } from './workflows';
 
 import { configureAmplify, getApiKey, getConfiguredAppsyncClientAPIKeyAuth } from './authHelper';
