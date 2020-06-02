@@ -1,11 +1,11 @@
 //schema
 export const schema = `
-type Order
-  @model
+type Order @model
   @key(name: "byCustomerByStatusByDate", fields: ["customerID", "status", "date"])
   @key(name: "byCustomerByDate", fields: ["customerID", "date"])
   @key(name: "byRepresentativebyDate", fields: ["accountRepresentativeID", "date"])
-  @key(name: "byProduct", fields: ["productID", "id"]) {
+  @key(name: "byProduct", fields: ["productID", "id"])
+{
   id: ID!
   customerID: ID!
   accountRepresentativeID: ID!
@@ -15,7 +15,8 @@ type Order
   date: String!
 }
 
-type Customer @model @key(name: "byRepresentative", fields: ["accountRepresentativeID", "id"]) {
+type Customer @model
+  @key(name: "byRepresentative", fields: ["accountRepresentativeID", "id"]) {
   id: ID!
   name: String!
   phoneNumber: String
@@ -24,8 +25,7 @@ type Customer @model @key(name: "byRepresentative", fields: ["accountRepresentat
   ordersByStatusDate: [Order] @connection(keyName: "byCustomerByStatusByDate", fields: ["id"])
 }
 
-type Employee
-  @model
+type Employee @model
   @key(name: "newHire", fields: ["newHire", "id"], queryField: "employeesNewHire")
   @key(name: "newHireByStartDate", fields: ["newHire", "startDate"], queryField: "employeesNewHireByStartDate")
   @key(name: "byName", fields: ["name", "id"], queryField: "employeeByName")
@@ -45,8 +45,7 @@ type Warehouse @model {
   employees: [Employee] @connection(keyName: "byWarehouse", fields: ["id"])
 }
 
-type AccountRepresentative
-  @model
+type AccountRepresentative @model
   @key(name: "bySalesPeriodByOrderTotal", fields: ["salesPeriod", "orderTotal"], queryField: "repsByPeriodAndTotal") {
   id: ID!
   customers: [Customer] @connection(keyName: "byRepresentative", fields: ["id"])
@@ -55,8 +54,7 @@ type AccountRepresentative
   salesPeriod: String
 }
 
-type Inventory
-  @model
+type Inventory @model
   @key(name: "byWarehouseID", fields: ["warehouseID"], queryField: "itemsByWarehouseID")
   @key(fields: ["productID", "warehouseID"]) {
   productID: ID!
@@ -69,31 +67,27 @@ type Product @model {
   name: String!
   orders: [Order] @connection(keyName: "byProduct", fields: ["id"])
   inventories: [Inventory] @connection(fields: ["id"])
-}
-`
+}`
 //mutations
 export const mutation1 = `
 # first
 mutation createWarehouse {
-  createWarehouse(input: { id: "1" }) {
+  createWarehouse(input: {id: "1"}) {
     id
   }
-}
-`
+}`
 
 export const mutation2 = `
 # second
 mutation createEmployee {
-  createEmployee(
-    input: {
-      id: "amanda"
-      name: "Amanda"
-      startDate: "2018-05-22"
-      phoneNumber: "6015555555"
-      warehouseID: "1"
-      jobTitle: "Manager"
-      newHire: "true"
-    }
+  createEmployee(input: {
+    id: "amanda"
+    name: "Amanda",
+    startDate: "2018-05-22",
+    phoneNumber: "6015555555",
+    warehouseID: "1",
+    jobTitle: "Manager",
+    newHire: "true"}
   ) {
     id
     jobTitle
@@ -103,66 +97,75 @@ mutation createEmployee {
     startDate
     warehouseID
   }
-}
-`
+}`
 
 export const mutation3 = `
 # third
 mutation createAccountRepresentative {
-  createAccountRepresentative(input: { id: "dabit", orderTotal: 400000, salesPeriod: "January 2019" }) {
+  createAccountRepresentative(input: {
+    id: "dabit"
+    orderTotal: 400000
+    salesPeriod: "January 2019"
+  }) {
     id
     orderTotal
     salesPeriod
   }
-}
-`
+}`
 
 export const mutation4 = `
 # fourth
 mutation createCustomer {
-  createCustomer(input: { id: "jennifer_thomas", accountRepresentativeID: "dabit", name: "Jennifer Thomas", phoneNumber: "+16015555555" }) {
+  createCustomer(input: {
+    id: "jennifer_thomas"
+    accountRepresentativeID: "dabit"
+    name: "Jennifer Thomas"
+    phoneNumber: "+16015555555"
+  }) {
     id
     name
     accountRepresentativeID
     phoneNumber
   }
-}
-`
+}`
 
 export const mutation5 = `
 # fifth
 mutation createProduct {
-  createProduct(input: { id: "yeezyboost", name: "Yeezy Boost" }) {
+  createProduct(input: {
+    id: "yeezyboost"
+    name: "Yeezy Boost"
+  }) {
     id
     name
   }
-}
-`
+}`
 
 export const mutation6 = `
 # sixth
 mutation createInventory {
-  createInventory(input: { productID: "yeezyboost", warehouseID: "1", inventoryAmount: 300 }) {
+  createInventory(input: {
+    productID: "yeezyboost"
+    warehouseID: "1"
+    inventoryAmount: 300
+  }) {
     productID
     inventoryAmount
     warehouseID
   }
-}
-`
+}`
 
 export const mutation7 = `
 # seventh
 mutation createOrder {
-  createOrder(
-    input: {
-      amount: 300
-      date: "2018-07-12"
-      status: "pending"
-      accountRepresentativeID: "dabit"
-      customerID: "jennifer_thomas"
-      productID: "yeezyboost"
-    }
-  ) {
+  createOrder(input: {
+    amount: 300
+    date: "2018-07-12"
+    status: "pending"
+    accountRepresentativeID: "dabit"
+    customerID: "jennifer_thomas"
+    productID: "yeezyboost"
+  }) {
     id
     customerID
     accountRepresentativeID
@@ -171,8 +174,7 @@ mutation createOrder {
     customerID
     productID
   }
-}
-`
+}`
 
 
 //queries
@@ -188,8 +190,7 @@ query getEmployee($id: ID!) {
     startDate
     jobTitle
   }
-}
-`
+}`
 export const input_query1 = {
     "id": "amanda"
 }
@@ -219,8 +220,7 @@ query employeeByName($name: String!) {
       jobTitle
     }
   }
-}
-`
+}`
 export const input_query2 = {
     "name": "Amanda"
 }
@@ -250,8 +250,7 @@ query employeeByName($name: String!) {
       phoneNumber
     }
   }
-}
-`
+}`
 export const input_query3 = {
     "name": "Amanda"
 }
@@ -275,8 +274,7 @@ query getCustomer($customerID: ID!) {
   getCustomer(id: $customerID) {
     phoneNumber
   }
-}
-`
+}`
 export const input_query4 = {
     "customerID": "jennifer_thomas"
 }
@@ -300,7 +298,9 @@ export const query5 = `
 
 query getCustomerWithOrdersByDate($customerID: ID!) {
   getCustomer(id: $customerID) {
-    ordersByDate(date: { between: ["2018-01-22", "2020-10-11"] }) {
+    ordersByDate(date: {
+      between: [ "2018-01-22", "2020-10-11" ]
+    }) {
       items {
         id
         amount
@@ -308,8 +308,7 @@ query getCustomerWithOrdersByDate($customerID: ID!) {
       }
     }
   }
-}
-`
+}`
 export const input_query5 = {
     "customerID": "jennifer_thomas"
 }
@@ -329,6 +328,7 @@ export const expected_result_query5 = {
 }
 
 export const query6 = `
+
 ## 6. Show all open orders within a given date range across all customers:
 #The '@key' 'byCustomerByStatusByDate' enables you to run a query that would work for this access pattern.
 
@@ -336,16 +336,19 @@ export const query6 = `
 
 query getCustomerWithOrdersByStatusDate($customerID: ID!) {
   getCustomer(id: $customerID) {
-    ordersByStatusDate(statusDate: { between: [{ status: "pending", date: "2018-01-22" }, { status: "pending", date: "2020-10-11" }] }) {
-      items {
-        id
-        amount
-        date
-      }
+    ordersByStatusDate (statusDate: {
+      between: [
+        { status: "pending" date:  "2018-01-22" },
+        { status: "pending", date: "2020-10-11"}
+      ]}) {
+        items {
+            id
+            amount
+            date
+        }
     }
   }
-}
-`
+}`
 export const input_query6 = {
     "customerID": "jennifer_thomas"
 }
@@ -366,7 +369,7 @@ export const expected_result_query6 = {
 
 export const query7 = `
 ## 7. See all employees hired recently:
-#Having '@key(name: "newHire", fields: ["newHire", "id"])' on the 'Employee' model allows one to query by whether an employee has been hired recently.
+#Having '@key(name: "newHire", fields: ["newHire", "id"])' on the 'Employee' model allows one to query by whether an employee has been hired recently. 
 
 query employeesNewHire {
   employeesNewHire(newHire: "true") {
@@ -378,8 +381,7 @@ query employeesNewHire {
       jobTitle
     }
   }
-}
-`
+}`
 export const expected_result_query7 = {
     "data": {
         "employeesNewHire": {
@@ -403,7 +405,7 @@ export const query8 = `
 query getWarehouse($warehouseID: ID!) {
   getWarehouse(id: $warehouseID) {
     id
-    employees {
+    employees{
       items {
         id
         name
@@ -413,8 +415,7 @@ query getWarehouse($warehouseID: ID!) {
       }
     }
   }
-}
-`
+}`
 export const input_query8 = {
     "warehouseID": "1"
 }
@@ -453,8 +454,7 @@ query getProductOrders($productID: ID!) {
       }
     }
   }
-}
-`
+}`
 export const input_query9 = {
     "productID": "yeezyboost"
 }
@@ -490,8 +490,7 @@ query getProductInventoryInfo($productID: ID!) {
       }
     }
   }
-}
-`
+}`
 export const input_query10 = {
     "productID": "yeezyboost"
 }
@@ -527,8 +526,7 @@ query getCustomersForAccountRepresentative($representativeId: ID!) {
       }
     }
   }
-}
-`
+}`
 export const input_query11 = {
     "representativeId": "dabit"
 }
@@ -556,17 +554,20 @@ export const query12 = `
 query getOrdersForAccountRepresentative($representativeId: ID!) {
   getAccountRepresentative(id: $representativeId) {
     id
-    orders(date: { between: ["2010-01-22", "2020-10-11"] }) {
-      items {
-        id
-        status
-        amount
-        date
-      }
+    orders(date: {
+      between: [
+         "2010-01-22", "2020-10-11"
+      ]
+    }) {
+        items {
+          id
+          status
+          amount
+          date
+        }
     }
   }
-}
-`
+}`
 export const input_query12 = {
     "representativeId": "dabit"
 }
@@ -638,8 +639,7 @@ query employeesByJobTitle {
       jobTitle
     }
   }
-}
-`
+}`
 export const expected_result_query14 = {
     "data": {
         "employeesByJobTitle": {
@@ -667,8 +667,7 @@ query inventoryByProductAndWarehouse($productID: ID!, $warehouseID: ID!) {
     warehouseID
     inventoryAmount
   }
-}
-`
+}`
 export const input_query15 = {
     "productID": "yeezyboost",
     "warehouseID": "1"
@@ -695,8 +694,7 @@ query listInventorys {
       inventoryAmount
     }
   }
-}
-`
+}`
 export const expected_result_query16 = {
     "data": {
         "listInventorys": {
@@ -716,14 +714,18 @@ export const query17 = `
 #It's uncertain exactly what this means. My take is that the sales period is either a date range or maybe even a month or week. Therefore we can set the sales period as a string and query using the combination of 'salesPeriod' and 'orderTotal'. We can also set the 'sortDirection' in order to get the return values from largest to smallest:
 
 query repsByPeriodAndTotal {
-  repsByPeriodAndTotal(sortDirection: DESC, salesPeriod: "January 2019", orderTotal: { ge: 1000 }) {
+  repsByPeriodAndTotal(
+    sortDirection: DESC,
+    salesPeriod: "January 2019",
+    orderTotal: {
+      ge: 1000
+    }) {
     items {
       id
       orderTotal
     }
   }
-}
-`
+}`
 export const expected_result_query17 = {
     "data": {
         "repsByPeriodAndTotal": {
@@ -778,8 +780,7 @@ query byWarehouseId($warehouseID: ID!) {
       productID
     }
   }
-}
-`
+}`
 export const input_query151 = {
     "warehouseID": "1"
 }
@@ -795,6 +796,3 @@ export const expected_result_query151 = {
         }
     }
 }
-
-
-

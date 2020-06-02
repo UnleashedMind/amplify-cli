@@ -1,27 +1,31 @@
 //schema
 export const schema = `
-#error: missing the owner field,
+#error: missing the owner field, 
 #change: added the missign owner field
-type Todo @model {
-  id: ID!
+type Todo @model
+{
+  id: ID! 
   owner: String!
-  updatedAt: AWSDateTime!
+  updatedAt: AWSDateTime! 
   content: String! @auth(rules: [{ allow: owner, operations: [update] }])
 }
 
-##fieldLevelAuth4
-`
+##fieldLevelAuth4`
 //mutations
 export const mutation1 = `
 mutation CreateTodo {
-  createTodo(input: { id: "1", owner: "user1", updatedAt: "2020-01-01T01:05:49.129Z", content: "todo1 content" }) {
-    id
-    owner
-    updatedAt
-    content
-  }
-}
-`
+    createTodo(input: {
+      id: "1",
+      owner: "user1",
+      updatedAt: "2020-01-01T01:05:49.129Z"
+      content: "todo1 content"
+    }) {
+      id
+      owner
+      updatedAt
+      content
+    }
+}`
 export const expected_result_mutation1 = {
     "data": {
         "createTodo": {
@@ -35,14 +39,18 @@ export const expected_result_mutation1 = {
 
 export const mutation2 = `
 mutation UpdateTodo {
-  updateTodo(input: { id: "1", owner: "user1", updatedAt: "2020-05-20T01:05:49.129Z", content: "todo1 content updated" }) {
-    id
-    owner
-    updatedAt
-    content
-  }
-}
-`
+    updateTodo(input: {
+      id: "1",
+      owner: "user1",
+      updatedAt: "2020-05-20T01:05:49.129Z"
+      content: "todo1 content updated"
+    }) {
+      id
+      owner
+      updatedAt
+      content
+    }
+}`
 export const expected_result_mutation2 = {
     "data": {
         "updateTodo": {

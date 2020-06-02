@@ -11,26 +11,25 @@ type Employee @model {
   # Only members of the "Admin" group may create an employee with a salary
   # or update a salary.
   salary: String
-    @auth(
-      rules: [
-        { allow: owner, ownerField: "username", operations: [read] }
-        { allow: groups, groups: ["admin"], operations: [create, update, read] }
-      ]
-    )
+    @auth(rules: [
+      { allow: owner, ownerField: "username", operations: [read] },
+      { allow: groups, groups: ["admin"], operations: [create, update, read] }
+    ])
 }
 
-##fieldLevelAuth3
-`
+##fieldLevelAuth3`
 //mutations
 export const mutation = `
-mutation CreateEmployee($input: CreateEmployeeInput!, $condition: ModelEmployeeConditionInput) {
-  createEmployee(input: $input, condition: $condition) {
-    id
-    username
-    salary
-  }
-}
-`
+mutation CreateEmployee(
+    $input: CreateEmployeeInput!
+    $condition: ModelEmployeeConditionInput
+  ) {
+    createEmployee(input: $input, condition: $condition) {
+      id
+      username
+      salary
+    }
+}`
 export const input_mutation = {
     "input": {
         "id": "1",
@@ -51,14 +50,13 @@ export const expected_result_mutation = {
 
 //queries
 export const query = `
-query GetEmployee {
-  getEmployee(id: "1") {
-    id
-    username
-    salary
-  }
-}
-`
+ query GetEmployee {
+    getEmployee(id: "1") {
+      id
+      username
+      salary
+    }
+}`
 export const expected_result_query = {
     "data": {
         "getEmployee": {

@@ -25,6 +25,3 @@ export const expected_result_query = {
         "echo": "query message"
     }
 }
-
-
-

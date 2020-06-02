@@ -25,8 +25,7 @@ type User @model {
   posts: [PostEditor] @connection(keyName: "byEditor", fields: ["id"])
 }
 
-##connection/manyToMany
-`
+##connection/manyToMany`
 //mutations
 export const mutation1 = `
 mutation CreateData {
@@ -166,6 +165,3 @@ export const expected_result_query2 = {
         }
     }
 }
-
-
-

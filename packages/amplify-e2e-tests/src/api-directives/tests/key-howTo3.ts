@@ -16,56 +16,71 @@ enum Status {
   UNKNOWN
 }
 
-##key/howTo3
-`
+##key/howTo3`
 //mutations
 export const mutation1 = `
-mutation CreateItem {
-  createItem(input: { orderId: "order1", status: DELIVERED, createdAt: "2019-01-01T01:05:49.129Z", name: "item1" }) {
-    orderId
-    status
-    createdAt
-    name
-    updatedAt
-  }
-}
-`
+ mutation CreateItem{
+    createItem(input: {
+        orderId: "order1",
+        status: DELIVERED,
+        createdAt: "2019-01-01T01:05:49.129Z",
+        name: "item1"
+  }) {
+      orderId
+      status
+      createdAt
+      name
+      updatedAt
+    }
+  }`
 
 export const mutation2 = `
-mutation CreateItem {
-  createItem(input: { orderId: "order1", status: IN_TRANSIT, createdAt: "2019-01-02T01:05:49.129Z", name: "item2" }) {
-    orderId
-    status
-    createdAt
-    name
-    updatedAt
-  }
-}
-`
+ mutation CreateItem{
+    createItem(input: {
+        orderId: "order1",
+        status: IN_TRANSIT,
+        createdAt: "2019-01-02T01:05:49.129Z",
+        name: "item2"
+  }) {
+      orderId
+      status
+      createdAt
+      name
+      updatedAt
+    }
+  }`
 
 export const mutation3 = `
-mutation CreateItem {
-  createItem(input: { orderId: "order1", status: PENDING, createdAt: "2019-01-03T01:05:49.129Z", name: "item3" }) {
-    orderId
-    status
-    createdAt
-    name
-    updatedAt
-  }
-}
-`
+ mutation CreateItem{
+    createItem(input: {
+        orderId: "order1",
+        status: PENDING,
+        createdAt: "2019-01-03T01:05:49.129Z",
+        name: "item3"
+  }) {
+      orderId
+      status
+      createdAt
+      name
+      updatedAt
+    }
+  }`
 
 export const mutation4 = `
-mutation CreateItem {
-  createItem(input: { orderId: "order1", status: UNKNOWN, createdAt: "2019-01-04T01:05:49.129Z", name: "item4" }) {
-    orderId
-    status
-    createdAt
-    name
-    updatedAt
-  }
-}
-`
+ mutation CreateItem{
+    createItem(input: {
+    	orderId: "order1",
+        status: UNKNOWN,
+        createdAt: "2019-01-04T01:05:49.129Z",
+        name: "item4"
+  }) {
+      orderId
+      status
+      createdAt
+      name
+      updatedAt
+    }
+}`
 
 
 //queries

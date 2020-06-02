@@ -1,25 +1,26 @@
 //schema
 export const schema = `
-type Post @model @auth(rules: [{ allow: groups, groupsField: "group" }]) {
+type Post @model @auth(rules: [{allow: groups, groupsField: "group"}]) {
   id: ID!
   title: String
   group: String
 }
 
-##dynamicGroup2
-`
+##dynamicGroup2`
 //mutations
 export const mutation1 = `
-mutation CreatePost($input: CreatePostInput!, $condition: ModelPostConditionInput) {
-  createPost(input: $input, condition: $condition) {
-    id
-    title
-    group
-    createdAt
-    updatedAt
-  }
-}
-`
+mutation CreatePost(
+    $input: CreatePostInput!
+    $condition: ModelPostConditionInput
+  ) {
+    createPost(input: $input, condition: $condition) {
+      id
+      title
+      group
+      createdAt
+      updatedAt
+    }
+}`
 export const input_mutation1 = {
     "input": {
         "id": "1",
@@ -40,16 +41,18 @@ export const expected_result_mutation1 = {
 }
 
 export const mutation2 = `
-mutation UpdatePost($input: UpdatePostInput!, $condition: ModelPostConditionInput) {
-  updatePost(input: $input, condition: $condition) {
-    id
-    title
-    group
-    createdAt
-    updatedAt
-  }
-}
-`
+ mutation UpdatePost(
+    $input: UpdatePostInput!
+    $condition: ModelPostConditionInput
+  ) {
+    updatePost(input: $input, condition: $condition) {
+      id
+      title
+      group
+      createdAt
+      updatedAt
+    }
+}`
 export const input_mutation2 = {
     "input": {
         "id": "1",

@@ -6,27 +6,29 @@ export async function runTest(projectDir: string, testModule: any) {
 
 //schema
 export const schema = `
-type Post @model @auth(rules: [{ allow: private }]) {
+type Post @model @auth (rules: [{ allow: private }]) {
   id: ID!
   title: String
   owner: String
-  secret: String @auth(rules: [{ allow: private, provider: iam, operations: [create, update] }])
+  secret: String
+    @auth (rules: [{ allow: private, provider: iam, operations: [create, update] }])
 }
 
-##combiningAuthRules3
-`
+##combiningAuthRules3`
 //mutations
 export const mutation = `
-mutation CreatePost($input: CreatePostInput!, $condition: ModelPostConditionInput) {
-  createPost(input: $input, condition: $condition) {
-    id
-    title
-    createdAt
-    updatedAt
-    owner
-  }
-}
-`
+mutation CreatePost(
+    $input: CreatePostInput!
+    $condition: ModelPostConditionInput
+  ) {
+    createPost(input: $input, condition: $condition) {
+      id
+      title
+      createdAt
+      updatedAt
+      owner
+    }
+}`
 export const input_mutation = {
     "input": {
         "id": "1",

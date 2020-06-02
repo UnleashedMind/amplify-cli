@@ -11,8 +11,7 @@ type Comment @model {
   content: String!
 }
 
-#connection/limit
-`
+#connection/limit`
 
 
 

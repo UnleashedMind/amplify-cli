@@ -12,8 +12,7 @@ type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
   content: String!
 }
 
-##connection/hasMany
-`
+##connection/hasMany`
 //mutations
 export const mutation1 = `
 mutation CreatePost {
@@ -21,8 +20,7 @@ mutation CreatePost {
     id
     title
   }
-}
-`
+}`
 export const expected_result_mutation1 = {
     "data": {
         "createPost": {
@@ -81,6 +79,3 @@ export const expected_result_query = {
         }
     }
 }
-
-
-

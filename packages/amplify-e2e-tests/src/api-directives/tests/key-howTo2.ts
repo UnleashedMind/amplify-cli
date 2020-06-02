@@ -6,19 +6,20 @@ type Order @model @key(fields: ["customerEmail", "createdAt"]) {
   orderId: ID!
 }
 
-#key/howTo2
-`
+#key/howTo2`
 //mutations
 export const mutation1 = `
-mutation CreateOrder($input: CreateOrderInput!, $condition: ModelOrderConditionInput) {
-  createOrder(input: $input, condition: $condition) {
-    customerEmail
-    createdAt
-    orderId
-    updatedAt
-  }
-}
-`
+mutation CreateOrder(
+    $input: CreateOrderInput!
+    $condition: ModelOrderConditionInput
+  ) {
+    createOrder(input: $input, condition: $condition) {
+      customerEmail
+      createdAt
+      orderId
+      updatedAt
+    }
+}`
 export const input_mutation1 = {
     "input": {
         "customerEmail": "me@email.com",
@@ -28,15 +29,17 @@ export const input_mutation1 = {
 }
 
 export const mutation2 = `
-mutation CreateOrder($input: CreateOrderInput!, $condition: ModelOrderConditionInput) {
-  createOrder(input: $input, condition: $condition) {
-    customerEmail
-    createdAt
-    orderId
-    updatedAt
-  }
-}
-`
+mutation CreateOrder(
+    $input: CreateOrderInput!
+    $condition: ModelOrderConditionInput
+  ) {
+    createOrder(input: $input, condition: $condition) {
+      customerEmail
+      createdAt
+      orderId
+      updatedAt
+    }
+}`
 export const input_mutation2 = {
     "input": {
         "customerEmail": "me@email.com",
@@ -71,6 +74,3 @@ export const expected_result_query = {
         }
     }
 }
-
-
-

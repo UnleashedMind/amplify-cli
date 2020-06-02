@@ -115,6 +115,3 @@ export const expected_result_query = {
         "echo": "query message echoed from different region."
     }
 }
-
-
-

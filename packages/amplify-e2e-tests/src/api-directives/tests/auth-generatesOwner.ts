@@ -1,23 +1,24 @@
 //schema
 export const schema = `
-type Post @model @auth(rules: [{ allow: owner }]) {
+type Post @model @auth(rules: [{allow: owner}]) {
   id: ID!
   title: String!
 }
 
-##generatesOwner
-`
+##generatesOwner`
 //mutations
 export const mutation1 = `
-mutation CreatePost($input: CreatePostInput!, $condition: ModelPostConditionInput) {
-  createPost(input: $input, condition: $condition) {
-    id
-    title
-    createdAt
-    updatedAt
-  }
-}
-`
+mutation CreatePost(
+    $input: CreatePostInput!
+    $condition: ModelPostConditionInput
+  ) {
+    createPost(input: $input, condition: $condition) {
+      id
+      title
+      createdAt
+      updatedAt
+    }
+}`
 export const input_mutation1 = {
     "input": {
         "id": "1",
@@ -36,15 +37,17 @@ export const expected_result_mutation1 = {
 }
 
 export const mutation2 = `
-mutation UpdatePost($input: UpdatePostInput!, $condition: ModelPostConditionInput) {
-  updatePost(input: $input, condition: $condition) {
-    id
-    title
-    createdAt
-    updatedAt
-  }
-}
-`
+ mutation UpdatePost(
+    $input: UpdatePostInput!
+    $condition: ModelPostConditionInput
+  ) {
+    updatePost(input: $input, condition: $condition) {
+      id
+      title
+      createdAt
+      updatedAt
+    }
+}`
 export const input_mutation2 = {
     "input": {
         "id": "1",

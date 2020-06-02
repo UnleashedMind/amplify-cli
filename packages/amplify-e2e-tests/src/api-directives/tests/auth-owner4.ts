@@ -4,19 +4,20 @@ export const schema = `
 type Post @model @auth(rules: [{ allow: owner, operations: [read] }]) {
   id: ID!
   title: String!
-}
-`
+}`
 //mutations
 export const mutation = `
-mutation CreatePost($input: CreatePostInput!, $condition: ModelPostConditionInput) {
-  createPost(input: $input, condition: $condition) {
-    id
-    title
-    createdAt
-    updatedAt
-  }
-}
-`
+mutation CreatePost(
+    $input: CreatePostInput!
+    $condition: ModelPostConditionInput
+  ) {
+    createPost(input: $input, condition: $condition) {
+      id
+      title
+      createdAt
+      updatedAt
+    }
+}`
 export const input_mutation = {
     "input": {
         "id": "1",

@@ -6,20 +6,21 @@ type Post @model {
   tags: [String!]!
 }
 
-##model/usage1
-`
+##model/usage1`
 //mutations
 export const mutation1 = `
-mutation CreatePost($input: CreatePostInput!, $condition: ModelPostConditionInput) {
-  createPost(input: $input, condition: $condition) {
-    id
-    title
-    tags
-    createdAt
-    updatedAt
-  }
-}
-`
+mutation CreatePost(
+    $input: CreatePostInput!
+    $condition: ModelPostConditionInput
+  ) {
+    createPost(input: $input, condition: $condition) {
+      id
+      title
+      tags
+      createdAt
+      updatedAt
+    }
+}`
 export const input_mutation1 = {
     "input": {
         "id": "1",
@@ -44,16 +45,18 @@ export const expected_result_mutation1 = {
 }
 
 export const mutation2 = `
-mutation UpdatePost($input: UpdatePostInput!, $condition: ModelPostConditionInput) {
-  updatePost(input: $input, condition: $condition) {
-    id
-    title
-    tags
-    createdAt
-    updatedAt
-  }
-}
-`
+  mutation UpdatePost(
+    $input: UpdatePostInput!
+    $condition: ModelPostConditionInput
+  ) {
+    updatePost(input: $input, condition: $condition) {
+      id
+      title
+      tags
+      createdAt
+      updatedAt
+    }
+}`
 export const input_mutation2 = {
     "input": {
         "id": "1",
@@ -82,16 +85,15 @@ export const expected_result_mutation2 = {
 
 //queries
 export const query = `
-query GetPost {
-  getPost(id: "1") {
-    id
-    title
-    tags
-    createdAt
-    updatedAt
-  }
-}
-`
+query GetPost{
+    getPost(id: "1") {
+      id
+      title
+      tags
+      createdAt
+      updatedAt
+    }
+}`
 export const expected_result_query = {
     "data": {
         "getPost": {

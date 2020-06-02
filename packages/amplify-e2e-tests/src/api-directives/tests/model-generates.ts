@@ -17,18 +17,20 @@ enum Category {
 `
 //mutations
 export const mutation1 = `
-mutation CreatePost($input: CreatePostInput!, $condition: ModelPostConditionInput) {
-  createPost(input: $input, condition: $condition) {
-    id
-    title
-    metadata {
-      category
+mutation CreatePost(
+    $input: CreatePostInput!
+    $condition: ModelPostConditionInput
+  ) {
+    createPost(input: $input, condition: $condition) {
+      id
+      title
+      metadata {
+        category
+      }
+      createdAt
+      updatedAt
     }
-    createdAt
-    updatedAt
-  }
-}
-`
+}`
 export const input_mutation1 = {
     "input": {
         "id": "1",
@@ -53,26 +55,29 @@ export const expected_result_mutation1 = {
 }
 
 export const mutation2 = `
-mutation UpdatePost($input: UpdatePostInput!, $condition: ModelPostConditionInput) {
-  updatePost(input: $input, condition: $condition) {
-    id
-    title
-    metadata {
-      category
+mutation UpdatePost(
+    $input: UpdatePostInput!
+    $condition: ModelPostConditionInput
+  ) {
+    updatePost(input: $input, condition: $condition) {
+      id
+      title
+      metadata {
+        category
+      }
+      createdAt
+      updatedAt
     }
-    createdAt
-    updatedAt
-  }
-}
-`
+}`
+
 export const input_mutation2 = {
-    "input": {
-        "id": "1",
-        "title": "title1-updated",
-        "metadata": {
-            "category": "news"
-        }
-    }
+  "input": {
+      "id": "1",
+      "title": "title1-updated",
+      "metadata": {
+          "category": "news"
+      }
+  }
 }
 export const expected_result_mutation2 = {
     "data": {
@@ -91,18 +96,17 @@ export const expected_result_mutation2 = {
 
 //queries
 export const query = `
-query GetPost {
-  getPost(id: "1") {
-    id
-    title
-    metadata {
-      category
+query GetPost{
+    getPost(id: "1") {
+      id
+      title
+      metadata {
+        category
+      }
+      createdAt
+      updatedAt
     }
-    createdAt
-    updatedAt
-  }
-}
-`
+}`
 export const expected_result_query = {
     "data": {
         "getPost": {

@@ -1,4 +1,3 @@
-import path from 'path';
 import { addApiWithAPIKeyAuthType, amplifyPushWithoutCodeGen } from '../workflows';
 
 import { getApiKey, configureAmplify, getConfiguredAppsyncClientAPIKeyAuth } from '../authHelper';
@@ -66,6 +65,3 @@ export const expected_result_query = {
         "doSomeWork": "initial mutation message|processed by worker-function|processed by audit function"
     }
 }
-
-
-

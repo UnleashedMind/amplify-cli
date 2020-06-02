@@ -5,19 +5,20 @@ type Customer @model @key(fields: ["email"]) {
   username: String
 }
 
-##key/howTo1
-`
+##key/howTo1`
 //mutations
 export const mutation = `
-mutation CreateCustomer($input: CreateCustomerInput!, $condition: ModelCustomerConditionInput) {
-  createCustomer(input: $input, condition: $condition) {
-    email
-    username
-    createdAt
-    updatedAt
-  }
-}
-`
+mutation CreateCustomer(
+    $input: CreateCustomerInput!
+    $condition: ModelCustomerConditionInput
+  ) {
+    createCustomer(input: $input, condition: $condition) {
+      email
+      username
+      createdAt
+      updatedAt
+    }
+}`
 export const input_mutation = {
     "input": {
         "email": "me@email.com",

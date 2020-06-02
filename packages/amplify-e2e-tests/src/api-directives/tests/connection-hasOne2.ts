@@ -12,19 +12,20 @@ type Team @model {
   name: String!
 }
 
-##connection/hasOne2
-`
+##connection/hasOne2`
 //mutations
 export const mutation1 = `
-mutation {
-  createTeam(input: { id: "a-team-id", name: "a-team" }) {
-    id
-    name
-    createdAt
-    updatedAt
-  }
-}
-`
+ mutation {
+    createTeam(input: {
+      id: "a-team-id",
+      name: "a-team"
+    }) {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+}`
 
 export const mutation2 = `
 mutation CreateProject {
@@ -50,7 +51,3 @@ export const expected_result_mutation2 = {
         }
     }
 }
-
-
-
-

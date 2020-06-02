@@ -6,13 +6,15 @@ type Post @model @versioned {
   version: Int! # <- If not provided, it is added for you.
 }
 
-##versioned/usage
-`
+##versioned/usage`
 //mutations
 export const mutation1 = `
 #change: add id: "1" in the input, so update mutation can be carried out
 mutation Create {
-  createPost(input: { id: "1", title: "Conflict detection in the cloud!" }) {
+  createPost(input: { 
+    id: "1"
+    title: "Conflict detection in the cloud!" 
+  }) {
     id
     title
     version # will be 1

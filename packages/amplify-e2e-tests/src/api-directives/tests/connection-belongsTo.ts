@@ -13,8 +13,7 @@ type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
   post: Post @connection(fields: ["postID"])
 }
 
-##connection/belongsTo
-`
+##connection/belongsTo`
 //mutations
 export const mutation1 = `
 mutation CreatePost {
@@ -22,8 +21,7 @@ mutation CreatePost {
     id
     title
   }
-}
-`
+}`
 export const expected_result_mutation1 = {
     "data": {
         "createPost": {
@@ -39,8 +37,7 @@ mutation CreateCommentOnPost1 {
     id
     content
   }
-}
-`
+}`
 export const expected_result_mutation2 = {
     "data": {
         "createComment": {
@@ -112,6 +109,3 @@ export const expected_result_query = {
         }
     }
 }
-
-
-

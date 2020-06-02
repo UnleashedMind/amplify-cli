@@ -6,8 +6,7 @@ type Post @model @searchable {
   createdAt: String!
   updatedAt: String!
   upvotes: Int
-}
-`
+}`
 //mutations
 export const mutation = `
 mutation CreatePost {
@@ -18,20 +17,16 @@ mutation CreatePost {
     updatedAt
     upvotes
   }
-}
-`
+}`
+
 //queries
 export const query1 = `
 #error: add "s" for searchPosts
 query SearchPosts {
-  searchPosts(filter: { title: { match: "Stream" } }) {
+  searchPosts(filter: { title: { match: "Stream" }}) {
     items {
       id
       title
     }
   }
-}
-`
-
-
-
+}`

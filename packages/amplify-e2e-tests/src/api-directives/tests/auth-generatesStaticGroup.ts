@@ -2,26 +2,27 @@
 export const schema = `
 #change: changed "Admin" to "admin"
 #error: though harmless, groups is probably unintentionally put here, and it's misleading, for static group auth, it does not need such field.
-type Post @model @auth(rules: [{ allow: groups, groups: ["admin"] }]) {
+type Post @model @auth(rules: [{allow: groups, groups: ["admin"]}]) {
   id: ID!
   title: String!
   groups: String
 }
 
-##generatesStaticGroup
-`
+##generatesStaticGroup`
 //mutations
 export const mutation1 = `
-mutation CreatePost($input: CreatePostInput!, $condition: ModelPostConditionInput) {
-  createPost(input: $input, condition: $condition) {
-    id
-    title
-    groups
-    createdAt
-    updatedAt
-  }
-}
-`
+mutation CreatePost(
+    $input: CreatePostInput!
+    $condition: ModelPostConditionInput
+  ) {
+    createPost(input: $input, condition: $condition) {
+      id
+      title
+      groups
+      createdAt
+      updatedAt
+    }
+}`
 export const input_mutation1 = {
     "input": {
         "id": "1",
@@ -42,16 +43,18 @@ export const expected_result_mutation1 = {
 }
 
 export const mutation2 = `
-mutation UpdatePost($input: UpdatePostInput!, $condition: ModelPostConditionInput) {
-  updatePost(input: $input, condition: $condition) {
-    id
-    title
-    groups
-    createdAt
-    updatedAt
-  }
-}
-`
+ mutation UpdatePost(
+    $input: UpdatePostInput!
+    $condition: ModelPostConditionInput
+  ) {
+    updatePost(input: $input, condition: $condition) {
+      id
+      title
+      groups
+      createdAt
+      updatedAt
+    }
+}`
 export const input_mutation2 = {
     "input": {
         "id": "1",

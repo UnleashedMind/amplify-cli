@@ -6,20 +6,21 @@ type Post @model @auth(rules: [{ allow: owner, operations: [create] }]) {
   title: String!
 }
 
-##auth/owner3
-`
+##auth/owner3`
 //mutations
 export const mutation = `
-mutation CreatePost($input: CreatePostInput!, $condition: ModelPostConditionInput) {
-  createPost(input: $input, condition: $condition) {
-    id
-    title
-    createdAt
-    updatedAt
-    owner
-  }
-}
-`
+mutation CreatePost(
+    $input: CreatePostInput!
+    $condition: ModelPostConditionInput
+  ) {
+    createPost(input: $input, condition: $condition) {
+      id
+      title
+      createdAt
+      updatedAt
+      owner
+    }
+}`
 export const input_mutation = {
     "input": {
         "id": "1",

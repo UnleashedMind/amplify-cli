@@ -6,18 +6,19 @@ type User @model {
   ssn: String @auth(rules: [{ allow: owner, ownerField: "username" }])
 }
 
-##fieldLevelAuth1
-`
+##fieldLevelAuth1`
 //mutations
 export const mutation = `
-mutation CreateUser($input: CreateUserInput!, $condition: ModelUserConditionInput) {
-  createUser(input: $input, condition: $condition) {
-    id
-    username
-    ssn
-  }
-}
-`
+mutation CreateUser(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    createUser(input: $input, condition: $condition) {
+      id
+      username
+      ssn
+    }
+}`
 export const input_mutation = {
     "input": {
         "id": "1",
@@ -37,14 +38,13 @@ export const expected_result_mutation = {
 
 //queries
 export const query = `
-query GetUser {
-  getUser(id: "1") {
-    id
-    username
-    ssn
-  }
-}
-`
+ query GetUser {
+    getUser(id: "1") {
+      id
+      username
+      ssn
+    }
+}`
 export const expected_result_query = {
     "data": {
         "getUser": {

@@ -1,26 +1,27 @@
 //schema
 export const schema = `
 #change: changed "Admin" to "admin"
-type Salary @model @auth(rules: [{ allow: groups, groups: ["admin"] }]) {
+type Salary @model @auth(rules: [{allow: groups, groups: ["admin"]}]) {
   id: ID!
   wage: Int
   currency: String
 }
 
-##staticGroup1
-`
+##staticGroup1`
 //mutations
 export const mutation1 = `
-mutation CreateSalary($input: CreateSalaryInput!, $condition: ModelSalaryConditionInput) {
-  createSalary(input: $input, condition: $condition) {
-    id
-    wage
-    currency
-    createdAt
-    updatedAt
-  }
-}
-`
+ mutation CreateSalary(
+    $input: CreateSalaryInput!
+    $condition: ModelSalaryConditionInput
+  ) {
+    createSalary(input: $input, condition: $condition) {
+      id
+      wage
+      currency
+      createdAt
+      updatedAt
+    }
+}`
 export const input_mutation1 = {
     "input": {
         "id": "1",
@@ -41,16 +42,18 @@ export const expected_result_mutation1 = {
 }
 
 export const mutation2 = `
-mutation UpdateSalary($input: UpdateSalaryInput!, $condition: ModelSalaryConditionInput) {
-  updateSalary(input: $input, condition: $condition) {
-    id
-    wage
-    currency
-    createdAt
-    updatedAt
-  }
-}
-`
+mutation UpdateSalary(
+    $input: UpdateSalaryInput!
+    $condition: ModelSalaryConditionInput
+  ) {
+    updateSalary(input: $input, condition: $condition) {
+      id
+      wage
+      currency
+      createdAt
+      updatedAt
+    }
+}`
 export const input_mutation2 = {
     "input": {
         "id": "1",
@@ -69,7 +72,3 @@ export const expected_result_mutation2 = {
         }
     }
 }
-
-
-
-

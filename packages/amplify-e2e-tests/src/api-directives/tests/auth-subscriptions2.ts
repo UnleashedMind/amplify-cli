@@ -1,15 +1,16 @@
 //schema
 export const schema = `
 #error: remove duplicate @model in doc
-#error: there's the ending "{"
+#error: there's the ending "{" 
 #change: changed "Admin" to "admin"
-type Post @model @auth(rules: [{ allow: groups, groups: ["admin"] }]) {
+type Post @model
+@auth(rules: [ {allow: groups, groups: ["admin"]} ])
+{
   id: ID!
   owner: String
   postname: String
   content: String
-}
-`
+}`
 
 
 //subscriptions
@@ -20,29 +21,32 @@ subscription OnCreatePost {
     postname
     content
   }
-}
-`
+}`
 export const mutations_subscription = [
 `#extra
 mutation CreatePost {
-  createPost(input: { postname: "post1", content: "post1 content" }) {
-    id
-    owner
-    postname
-    content
-  }
-}
-`,
+    createPost(input: { 
+        postname: "post1",
+        content: "post1 content"
+    }) {
+        id
+        owner 
+        postname
+        content
+    }
+}`,
 `#extra
 mutation CreatePost {
-  createPost(input: { postname: "post2", content: "post2 content" }) {
-    id
-    owner
-    postname
-    content
-  }
-}
-`,
+    createPost(input: { 
+        postname: "post2",
+        content: "post2 content"
+    }) {
+        id
+        owner 
+        postname
+        content
+    }
+}`,
 ]
 export const expected_result_subscription = [
     {
@@ -58,5 +62,3 @@ export const expected_result_subscription = [
         }
     }
 ]
-
-

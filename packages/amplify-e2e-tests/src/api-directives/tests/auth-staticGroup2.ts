@@ -1,18 +1,18 @@
 //schema
 export const schema = `
 #change: changed "Admin" to "admin"
-type Draft
-  @model
-  @auth(
-    rules: [
-      # Defaults to use the "owner" field.
-      { allow: owner }
-      # Authorize the update mutation and both queries. Use "queries: null" to disable auth for queries.
-      { allow: owner, ownerField: "editors", operations: [update] }
-      # Admin users can access any operation.
-      { allow: groups, groups: ["admin"] }
-    ]
-  ) {
+type Draft @model
+  @auth(rules: [
+
+    # Defaults to use the "owner" field.
+    { allow: owner },
+
+    # Authorize the update mutation and both queries. Use 'queries: null' to disable auth for queries.
+    { allow: owner, ownerField: "editors", operations: [update] },
+
+    # Admin users can access any operation.
+    { allow: groups, groups: ["admin"] }
+  ]) {
   id: ID!
   title: String!
   content: String
@@ -20,22 +20,23 @@ type Draft
   editors: [String]!
 }
 
-#staticGroup2
-`
+#staticGroup2`
 //mutations
 export const mutation1 = `
-mutation CreateDraft($input: CreateDraftInput!, $condition: ModelDraftConditionInput) {
-  createDraft(input: $input, condition: $condition) {
-    id
-    title
-    content
-    owner
-    editors
-    createdAt
-    updatedAt
-  }
-}
-`
+mutation CreateDraft(
+    $input: CreateDraftInput!
+    $condition: ModelDraftConditionInput
+  ) {
+    createDraft(input: $input, condition: $condition) {
+      id
+      title
+      content
+      owner
+      editors
+      createdAt
+      updatedAt
+    }
+}`
 export const input_mutation1 = {
     "input": {
         "id": "1",
@@ -64,18 +65,20 @@ export const expected_result_mutation1 = {
 }
 
 export const mutation2 = `
-mutation UpdateDraft($input: UpdateDraftInput!, $condition: ModelDraftConditionInput) {
-  updateDraft(input: $input, condition: $condition) {
-    id
-    title
-    content
-    owner
-    editors
-    createdAt
-    updatedAt
-  }
-}
-`
+ mutation UpdateDraft(
+    $input: UpdateDraftInput!
+    $condition: ModelDraftConditionInput
+  ) {
+    updateDraft(input: $input, condition: $condition) {
+      id
+      title
+      content
+      owner
+      editors
+      createdAt
+      updatedAt
+    }
+  }`
 export const input_mutation2 = {
     "input": {
         "id": "1",
@@ -102,7 +105,3 @@ export const expected_result_mutation2 = {
         }
     }
 }
-
-
-
-

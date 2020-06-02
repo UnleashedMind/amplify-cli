@@ -125,6 +125,3 @@ export const expected_result_query = {
         ]
     }
 }
-
-
-

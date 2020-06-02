@@ -6,20 +6,22 @@ type Post @model(queries: { get: "post" }, mutations: null, subscriptions: null)
   tags: [String!]!
 }
 
-##model/usage2
-`
+##model/usage2`
 //mutations
 export const mutation = `
 mutation CreatePost {
-  createPost(input: { id: "1", title: "title1", tags: ["tag1"] }) {
-    id
-    title
-    tags
-    createdAt
-    updatedAt
-  }
-}
-`
+    createPost(input: {
+      id: "1",
+      title: "title1",
+      tags: ["tag1"]
+    }) {
+      id
+      title
+      tags
+      createdAt
+      updatedAt
+    }
+}`
 export const expected_result_mutation = {
     "errors": [
         {
@@ -31,16 +33,15 @@ export const expected_result_mutation = {
 
 //queries
 export const query = `
-query Post {
-  post(id: "1") {
-    id
-    title
-    tags
-    createdAt
-    updatedAt
-  }
-}
-`
+ query Post {
+    post(id: "1") {
+      id
+      title
+      tags
+      createdAt
+      updatedAt
+    }
+  }`
 export const expected_result_query = {
     "data": {
         "post": null
