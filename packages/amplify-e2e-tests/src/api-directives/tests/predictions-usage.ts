@@ -11,13 +11,12 @@ import { updateSchemaInTestProject } from '../common';
 
 export async function runTest(projectDir: string, testModule: any) {
   const imageFilePath = path.join(__dirname, 'predictions-usage-image.jpg');
-  const queryFilePath = path.join(__dirname, 'query.graphql');
-
+  
   await addAuth(projectDir);
   await addS3Storage(projectDir);
   await addApiWithAPIKeyAuthType(projectDir);
   updateSchemaInTestProject(projectDir, testModule.schema);
-  
+
   await amplifyPushWithoutCodeGen(projectDir);
 
   const awsconfig = configureAmplify(projectDir);
@@ -29,8 +28,6 @@ export async function runTest(projectDir: string, testModule: any) {
 
   const apiKey = getApiKey(projectDir);
   const appSyncClient = getConfiguredAppsyncClientAPIKeyAuth(awsconfig.aws_appsync_graphqlEndpoint, awsconfig.aws_appsync_region, apiKey);
-
-  const query = fs.readFileSync(queryFilePath).toString();
 
   const result = await appSyncClient.query({
     query: gql(query),

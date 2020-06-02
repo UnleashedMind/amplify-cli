@@ -1,21 +1,20 @@
-import path from 'path';
 import { addApiWithAPIKeyAuthType, amplifyPushWithoutCodeGen } from '../workflows';
 
 import { getApiKey, configureAmplify, getConfiguredAppsyncClientAPIKeyAuth } from '../authHelper';
 
-import { testMutations, testQueries } from '../common';
+import { updateSchemaInTestProject, testMutations, testQueries } from '../common';
 
-export async function runTest(projectDir: string) {
-  const schemaFilePath = path.join(__dirname, 'input.graphql');
-  await addApiWithAPIKeyAuthType(projectDir, schemaFilePath);
+export async function runTest(projectDir: string, testModule: any) {
+  await addApiWithAPIKeyAuthType(projectDir);
+  updateSchemaInTestProject(projectDir, testModule.schema);
   await amplifyPushWithoutCodeGen(projectDir);
 
   const awsconfig = configureAmplify(projectDir);
   const apiKey = getApiKey(projectDir);
   const appSyncClient = getConfiguredAppsyncClientAPIKeyAuth(awsconfig.aws_appsync_graphqlEndpoint, awsconfig.aws_appsync_region, apiKey);
 
-  await testMutations(__dirname, appSyncClient);
-  await testQueries(__dirname, appSyncClient);
+  await testMutations(testModule, appSyncClient);
+  await testQueries(testModule, appSyncClient);
 }
 
 //schema

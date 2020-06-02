@@ -1,13 +1,11 @@
 //handle subscription from another user
-
 import { runAutTest } from '../common';
 
-export async function runTest(projectDir: string) {
+export async function runTest(projectDir: string, testModule: any) {
   //test owner
-  await runAutTest(projectDir, __dirname);
-  //test other user's ability to subscribe
+  await runAutTest(projectDir, testModule);
+  //todo: test other user's ability to subscribe
 }
-
 //schema
 export const schema = `
 #change: "Admins" to "admin"

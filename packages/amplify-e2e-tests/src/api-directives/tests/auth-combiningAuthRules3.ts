@@ -1,7 +1,7 @@
 import { runMultiAutTest } from '../common';
 
-export async function runTest(projectDir: string) {
-  await runMultiAutTest(projectDir, __dirname);
+export async function runTest(projectDir: string, testModule: any) {
+  await runMultiAutTest(projectDir, testModule);
 }
 
 //schema
