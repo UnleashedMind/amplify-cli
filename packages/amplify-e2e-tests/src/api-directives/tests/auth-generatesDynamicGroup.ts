@@ -6,7 +6,8 @@ type Post @model @auth(rules: [{ allow: groups, groupsField: "groups" }]) {
   groups: String
 }
 
-##generatesDynamicGroup`
+##auth generatesDynamicGroup`
+
 //mutations
 export const mutation1 = `
 mutation CreatePost(

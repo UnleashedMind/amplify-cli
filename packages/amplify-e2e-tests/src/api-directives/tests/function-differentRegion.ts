@@ -1,15 +1,17 @@
 //special handling needed becasue we need to set up the function in a differnt region
 import path from 'path';
 import fs from 'fs-extra';
-import { getProjectMeta, deleteProject, deleteProjectDir } from 'amplify-e2e-core';
 
 import {
-  addApiWithAPIKeyAuthType,
-  amplifyPushWithoutCodeGen,
-  amplifyPush,
-  addSimpleFunction,
-  initProjectWithAccessKeyAndRegion,
-} from '../workflows';
+    getProjectMeta, 
+    deleteProject, 
+    deleteProjectDir,
+    addApiWithAPIKeyAuthType,
+    amplifyPushWithoutCodeGen,
+    amplifyPushWithoutGraphQLAPI,
+    addSimpleFunction,
+    initProjectWithAccessKeyAndRegion,
+} from 'amplify-e2e-core';
 
 import { getApiKey, configureAmplify, getConfiguredAppsyncClientAPIKeyAuth } from '../authHelper';
 
@@ -59,7 +61,7 @@ async function setupFunction(functionProjectDirPath: string, functionRegion: str
 
   fs.writeFileSync(amplifyFunctionIndexFilePath, func);
 
-  await amplifyPush(functionProjectDirPath);
+  await amplifyPushWithoutGraphQLAPI(functionProjectDirPath);
 
   const amplifyMeta = getProjectMeta(functionProjectDirPath);
 

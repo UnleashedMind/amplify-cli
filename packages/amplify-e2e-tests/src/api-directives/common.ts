@@ -8,7 +8,7 @@ import {
   addApiWithAPIKeyCognitoUserPoolIAMAuthTypes,
   amplifyPushWithoutCodeGen,
   updateAuthAddFirstUserGroup,
-} from './workflows';
+} from 'amplify-e2e-core';
 
 import {
   setupUser,
@@ -173,12 +173,12 @@ export async function testQuery(appSyncClient: any, query: any, queryInput?: any
       fetchPolicy: 'no-cache',
       variables: queryInput,
     });
-    console.log('///actual query result', result)
+    console.log('////actual query result', result)
     if (!checkResult(result, queryResult)) {
       resultMatch = false;
     }
   } catch (err) {
-    console.log('///actual query err', err)
+    console.log('////actual query err', err)
     if (!checkError(err, queryResult)) {
       errorMatch = false;
     }
@@ -257,7 +257,7 @@ export async function testSubscription(
   await runInSequential(mutationTasks);
 
   await new Promise(res => setTimeout(() => res(), 4000));
-  
+
   console.log('////actual subscription received', received)
 
   sub.unsubscribe();

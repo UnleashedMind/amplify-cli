@@ -7,7 +7,7 @@ import {
   addApiWithCognitoUserPoolAuthTypeWhenAuthExists,
   updateAuthAddFirstUserGroup,
   addAuth,
-} from '../workflows';
+} from 'amplify-e2e-core';
 
 import { updateFunctionNameInSchema } from '../functionTester';
 

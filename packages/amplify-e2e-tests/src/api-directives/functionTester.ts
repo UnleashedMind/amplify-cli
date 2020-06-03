@@ -1,7 +1,7 @@
 import path from 'path';
 import uuid from 'uuid';
 import fs from 'fs-extra';
-import { amplifyPushWithoutCodeGen, addSimpleFunction, addApiWithAPIKeyAuthType } from './workflows';
+import { amplifyPushWithoutCodeGen, addSimpleFunction, addApiWithAPIKeyAuthType } from  'amplify-e2e-core';
 
 import { configureAmplify, getApiKey, getConfiguredAppsyncClientAPIKeyAuth } from './authHelper';
 

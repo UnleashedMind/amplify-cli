@@ -916,3 +916,81 @@ export function addAuthWithMaxOptions(cwd: string, settings: any) {
       });
   });
 }
+
+//add default auth
+export function addAuth(projectDir: string) {
+  return new Promise((resolve, reject) => {
+    spawn(getCLIPath(), ['add', 'auth'], { cwd: projectDir, stripColors: true })
+      .wait('Do you want to use the default authentication and security configuration')
+      .sendCarriageReturn()
+      .wait('How do you want users to be able to sign in')
+      .sendCarriageReturn()
+      .wait('Do you want to configure advanced settings')
+      .sendCarriageReturn()
+      .wait('"amplify publish" will build all your local backend and frontend resources')
+      .run((err: Error) => {
+        if (!err) {
+          resolve();
+        } else {
+          reject(err);
+        }
+      });
+  });
+}
+
+//update auth to add user group
+export function updateAuthAddFirstUserGroup(projectDir: string, groupName: string) {
+  return new Promise((resolve, reject) => {
+    spawn(getCLIPath(), ['update', 'auth'], { cwd: projectDir, stripColors: true })
+      .wait('What do you want to do?')
+      .send(KEY_DOWN_ARROW)
+      .send(KEY_DOWN_ARROW)
+      .sendCarriageReturn()
+      .wait('Provide a name for your user pool group')
+      .send(groupName)
+      .sendCarriageReturn()
+      .wait('Do you want to add another User Pool Group')
+      .sendCarriageReturn()
+      .wait('Sort the user pool groups in order of preference')
+      .sendCarriageReturn()
+      .wait('"amplify publish" will build all your local backend and frontend resources')
+      .run((err: Error) => {
+        if (!err) {
+          resolve();
+        } else {
+          reject(err);
+        }
+      });
+  });
+}
+
+//update auth to add additional user group
+export function updateAuthAddAdditionalUserGroup(projectDir: string, groupName: string) {
+  return new Promise((resolve, reject) => {
+    spawn(getCLIPath(), ['update', 'auth'], { cwd: projectDir, stripColors: true })
+      .wait('What do you want to do?')
+      .send(KEY_DOWN_ARROW)
+      .send(KEY_DOWN_ARROW)
+      .sendCarriageReturn()
+      .wait('Select any user pool groups you want to delete')
+      .sendCarriageReturn()
+      .wait('Do you want to add another User Pool Group')
+      .send('y')
+      .sendCarriageReturn()
+      .wait('Provide a name for your user pool group')
+      .send(groupName)
+      .sendCarriageReturn()
+      .wait('Do you want to add another User Pool Group')
+      .sendCarriageReturn()
+      .wait('Sort the user pool groups in order of preference')
+      .sendCarriageReturn()
+      .wait('"amplify publish" will build all your local backend and frontend resources')
+      .run((err: Error) => {
+        if (!err) {
+          resolve();
+        } else {
+          reject(err);
+        }
+      });
+  });
+}

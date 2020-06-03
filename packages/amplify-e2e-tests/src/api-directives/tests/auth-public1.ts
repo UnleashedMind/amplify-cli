@@ -1,4 +1,4 @@
-import { addApiWithAPIKeyAuthType, amplifyPushWithoutCodeGen } from '../workflows';
+import { addApiWithAPIKeyAuthType, amplifyPushWithoutCodeGen } from 'amplify-e2e-core';
 
 import { getApiKey, configureAmplify, getConfiguredAppsyncClientAPIKeyAuth } from '../authHelper';
 

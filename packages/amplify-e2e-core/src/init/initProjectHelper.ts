@@ -205,3 +205,46 @@ export function initNewEnvWithProfile(cwd: string, s: { envName: string }) {
       });
   });
 }
+
+export function initProjectWithAccessKeyAndRegion(cwd: string, accessKeyId: string, secretAccessKey: string, region: string) {
+  return new Promise((resolve, reject) => {
+    spawn(getCLIPath(), ['init'], { cwd, stripColors: true })
+      .wait('Enter a name for the project')
+      .sendCarriageReturn()
+      .wait('Enter a name for the environment')
+      .sendCarriageReturn() //dev
+      .wait('Choose your default editor:')
+      .sendCarriageReturn()
+      .wait("Choose the type of app that you're building")
+      .sendCarriageReturn()
+      .wait('What javascript framework are you using')
+      .sendCarriageReturn()
+      .wait('Source Directory Path:')
+      .sendCarriageReturn()
+      .wait('Distribution Directory Path:')
+      .sendCarriageReturn()
+      .wait('Build Command:')
+      .sendCarriageReturn()
+      .wait('Start Command:')
+      .sendCarriageReturn()
+      .wait('Using default provider  awscloudformation')
+      .wait('Do you want to use an AWS profile?')
+      .sendLine('n')
+      .pauseRecording()
+      .wait('accessKeyId')
+      .sendLine(accessKeyId)
+      .wait('secretAccessKey')
+      .sendLine(secretAccessKey)
+      .wait('region')
+      .sendLine(region)
+      .resumeRecording()
+      .wait('Try "amplify add api" to create a backend API and then "amplify publish" to deploy everything')
+      .run((err: Error) => {
+        if (!err) {
+          resolve();
+        } else {
+          reject(err);
+        }
+      });
+  });
+}

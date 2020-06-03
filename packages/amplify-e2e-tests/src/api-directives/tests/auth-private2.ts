@@ -1,4 +1,4 @@
-import { addApiWithIAMAuthType, amplifyPushWithoutCodeGen } from '../workflows';
+import { addApiWithIAMAuthType, amplifyPushWithoutCodeGen } from 'amplify-e2e-core';
 
 import { configureAmplify, getConfiguredAppsyncClientIAMAuth } from '../authHelper';
 

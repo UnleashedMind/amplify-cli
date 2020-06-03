@@ -140,6 +140,80 @@ const coreFunction = (
   });
 };
 
+
+//add function
+export function addSimpleFunction(projectDir: string, functionName: string) {
+  return new Promise((resolve, reject) => {
+    spawn(getCLIPath(), ['add', 'function'], { cwd: projectDir, stripColors: true })
+      .wait('Provide a friendly name for your resource to be used as a label for this category in the project:')
+      .sendLine(functionName)
+      .wait('Provide the AWS Lambda function name:')
+      .sendLine(functionName)
+      .wait('Choose the function runtime that you want to use:')
+      .sendCarriageReturn()
+      .wait('Choose the function template that you want to use:')
+      .send(KEY_DOWN_ARROW) //Hellow world
+      .sendCarriageReturn()
+      .wait('Do you want to access other resources created in this project from your Lambda function?')
+      .sendLine('n')
+      .wait('Do you want to invoke this function on a recurring schedule?')
+      .sendLine('N')
+      .wait('Do you want to edit the local lambda function now?')
+      .sendLine('n')
+      .wait('"amplify publish" builds all of your local backend and front-end resources')
+      .run((err: Error) => {
+        if (!err) {
+          resolve();
+        } else {
+          reject(err);
+        }
+      });
+  });
+}
+
+
+export function addSimpleFunctionWithAuthAccess(projectDir: string, functionName: string) {
+  return new Promise((resolve, reject) => {
+    spawn(getCLIPath(), ['add', 'function'], { cwd: projectDir, stripColors: true })
+      .wait('Provide a friendly name for your resource to be used as a label for this category in the project:')
+      .sendLine(functionName)
+      .wait('Provide the AWS Lambda function name:')
+      .sendLine(functionName)
+      .wait('Choose the function runtime that you want to use:')
+      .sendCarriageReturn()
+      .wait('Choose the function template that you want to use:')
+      .send(KEY_DOWN_ARROW) //Hellow world
+      .sendCarriageReturn()
+      .wait('Do you want to access other resources created in this project from your Lambda function?')
+      .sendCarriageReturn() //Y
+      .wait('Select the category')
+      .send(' ') //auth
+      .sendCarriageReturn()
+      .wait('Select the operations you want to permit for')
+      .send(' ') //create
+      .send(KEY_DOWN_ARROW)
+      .send(' ') //read
+      .send(KEY_DOWN_ARROW)
+      .send(' ') //update
+      .send(KEY_DOWN_ARROW)
+      .send(' ') //deleate
+      .sendCarriageReturn()
+      .wait('Do you want to invoke this function on a recurring schedule?')
+      .sendLine('N')
+      .wait('Do you want to edit the local lambda function now?')
+      .sendLine('n')
+      .wait('"amplify publish" builds all of your local backend and front-end resources')
+      .run((err: Error) => {
+        if (!err) {
+          resolve();
+        } else {
+          reject(err);
+        }
+      });
+  });
+}
+
+
 export const addFunction = (
   cwd: string,
   settings: any,

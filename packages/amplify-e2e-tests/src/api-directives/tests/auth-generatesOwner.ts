@@ -5,7 +5,8 @@ type Post @model @auth(rules: [{allow: owner}]) {
   title: String!
 }
 
-##generatesOwner`
+##auth generatesOwner`
+
 //mutations
 export const mutation1 = `
 mutation CreatePost(

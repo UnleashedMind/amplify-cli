@@ -22,6 +22,7 @@ type Employee @model
 }
 
 ##fieldLevelAuth8`
+
 //mutations
 export const mutation = `
 #error: title and content are not in the Employee type
