@@ -353,3 +353,41 @@ export function addS3WithTrigger(cwd: string, settings: any) {
       });
   });
 }
+
+export function addS3Storage(projectDir: string) {
+  return new Promise((resolve, reject) => {
+    spawn(getCLIPath(), ['add', 'storage'], { cwd: projectDir, stripColors: true })
+      .wait('Please select from one of the below mentioned services:')
+      .sendCarriageReturn()
+      .wait('Please provide a friendly name for your resource that will be used to label this category in the project:')
+      .sendCarriageReturn()
+      .wait('Please provide bucket name:')
+      .sendCarriageReturn()
+      .wait('Who should have access:')
+      .send(KEY_DOWN_ARROW) //'Auth and guest users'
+      .sendCarriageReturn()
+      .wait('What kind of access do you want for Authenticated users?')
+      .send(' ') //create/update
+      .send(KEY_DOWN_ARROW)
+      .send(' ') //red
+      .send(KEY_DOWN_ARROW)
+      .send(' ') //read
+      .sendCarriageReturn()
+      .wait('What kind of access do you want for Guest users?')
+      .send(' ') //create/update
+      .send(KEY_DOWN_ARROW)
+      .send(' ') //read
+      .send(KEY_DOWN_ARROW)
+      .send(' ') //red
+      .sendCarriageReturn()
+      .wait('Do you want to add a Lambda Trigger for your S3 Bucket?')
+      .sendCarriageReturn() //"No"
+      .run((err: Error) => {
+        if (!err) {
+          resolve();
+        } else {
+          reject(err);
+        }
+      });
+  });
+}
