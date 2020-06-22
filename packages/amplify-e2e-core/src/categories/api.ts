@@ -485,7 +485,7 @@ export function addApiWithIAMAuthType(projectDir: string) {
   });
 }
 
-export function addApiWithOIDCAuthType(
+export function addApiWithOIDCAndIAMAuthType(
   projectDir: string,
   oidcProviderName: string,
   oidcProviderDomain: string,
@@ -507,7 +507,7 @@ export function addApiWithOIDCAuthType(
       .wait('Enter a name for the OpenID Connect provider')
       .send(oidcProviderName)
       .sendCarriageReturn()
-      .wait('Enter the OpenID Connect provider domain (Issuer URL)')
+      .wait('Enter the OpenID Connect provider domain')
       .send(oidcProviderDomain)
       .sendCarriageReturn()
       .wait('Enter the Client Id from your OpenID Client Connect application (optional)')
@@ -520,7 +520,18 @@ export function addApiWithOIDCAuthType(
       .send(ttlaAuthInMillisecond)
       .sendCarriageReturn()
       .wait('Do you want to configure advanced settings for the GraphQL API')
+      .send(KEY_DOWN_ARROW)
       .sendCarriageReturn()
+      .wait('Configure additional auth types')
+      .send('y')
+      .sendCarriageReturn()
+      .wait('Choose the additional authorization types you want to configure for the API')
+      .send(KEY_DOWN_ARROW)
+      .send(KEY_DOWN_ARROW)
+      .send(' ')
+      .sendCarriageReturn()//IAM
+      .wait('Configure conflict detection')
+      .sendCarriageReturn()//N
       .wait('Do you have an annotated GraphQL schema?')
       .sendLine('n')
       .wait('Do you want a guided schema creation')

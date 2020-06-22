@@ -72,11 +72,20 @@ export function getConfiguredAppsyncClientCognitoAuth(url: string, region: strin
     url,
     region,
     disableOffline: true,
-    offlineConfig: {
-      keyPrefix: 'userPools',
-    },
     auth: {
       type: AUTH_TYPE.AMAZON_COGNITO_USER_POOLS,
+      jwtToken: user.signInUserSession.idToken.jwtToken,
+    },
+  });
+}
+
+export function getConfiguredAppsyncClientOIDCAuth(url: string, region: string, user: any): any {
+  return new AWSAppSyncClient({
+    url,
+    region,
+    disableOffline: true,
+    auth: {
+      type: AUTH_TYPE.OPENID_CONNECT,
       jwtToken: user.signInUserSession.idToken.jwtToken,
     },
   });
@@ -176,4 +185,26 @@ export async function authenticateUser(user: any, details: any, realPw: string) 
       },
     });
   });
+}
+
+export function getUserPoolIssUrl(projectDir: string){
+  const amplifyMeta = getProjectMeta(projectDir);
+  const cognitoResource = Object.values(amplifyMeta.auth).find((res: any) => {
+    return res.service === 'Cognito';
+  }) as any;
+
+  const userPoolId =  cognitoResource.output.UserPoolId;
+  const region = amplifyMeta.providers.awscloudformation.Region;
+
+  return `https://cognito-idp.${region}.amazonaws.com/${userPoolId}/`;
+}
+
+
+export function getAppClientIDWeb(projectDir: string){
+  const amplifyMeta = getProjectMeta(projectDir);
+  const cognitoResource = Object.values(amplifyMeta.auth).find((res: any) => {
+    return res.service === 'Cognito';
+  }) as any;
+
+  return  cognitoResource.output.AppClientIDWeb;
 }

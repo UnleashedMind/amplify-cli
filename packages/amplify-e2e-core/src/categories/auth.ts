@@ -1,4 +1,5 @@
 import { nspawn as spawn, KEY_DOWN_ARROW, getCLIPath, getEnvVars } from '../../src';
+import { KEY_UP_ARROW } from '../utils';
 
 export function addAuthWithDefault(cwd: string, settings: any) {
   return new Promise((resolve, reject) => {
@@ -926,6 +927,37 @@ export function addAuth(projectDir: string) {
       .wait('How do you want users to be able to sign in')
       .sendCarriageReturn()
       .wait('Do you want to configure advanced settings')
+      .sendCarriageReturn()
+      .wait('"amplify publish" will build all your local backend and frontend resources')
+      .run((err: Error) => {
+        if (!err) {
+          resolve();
+        } else {
+          reject(err);
+        }
+      });
+  });
+}
+
+//add default auth with pre token generation trigger
+export function addAuthWithPreTokenGenerationTrigger(projectDir: string) {
+  return new Promise((resolve, reject) => {
+    spawn(getCLIPath(), ['add', 'auth'], { cwd: projectDir, stripColors: true })
+      .wait('Do you want to use the default authentication and security configuration')
+      .sendCarriageReturn()
+      .wait('How do you want users to be able to sign in')
+      .sendCarriageReturn()
+      .wait('Do you want to configure advanced settings')
+      .send(KEY_DOWN_ARROW)
+      .sendCarriageReturn()
+      .wait('What attributes are required for signing up?')
+      .sendCarriageReturn()
+      .wait('Do you want to enable any of the following capabilities')
+      .send(KEY_UP_ARROW) //Override ID Token Claims
+      .send(' ')
+      .sendCarriageReturn()
+      .wait('Do you want to edit your alter-claims function now')
+      .send('n')
       .sendCarriageReturn()
       .wait('"amplify publish" will build all your local backend and frontend resources')
       .run((err: Error) => {
