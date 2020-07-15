@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.21.3](https://github.com/aws-amplify/amplify-cli/compare/amplify-category-function@2.21.2...amplify-category-function@2.21.3) (2020-07-14)
+
+
+### Bug Fixes
+
+* update function not loading previous selections ([#4823](https://github.com/aws-amplify/amplify-cli/issues/4823)) ([20a8dec](https://github.com/aws-amplify/amplify-cli/commit/20a8dec9b4c51239760846ec94a71dc528009498))
+
+
+
+
+
+## [2.21.2](https://github.com/aws-amplify/amplify-cli/compare/amplify-category-function@2.21.1...amplify-category-function@2.21.2) (2020-07-11)
+
+
+### Bug Fixes
+
+* **cli:** remove unnecessary stack trace log when adding services ([#4610](https://github.com/aws-amplify/amplify-cli/issues/4610)) ([5bee574](https://github.com/aws-amplify/amplify-cli/commit/5bee574bbcd956c032e7714b0813aedd7914a6cb))
+
+
+### Reverts
+
+* Revert problematic PRs (#4803) ([7f38d81](https://github.com/aws-amplify/amplify-cli/commit/7f38d81ef2f890c25d39b02407c5255c8760c511)), closes [#4803](https://github.com/aws-amplify/amplify-cli/issues/4803) [#4796](https://github.com/aws-amplify/amplify-cli/issues/4796) [#4576](https://github.com/aws-amplify/amplify-cli/issues/4576) [#4575](https://github.com/aws-amplify/amplify-cli/issues/4575) [#4610](https://github.com/aws-amplify/amplify-cli/issues/4610)
+
+
+
+
+
 ## [2.21.1](https://github.com/aws-amplify/amplify-cli/compare/amplify-category-function@2.21.0...amplify-category-function@2.21.1) (2020-07-09)
 
 
