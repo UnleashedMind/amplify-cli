@@ -162,16 +162,15 @@ export function initProjectWithAccessKey(cwd: string, settings: { accessKeyId: s
       .resumeRecording()
       .wait('region');
 
-      singleSelect(chain, s.region, amplifyRegions);
+    singleSelect(chain, s.region, amplifyRegions);
 
-      chain.wait('Try "amplify add api" to create a backend API and then "amplify publish" to deploy everything')
-      .run((err: Error) => {
-        if (!err) {
-          resolve();
-        } else {
-          reject(err);
-        }
-      });
+    chain.wait('Try "amplify add api" to create a backend API and then "amplify publish" to deploy everything').run((err: Error) => {
+      if (!err) {
+        resolve();
+      } else {
+        reject(err);
+      }
+    });
   });
 }
 
@@ -189,16 +188,17 @@ export function initNewEnvWithAccessKey(cwd: string, s: { envName: string; acces
       .sendLine(s.accessKeyId)
       .wait('secretAccessKey')
       .sendLine(s.secretAccessKey)
-      .wait('region')
-      .sendLine('us-east-2')
-      .wait('Try "amplify add api" to create a backend API and then "amplify publish" to deploy everything')
-      .run((err: Error) => {
-        if (!err) {
-          resolve();
-        } else {
-          reject(err);
-        }
-      });
+      .wait('region');
+
+    singleSelect(chain, process.env.CLI_REGION, amplifyRegions);
+
+    chain.wait('Try "amplify add api" to create a backend API and then "amplify publish" to deploy everything').run((err: Error) => {
+      if (!err) {
+        resolve();
+      } else {
+        reject(err);
+      }
+    });
   });
 }
 
