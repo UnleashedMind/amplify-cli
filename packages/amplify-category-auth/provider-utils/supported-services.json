@@ -184,6 +184,12 @@
         ]
       },
       {
+        "key": "oidcAppId",
+        "prefix": " \n You've opted to allow users to authenticate via OpenID Connect.  If you haven't already, you'll need to go to your OpenID connect provider and create an App ID. \n",
+        "question": "Enter your OIDC Client ID for your identity pool: ",
+        "required": true
+      },
+      {
         "key": "googleIos",
         "prefix": " \n You've opted to allow users to authenticate via Google within an iOS project.  If you haven't already, you'll need to go to https://developers.google.com/identity and create an iOS Client ID. \n",
         "question": "Enter your Google iOS Client ID for your identity pool: ",
@@ -1104,6 +1110,101 @@
             "operator": "includes"
           }
         ]
+      },
+      {
+        "key": "oidcAppIdUserPool",
+        "prefix": " \n You've opted to allow users to authenticate via OpenID Connect.  If you haven't already, you'll need to go to your OIDC provider and create an App ID. \n",
+        "question": "Enter your OIDC App ID for your OAuth flow: ",
+        "required": true,
+        "andConditions": [
+          {
+            "key": "authProvidersUserPool",
+            "value": "OIDC",
+            "operator": "includes"
+          }
+        ]
+      },
+      {
+        "key": "oidcAppSecretUserPool",
+        "question": "Enter your OIDC App Secret for your OAuth flow: ",
+        "required": true,
+        "andConditions": [
+          {
+            "key": "authProvidersUserPool",
+            "value": "OIDC",
+            "operator": "includes"
+          }
+        ]
+      },
+      {
+        "key": "oidcAppOIDCIssuer",
+        "question": "Enter your OIDC Issuer url: ",
+        "required": true,
+        "andConditions": [
+          {
+            "key": "authProvidersUserPool",
+            "value": "OIDC",
+            "operator": "includes"
+          }
+        ],
+        "validation": {
+          "operator": "regex",
+          "value": "^(((?!http://(?!localhost))([a-zA-Z0-9.]{1,})://([a-zA-Z0-9-._~:?#@!$&'()*+,;=/]{1,}))|(?!http)(?!https)([a-zA-Z0-9.]{1,})://)$",
+          "onErrorMsg": "The value must be a valid URI with a trailing forward slash. HTTPS must be used instead of HTTP unless you are using localhost."
+        }
+      },
+      {
+        "key": "oidcAppOIDCAttributesRequestMethod",
+        "question": "Select your OIDC Attributes Request Method: ",
+        "type": "list",
+        "default": "GET",
+        "map": "attributesRequestMethod",
+        "required": true,
+        "andConditions": [
+          {
+            "key": "authProvidersUserPool",
+            "value": "OIDC",
+            "operator": "includes"
+          }
+        ]
+      },
+      {
+        "key": "oidcAppOIDCAuthorizeScopes",
+        "question": "Enter authorize scopes used by your application during authentication to authorize access to a user's details, like name and picture as a JSON array (ex. [\"openid\",\"test\"]): ",
+        "type": "input",
+        "required": false,
+        "default": "[\"openid\"]",
+        "andConditions": [
+          {
+            "key": "authProvidersUserPool",
+            "value": "OIDC",
+            "operator": "includes"
+          }
+        ],
+        "validation": {
+          "operator": "regex",
+          "value": "\\[\\]|^\\[((\"(\\w*\\s*)+\")(\\,\"(\\w*\\s*)+\")*)\\]",
+          "onErrorMsg": "The value must be a valid JSON array without spaces."
+        }
+      },
+      {
+        "key": "oidcAppOIDCAttributesMapping",
+        "question": "Enter the expected attributes mapping between your OIDC provider and your Cognito user as a JSON (ex. {\"email\":\"EMAIL\",\"username\":\"sub\"}): ",
+        "type": "input",
+        "required": false,
+        "default": "{}",
+        "andConditions": [
+          {
+            "key": "authProvidersUserPool",
+            "value": "OIDC",
+            "operator": "includes"
+          }
+        ],
+        "validation": {
+          "operator": "regex",
+          "value": "{}|^({(\"\\w*\\s*\"):(\"\\w*\\s*\"))(\\,(\"\\w*\\s*\"):(\"\\w*\\s*\"))*}",
+          "onErrorMsg": "The value must be a valid JSON array without spaces."
+        }
       },
       {
         "key": "loginwithamazonAppIdUserPool",
