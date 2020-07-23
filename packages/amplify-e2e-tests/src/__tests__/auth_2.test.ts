@@ -1,4 +1,5 @@
 import * as fs from 'fs-extra';
+
 import {
   initJSProjectWithProfile,
   initAndroidProjectWithProfile,
@@ -6,6 +7,7 @@ import {
   deleteProject,
   amplifyPushAuth,
   amplifyPush,
+  getBackendAmplifyMeta,
 } from 'amplify-e2e-core';
 import {
   addAuthWithDefault,
@@ -46,6 +48,28 @@ describe('amplify add auth...', () => {
   afterEach(async () => {
     await deleteProject(projRoot);
     deleteProjectDir(projRoot);
+  });
+
+  it('...should init a project and add auth with defaults and push, then remove auth and push should clean up trust relationship conditions', async () => {
+    await initJSProjectWithProfile(projRoot, defaultsSettings);
+    await addAuthWithDefault(projRoot, {});
+    await amplifyPushAuth(projRoot);
+
+    const amplifyMeta = getBackendAmplifyMeta(projRoot);
+    const { AuthRoleName, UnauthRoleName } = amplifyMeta.providers.awscloudformation;
+    const cognitoResource = Object.values(amplifyMeta.auth).find((res: any) => {
+      return res.service === 'Cognito';
+    }) as any;
+    const idpId = cognitoResource.output.IdentityPoolId;
+
+    expect(AuthRoleName).toHaveAssumeRolePolicyConditionMatchingIdpId(idpId);
+    expect(UnauthRoleName).toHaveAssumeRolePolicyConditionMatchingIdpId(idpId);
+
+    await removeAuthWithDefault(projRoot);
+    await amplifyPushAuth(projRoot);
+
+    expect(AuthRoleName).not.toHaveAssumeRolePolicyConditionMatchingIdpId(idpId);
+    expect(UnauthRoleName).not.toHaveAssumeRolePolicyConditionMatchingIdpId(idpId);
   });
 
   it('...should init a project with only user pool and no identity pool', async () => {
