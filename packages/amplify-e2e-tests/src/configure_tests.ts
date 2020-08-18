@@ -2,7 +2,7 @@ import { amplifyConfigure as configure } from 'amplify-e2e-core';
 import { isCI, setTestAccountCredentials } from 'amplify-e2e-core';
 
 async function setupAmplify() {
-  if (isCI()) {
+  if (true){//isCI()) {
     const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
     const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
     const REGION = process.env.CLI_REGION;

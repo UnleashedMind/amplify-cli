@@ -10,8 +10,8 @@ describe('api directives @auth batch 1', () => {
   });
 
   afterEach(async () => {
-    await deleteProject(projectDir);
-    deleteProjectDir(projectDir);
+    // await deleteProject(projectDir);
+    // deleteProjectDir(projectDir);
   });
 
   it('auth owner1', async () => {
@@ -19,18 +19,18 @@ describe('api directives @auth batch 1', () => {
     expect(testresult).toBeTruthy();
   });
 
-  it('auth owner2', async () => {
-    const testresult = await testSchema(projectDir, 'auth', 'owner2');
-    expect(testresult).toBeTruthy();
-  });
+  // it('auth owner2', async () => {
+  //   const testresult = await testSchema(projectDir, 'auth', 'owner2');
+  //   expect(testresult).toBeTruthy();
+  // });
 
-  it('auth owner3', async () => {
-    const testresult = await testSchema(projectDir, 'auth', 'owner3');
-    expect(testresult).toBeTruthy();
-  });
+  // it('auth owner3', async () => {
+  //   const testresult = await testSchema(projectDir, 'auth', 'owner3');
+  //   expect(testresult).toBeTruthy();
+  // });
 
-  it('auth owner4', async () => {
-    const testresult = await testSchema(projectDir, 'auth', 'owner4');
-    expect(testresult).toBeTruthy();
-  });
+  // it('auth owner4', async () => {
+  //   const testresult = await testSchema(projectDir, 'auth', 'owner4');
+  //   expect(testresult).toBeTruthy();
+  // });
 });
