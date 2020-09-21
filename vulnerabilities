@@ -1,0 +1,49 @@
+Useless regular-expression character escape aws-amplify-cli
+packages/amplify-util-mock/src/utils/git-ignore.ts#L11 aEURC/ Detected 15 days ago
+
+Useless regular-expression character escape aws-amplify-cli
+packages/amplify-util-mock/src/utils/git-ignore.ts#L11 aEURC/ Detected 15 days ago
+/////////////////
+
+Client-side URL redirect aws-amplify-cli
+packages/amplify-category-auth/provider-utils/awscloudformation/triggers/CustomMessage/assets/verify.js#L47 aEURC/ Detected 15 days ago
+
+Client-side URL redirect aws-amplify-cli
+packages/amplify-category-auth/provider-utils/awscloudformation/triggers/CustomMessage/assets/verify.js#L50 aEURC/ Detected 15 days ago
+
+/////////////
+Incomplete URL substring sanitization aws-amplify-cli
+packages/amplify-category-auth/provider-utils/awscloudformation/index.js#L498 aEURC/ Detected 15 days ago
+
+Incomplete URL substring sanitization aws-amplify-cli
+packages/amplify-category-auth/provider-utils/awscloudformation/index.js#L507 aEURC/ Detected 15 days ago
+
+Incomplete URL substring sanitization aws-amplify-cli
+packages/amplify-category-auth/provider-utils/awscloudformation/index.js#L510 aEURC/ Detected 15 days ago
+
+
+////////////////////////
+Incomplete URL substring sanitization aws-amplify-cli
+packages/amplify-category-auth/provider-utils/awscloudformation/service-walkthroughs/auth-questions.js#L389 aEURC/ Detected 15 days ago
+
+
+
+////////////
+Hard-coded credentials aws-amplify-cli
+packages/amplify-appsync-simulator/src/tests/server/subscription/websocket-server/server.test.ts#L108 aEURC/ Detected 15 days ago
+
+////////////
+Incomplete string escaping or encoding aws-amplify-cli
+packages/amplify-e2e-core/dist/index.html#L35 aEURC/ Detected 15 days ago
+
+Incomplete string escaping or encoding aws-amplify-cli
+packages/amplify-e2e-core/src/utils/nexpect.ts#L385 aEURC/ Detected 15 days ago
+
+Incomplete string escaping or encoding aws-amplify-cli
+packages/amplify-graphql-types-generator/src/scala/values.js#L4 aEURC/ Detected 15 days ago
+
+Incomplete string escaping or encoding aws-amplify-cli
+packages/amplify-graphql-types-generator/src/swift/language.ts#L31 aEURC/ Detected 15 days ago
+
+Incomplete string escaping or encoding aws-amplify-cli
+packages/amplify-velocity-template/src/compile/literal.js#L121 aEURC/ Detected 15 days ago

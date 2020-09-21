@@ -122,3 +122,8 @@ module.exports = function(Velocity, utils) {
     },
   });
 };
+
+
+
+// Incomplete string escaping or encoding aws-amplify-cli
+// packages/amplify-velocity-template/src/compile/literal.js#L121 aEURC/ Detected 15 days ago

@@ -119,6 +119,9 @@ describe('WebsocketSubscriptionServer', () => {
       expect(onConnectHandler.mock.calls[0][1]).toEqual(header);
     });
 
+// Hard-coded credentials aws-amplify-cli
+// packages/amplify-appsync-simulator/src/tests/server/subscription/websocket-server/server.test.ts#L108 aEURC/ Detected 15 days ago
+
     it('should fail connection when onConnectionHandler throw and error', async done => {
       onConnectHandler.mockRejectedValue('error');
       const client = new WS(`ws://localhost:${serverPort}${SUBSCRIPTION_PATH}`, 'graphql-ws');

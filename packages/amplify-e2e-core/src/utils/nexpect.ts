@@ -384,6 +384,9 @@ function chain(context: Context): ExecutionContext {
         const { fn: currentFn, name: currentFnName } = step;
         const nonEmptyLines = stdout.map(line => line.replace('\r', '').trim()).filter(line => line !== '');
 
+        // Incomplete string escaping or encoding aws-amplify-cli
+        // packages/amplify-e2e-core/src/utils/nexpect.ts#L385 aEURC/ Detected 15 days ago
+        
         var lastLine = nonEmptyLines[nonEmptyLines.length - 1];
 
         if (!lastLine) {

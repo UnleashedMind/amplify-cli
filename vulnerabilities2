@@ -1,0 +1,41 @@
+Client-side URL redirect
+master
+packages/amplify-category-auth/provider-utils/awscloudformation/triggers/CustomMessage/assets/verify.js#L47 • Detected 6 days ago
+Client-side URL redirect
+master
+packages/amplify-category-auth/provider-utils/awscloudformation/triggers/CustomMessage/assets/verify.js#L50 • Detected 6 days ago
+
+
+Useless regular-expression character escape
+master
+packages/amplify-util-mock/src/utils/git-ignore.ts#L11 • Detected 6 days ago
+Useless regular-expression character escape
+master
+packages/amplify-util-mock/src/utils/git-ignore.ts#L11 • Detected 6 days ago
+
+
+Incomplete URL substring sanitization
+master
+packages/amplify-category-auth/src/provider-utils/awscloudformation/index.js#L329 • Detected 6 days ago
+Incomplete URL substring sanitization
+master
+packages/amplify-category-auth/src/provider-utils/awscloudformation/index.js#L338 • Detected 6 days ago
+Incomplete URL substring sanitization
+master
+packages/amplify-category-auth/src/provider-utils/awscloudformation/index.js#L341 • Detected 6 days ago
+
+
+Incomplete URL substring sanitization
+master
+packages/amplify-category-auth/src/provider-utils/awscloudformation/service-walkthroughs/auth-questions.js#L390 • Detected 6 days ago
+
+
+Incomplete string escaping or encoding
+master
+packages/amplify-graphql-types-generator/src/scala/values.js#L4 • Detected 6 days ago
+Incomplete string escaping or encoding
+master
+packages/amplify-graphql-types-generator/src/swift/language.ts#L31 • Detected 6 days ago
+Incomplete string escaping or encoding
+master
+packages/amplify-velocity-template/src/compile/literal.js#L121 • Detected 6 days ago

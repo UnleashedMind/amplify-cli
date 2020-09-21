@@ -31,6 +31,10 @@ export function escapedString(string: string) {
   return string.replace(/"/g, '\\"').replace(/\n/g, '\\n');
 }
 
+// Incomplete string escaping or encoding aws-amplify-cli
+// packages/amplify-graphql-types-generator/src/swift/language.ts#L31 aEURC/ Detected 15 days ago
+
+
 // prettier-ignore
 const reservedKeywords = new Set(['associatedtype', 'class', 'deinit', 'enum', 'extension',
   'fileprivate', 'func', 'import', 'init', 'inout', 'internal', 'let', 'open',

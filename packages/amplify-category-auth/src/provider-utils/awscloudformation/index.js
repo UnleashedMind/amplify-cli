@@ -441,3 +441,13 @@ module.exports = {
   console,
   getPermissionPolicies,
 };
+
+
+// Incomplete URL substring sanitization aws-amplify-cli
+// packages/amplify-category-auth/provider-utils/awscloudformation/index.js#L498 aEURC/ Detected 15 days ago
+
+// Incomplete URL substring sanitization aws-amplify-cli
+// packages/amplify-category-auth/provider-utils/awscloudformation/index.js#L507 aEURC/ Detected 15 days ago
+
+// Incomplete URL substring sanitization aws-amplify-cli
+// packages/amplify-category-auth/provider-utils/awscloudformation/index.js#L510 aEURC/ Detected 15 days ago

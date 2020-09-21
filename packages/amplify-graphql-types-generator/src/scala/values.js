@@ -4,6 +4,9 @@ export function escapedString(string) {
   return string.replace(/"/g, '\\"');
 }
 
+// Incomplete string escaping or encoding aws-amplify-cli
+// packages/amplify-graphql-types-generator/src/scala/values.js#L4 aEURC/ Detected 15 days ago
+
 export function multilineString(context, string) {
   const lines = string.split('\n');
   lines.forEach((line, index) => {

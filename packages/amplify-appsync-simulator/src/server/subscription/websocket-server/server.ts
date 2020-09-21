@@ -115,6 +115,11 @@ export class WebsocketSubscriptionServer {
     }
   };
 
+
+// Hard-coded credentials aws-amplify-cli
+// packages/amplify-appsync-simulator/src/tests/server/subscription/websocket-server/server.test.ts#L108 aEURC/ Detected 15 days ago
+
+
   private onSocketConnection = async (socket: WebSocket, request: IncomingMessage): Promise<void> => {
     (socket as any).upgradeReq = request;
     try {

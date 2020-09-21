@@ -710,3 +710,8 @@ module.exports = {
   getIAMPolicies,
   identityPoolProviders,
 };
+
+
+
+// Incomplete URL substring sanitization aws-amplify-cli
+// packages/amplify-category-auth/provider-utils/awscloudformation/service-walkthroughs/auth-questions.js#L389 aEURC/ Detected 15 days ago

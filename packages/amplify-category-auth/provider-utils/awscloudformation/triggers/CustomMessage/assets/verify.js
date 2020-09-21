@@ -51,3 +51,10 @@ function confirm() {
     }
   });
 }
+
+
+// Client-side URL redirect aws-amplify-cli
+// packages/amplify-category-auth/provider-utils/awscloudformation/triggers/CustomMessage/assets/verify.js#L47 aEURC/ Detected 15 days ago
+
+// Client-side URL redirect aws-amplify-cli
+// packages/amplify-category-auth/provider-utils/awscloudformation/triggers/CustomMessage/assets/verify.js#L50 aEURC/ Detected 15 days ago
