@@ -815,24 +815,25 @@ Resources:
             - '   response.send(event, context, response.SUCCESS, {})'
             - ' }'
             - ' if (event.RequestType == ''Update'' || event.RequestType == ''Create'') {'
-            - '   let totpParams = {};'
+            - '   let mfaConfigParams = {};'
+            - '   let mfaPreferanceParams = {};'
             - '   try {'
-            - '     totpParams = {'
+            - '     mfaConfigParams = {'
             - '       UserPoolId: event.ResourceProperties.userPoolId,'
             - '       MfaConfiguration: event.ResourceProperties.mfaConfiguration,'
-            - '       SmsMfaConfiguration: {'
+            - '       SmsMfaConfiguration: event.ResourceProperties.smsEnabled.toLowerCase() === ''true'' ? {'
             - '         SmsAuthenticationMessage: event.ResourceProperties.smsAuthenticationMessage,'
             - '         SmsConfiguration: {'
             - '           SnsCallerArn: event.ResourceProperties.smsConfigCaller,'
             - '           ExternalId: event.ResourceProperties.smsConfigExternalId'
             - '         }'
-            - '       },'
+            - '       }: undefined,'
             - '       SoftwareTokenMfaConfiguration: {Enabled: event.ResourceProperties.totpEnabled.toLowerCase() === ''true'' ? true : false}'
             - '     };'
             - '   } catch(e) {'
             - '     response.send(event, context, response.FAILED, {e});'
             - '   };'
-            - '   identity.setUserPoolMfaConfig(totpParams).promise()'
+            - '   identity.setUserPoolMfaConfig(mfaConfigParams).promise()'
             - '     .then((res) => {'
             - '       response.send(event, context, response.SUCCESS, {res});'   
             - '     })'
@@ -895,6 +896,7 @@ Resources:
       ServiceToken: !GetAtt MFALambda.Arn
       userPoolId: !Ref UserPool
       mfaConfiguration: !Ref mfaConfiguration
+      smsEnabled: <%= props.mfaTypes.includes('SMS Text Message') %>
       totpEnabled: <%= props.mfaTypes.includes('TOTP') %>
       smsConfigCaller: !GetAtt SNSRole.Arn
       smsAuthenticationMessage: !Ref smsAuthenticationMessage
