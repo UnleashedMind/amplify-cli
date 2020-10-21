@@ -1227,7 +1227,6 @@ workflows:
             branches:
               only:
                 - master
-                - /feat\/cloudformation-logging/
                 - graphqlschemae2e
                 - graphql_e2e_testing
                 - feat-import
@@ -1239,7 +1238,6 @@ workflows:
             branches:
               only:
                 - master
-                - /feat\/cloudformation-logging/
                 - graphqlschemae2e
                 - beta
                 - feat-import
@@ -1251,7 +1249,6 @@ workflows:
             branches:
               only:
                 - master
-                - /feat\/cloudformation-logging/
                 - graphqlschemae2e
                 - beta
                 - feat-import
@@ -1262,7 +1259,6 @@ workflows:
             branches:
               only:
                 - master
-                - /feat\/cloudformation-logging/
                 - graphqlschemae2e
                 - feat-import
           requires:
@@ -1272,7 +1268,6 @@ workflows:
             branches:
               only:
                 - master
-                - /feat\/cloudformation-logging/
                 - graphqlschemae2e
                 - feat-import
           requires:
@@ -1329,7 +1324,6 @@ workflows:
               only:
                 - release
                 - master
-                - /feat\/cloudformation-logging/
                 - beta
                 - feat-import
       - plugin-amplify_e2e_tests:
@@ -1337,7 +1331,6 @@ workflows:
             branches:
               only:
                 - master
-                - /feat\/cloudformation-logging/
                 - graphqlschemae2e
                 - feat-import
           requires:
