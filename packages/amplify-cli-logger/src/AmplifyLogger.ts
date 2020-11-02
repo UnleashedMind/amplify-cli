@@ -67,4 +67,8 @@ export class AmplifyLogger implements IAmplifyLogger {
     const { message, ...others } = content;
     this.logger.error(message, { ...others });
   }
+
+  loggerEnd() {
+    this.logger.end();
+  }
 }
