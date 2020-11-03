@@ -13,7 +13,7 @@ const configurationManager = require('./configuration-manager');
 const amplifyServiceManager = require('./amplify-service-manager');
 const amplifyServiceMigrate = require('./amplify-service-migrate');
 
-async function run(context) {
+async function run22(context) {
   await configurationManager.init(context);
   if (!context.exeInfo || context.exeInfo.isNewEnv) {
     context.exeInfo = context.exeInfo || {};
