@@ -1437,8 +1437,7 @@ export const supportedServices = {
           },
         ]
       },
-  {
-
+      {
           key: "newOIDCMappingOnUpdate",
           question: "Which attribute mappings do you want to add?",
           required: true,

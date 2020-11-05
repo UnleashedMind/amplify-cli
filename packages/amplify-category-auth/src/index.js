@@ -235,7 +235,7 @@ async function initEnv(context) {
 
 async function console(context) {
   const { amplify } = context;
-  const supportedServices = amplify.readJsonFile(`${__dirname}/provider-utils/supported-services.json`);
+  const {supportedServices} = require('./provider-utils/supported-services');
   const amplifyMeta = amplify.getProjectMeta();
 
   if (!amplifyMeta.auth || Object.keys(amplifyMeta.auth).length === 0) {
